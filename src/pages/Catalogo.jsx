@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import ProductCard from '../components/ProductCard'
@@ -35,13 +35,20 @@ export default function Catalogo() {
     return () => controller.abort()
   }, [numeracao])
 
+  // memoiza lista já ordenada para não reordenar a cada render
+  const produtosOrdenados = useMemo(() => {
+    return [...produtos].sort((a, b) =>
+      a.nome.localeCompare(b.nome, 'pt-BR', { sensitivity: 'base' })
+    )
+  }, [produtos])
+
   return (
-    <div className="min-h-screen p-6 bg-gradient-to-br from-gray-50 to-gray-100">
+    <div className="min-h-screen p-4 sm:p-6 bg-gradient-to-br from-gray-50 to-gray-100">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
-        <header className="mb-8 flex items-center justify-between">
+        <header className="mb-6 sm:mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
           <div>
-            <h1 className="text-3xl font-extrabold text-gray-800 tracking-tight">
+            <h1 className="text-2xl sm:text-3xl font-extrabold text-gray-800 tracking-tight">
               Catálogo
             </h1>
             <p className="text-sm text-gray-500 mt-1">
@@ -54,7 +61,7 @@ export default function Catalogo() {
 
           <button
             onClick={() => navigate(-1)}
-            className="flex items-center gap-2 px-4 py-2 rounded-lg border border-gray-300 text-gray-700 bg-white shadow-sm hover:shadow-md hover:bg-gray-50 transition"
+            className="flex items-center justify-center gap-2 px-4 py-2 rounded-lg border border-gray-300 text-gray-700 bg-white shadow-sm hover:shadow-md hover:bg-gray-50 transition text-sm sm:text-base"
           >
             <ArrowLeft size={16} />
             Voltar
@@ -72,18 +79,27 @@ export default function Catalogo() {
             Erro: {error}
           </div>
         )}
-        {!loading && produtos.length === 0 && (
+        {!loading && produtosOrdenados.length === 0 && (
           <div className="text-gray-600 text-center py-12">
             Nenhum produto disponível para essa numeração.
           </div>
         )}
 
         {/* Grid de Produtos */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {produtos.map((p) => (
+        <div
+          className="
+            grid gap-4 sm:gap-6
+            grid-cols-1
+            sm:grid-cols-2
+            md:grid-cols-3
+            lg:grid-cols-4
+          "
+        >
+          {produtosOrdenados.map((p) => (
             <ProductCard
               key={p.id}
               produto={p}
+              numeracaoSelecionada={numeracao}
               onView={() => navigate(`/produto/${p.id}`)}
             />
           ))}
