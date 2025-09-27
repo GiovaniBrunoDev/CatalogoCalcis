@@ -17,12 +17,16 @@ export default function Numeracao() {
       // Pré-carrega produtos
       const res = await axios.get(`${base}/produtos`, { params: { numeracao: size } })
 
-      // Passa os produtos via state para Catalogo
-      navigate(`/catalogo/${size}`, { state: { preloadedProducts: res.data || [] } })
+      // Aguarda 2 segundos antes de navegar
+      setTimeout(() => {
+        navigate(`/catalogo/${size}`, { state: { preloadedProducts: res.data || [] } })
+      }, 2000)
     } catch (err) {
       console.error('Erro ao pré-carregar produtos:', err)
-      // Mesmo em caso de erro, navega normalmente
-      navigate(`/catalogo/${size}`)
+      // Mesmo em caso de erro, navega com 2s de delay
+      setTimeout(() => {
+        navigate(`/catalogo/${size}`)
+      }, 2000)
     }
   }
 
@@ -63,7 +67,7 @@ export default function Numeracao() {
               className="w-20 h-20 border-4 border-green-500 border-t-transparent rounded-full mb-4"
               animate={{ rotate: 360 }}
               transition={{ repeat: Infinity, duration: 1, ease: 'linear' }}
-            ></motion.div>
+            />
 
             <motion.p
               className="text-gray-700 text-lg font-medium text-center px-6"

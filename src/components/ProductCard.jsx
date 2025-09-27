@@ -29,16 +29,34 @@ export default function ProductCard({ produto, numeracaoSelecionada }) {
                 </h3>
 
                 {/* Preços */}
-                <div className="flex items-center space-x-2 mb-3">
-                    <span className="text-lg font-semibold text-green-600">
-                        R$ {Number(produto.preco || 0).toFixed(2)}
-                    </span>
-                    {produto.precoAntigo && (
-                        <span className="text-gray-400 line-through text-xs">
-                            R$ {Number(produto.precoAntigo).toFixed(2)}
+                <div className="flex flex-col items-center mb-3">
+                    {/* Preço */}
+                    <div className="flex items-baseline gap-2">
+                        <span className="text-xl sm:text-2xl font-bold text-green-500">
+                            {produto.preco
+                                ? produto.preco.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
+                                : 'R$ 0,00'}
+                        </span>
+
+
+                        {produto.precoAntigo && (
+                            <span className="text-gray-400 text-sm sm:text-base line-through">
+                                {produto.precoAntigo.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
+                            </span>
+                        )}
+                    </div>
+
+                    {/* Parcelamento com juros de 6,12% */}
+                    {produto.preco && (
+                        <span className="text-xs sm:text-sm text-gray-500 mt-1">
+                            ou 3x de{' '}
+                            {((produto.preco * 1.0612) / 3).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}{' '}
+                            no cartão
                         </span>
                     )}
                 </div>
+
+
 
                 {/* Tamanhos */}
                 {produto.variacoes?.length > 0 && (
