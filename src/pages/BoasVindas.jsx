@@ -30,7 +30,7 @@ export default function BoasVindas() {
         <div className="flex items-center justify-center min-h-screen p-4">
             <div className="w-full max-w-md bg-white shadow rounded p-6">
                 <h1 className="text-2xl font-bold mb-3">Bem-vindo à Calcis 👋</h1>
-                <p className="text-sm text-gray-600 mb-4">Insira seu nome e telefone para continuar.</p>
+                <p className="text-sm text-gray-600 mb-4">ei Insira seu nome e telefone para continuar.</p>
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <div>
                         <label className="block text-sm font-medium">Nome</label>
