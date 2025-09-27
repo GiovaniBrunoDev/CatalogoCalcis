@@ -24,12 +24,12 @@ export default function ProductCard({ produto, numeracaoSelecionada }) {
             {/* Conteúdo */}
             <div className="p-3 flex flex-col flex-1 items-center text-center">
                 {/* Nome */}
-                <h3 className="text-base font-medium text-gray-800 mb-1 line-clamp-2">
+                <h3 className="text-base font-medium text-gray-800 mb-2 line-clamp-2">
                     {produto.nome}
                 </h3>
 
                 {/* Preços */}
-                <div className="flex items-center space-x-2 mb-2">
+                <div className="flex items-center space-x-2 mb-3">
                     <span className="text-lg font-semibold text-green-600">
                         R$ {Number(produto.preco || 0).toFixed(2)}
                     </span>
@@ -43,8 +43,8 @@ export default function ProductCard({ produto, numeracaoSelecionada }) {
                 {/* Tamanhos */}
                 {produto.variacoes?.length > 0 && (
                     <div className="mb-3">
-                        <p className="text-xs text-gray-500">Tamanhos disponíveis:</p>
-                        <div className="flex flex-wrap gap-1.5 mt-1 justify-center">
+                        <p className="text-xs text-gray-500 mb-1">Tamanhos disponíveis:</p>
+                        <div className="flex flex-wrap gap-2 justify-center">
                             {produto.variacoes
                                 .slice()
                                 .sort((a, b) => Number(a.numeracao) - Number(b.numeracao))
@@ -62,9 +62,9 @@ export default function ProductCard({ produto, numeracaoSelecionada }) {
                 )}
 
                 {/* Aviso de última unidade */}
-                {ultimaUnidade && (
-                    <span className="inline-flex items-center gap-1 px-2 py-1 text-xs font-medium bg-red-100 text-red-700 rounded-full mb-2">
-                        🔥 Última unidade na sua numeração!
+                {ultimaUnidade && numeracaoSelecionada && (
+                    <span className="inline-flex items-center gap-1 px-2 py-1 text-xs font-medium bg-red-100 text-red-700 rounded-full mb-3">
+                        🔥 Última unidade na numeração {numeracaoSelecionada}!
                     </span>
                 )}
 
@@ -79,6 +79,7 @@ export default function ProductCard({ produto, numeracaoSelecionada }) {
                     Pedir via WhatsApp
                 </a>
             </div>
+
         </div>
     )
 }
