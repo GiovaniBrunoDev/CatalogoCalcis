@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import axios from 'axios'
 import { FaShoePrints } from 'react-icons/fa'
+import bannerImage from '../assets/banner.png' // ajuste o caminho da imagem
 
 export default function Numeracao() {
   const navigate = useNavigate()
@@ -15,7 +16,6 @@ export default function Numeracao() {
 
     try {
       const res = await axios.get(`${base}/produtos`, { params: { numeracao: size } })
-
       setTimeout(() => {
         navigate(`/catalogo/${size}`, { state: { preloadedProducts: res.data || [] } })
       }, 1200)
@@ -28,43 +28,85 @@ export default function Numeracao() {
   }
 
   return (
-    <div className="relative min-h-screen flex items-center justify-center p-6 bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white">
-      {/* Card central */}
-      <motion.div
-        initial={{ scale: 0.95, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        transition={{ duration: 0.4, ease: 'easeOut' }}
-        className="w-full max-w-lg bg-gray-900/90 backdrop-blur-xl rounded-2xl shadow-lg p-8 z-10 border border-gray-800"
-      >
-        {/* Header */}
-        <div className="flex items-center gap-3 mb-6">
-          <FaShoePrints className="text-pink-500 text-2xl" />
-          <h2 className="text-xl font-bold tracking-tight text-gray-100">
-            Escolha sua numeração
-          </h2>
+    <div className="relative min-h-screen bg-gray-50 text-gray-800 flex flex-col">
+      {/* Banner topo */}
+      <div className="relative w-full aspect-[18/10] overflow-hidden">
+        <img
+          src={bannerImage}
+          alt="Banner"
+          className="absolute inset-0 w-full h-full object-cover object-center"
+        />
+
+        <div className="absolute inset-0 flex flex-col items-start justify-center px-6 sm:px-12 text-white z-10 animate-fadeIn bg-black/40">
+          <h2 className="text-2xl sm:text-4xl font-bold mb-4">BEM-VINDO À CALCIS</h2>
+          <p className="text-sm sm:text-lg font-medium mb-4">
+            <span className="font-bold">ESTILO, CONFORTO E QUALIDADE</span><br />
+            PARA TODOS OS MOMENTOS.
+          </p>
+          <button
+            onClick={() => document.getElementById('numeracao-section')?.scrollIntoView({ behavior: 'smooth' })}
+            className="bg-gray-900 hover:bg-gray-800 text-white font-bold py-2 px-5 rounded-full text-sm sm:text-base shadow-md"
+          >
+            CONFIRA NOSSO CATÁLOGO
+          </button>
         </div>
 
-        {/* Grade de botões */}
-        <div className="grid grid-cols-4 sm:grid-cols-6 gap-3">
-          {sizes.map((s) => (
-            <button
-              key={s}
-              onClick={() => choose(s)}
-              disabled={loadingSize !== null}
-              className={`
-                py-2 rounded-lg font-medium transition-all duration-300
-                border
-                ${loadingSize === s
-                  ? 'bg-pink-600 text-white border-pink-500 animate-pulse'
-                  : 'bg-gray-800 border-gray-700 hover:bg-gray-700 text-gray-200'}
-                ${loadingSize !== null && loadingSize !== s ? 'opacity-40 cursor-not-allowed' : ''}
-              `}
-            >
-              {s}
-            </button>
-          ))}
-        </div>
-      </motion.div>
+        <style jsx>{`
+          @keyframes fadeIn {
+            from {
+              opacity: 0;
+              transform: translateY(20px);
+            }
+            to {
+              opacity: 1;
+              transform: translateY(0);
+            }
+          }
+          .animate-fadeIn {
+            animation: fadeIn 1.2s ease-out forwards;
+          }
+        `}</style>
+      </div>
+
+      {/* Seção escolha de numeração */}
+      <div id="numeracao-section" className="flex-1 flex items-center justify-center p-6">
+        <motion.div
+          initial={{ y: 30, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.5, ease: 'easeOut' }}
+          className="w-full max-w-xl bg-white rounded-2xl shadow-xl p-8 z-10 border border-gray-200"
+        >
+          <div className="text-center mb-8">
+            <FaShoePrints className="text-gray-700 text-4xl mx-auto mb-3" />
+            <h2 className="text-2xl font-bold tracking-tight text-gray-900">
+              Escolha sua numeração
+            </h2>
+            <p className="text-gray-500 mt-2 text-sm">
+              Selecione o tamanho para visualizar os produtos disponíveis em estoque.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-4 sm:grid-cols-6 gap-4">
+            {sizes.map((s) => (
+              <button
+                key={s}
+                onClick={() => choose(s)}
+                disabled={loadingSize !== null}
+                className={`
+                  py-2 rounded-lg font-medium text-sm transition-all duration-300
+                  border shadow-sm
+                  ${loadingSize === s
+                    ? 'bg-gray-900 text-white border-gray-900 animate-pulse'
+                    : 'bg-gray-100 border-gray-300 hover:bg-gray-200 hover:border-gray-400'}
+                  ${loadingSize !== null && loadingSize !== s ? 'opacity-40 cursor-not-allowed' : ''}
+                `}
+              >
+                {s}
+              </button>
+            ))}
+          </div>
+        </motion.div>
+      </div>
 
       {/* Overlay de loading */}
       <AnimatePresence>
@@ -75,18 +117,15 @@ export default function Numeracao() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="absolute inset-0 flex flex-col items-center justify-center bg-black/80 backdrop-blur-sm z-20"
+            className="absolute inset-0 flex flex-col items-center justify-center bg-white/90 backdrop-blur-sm z-20"
           >
-            {/* Spinner */}
             <motion.div
-              className="w-14 h-14 border-4 border-pink-500 border-t-transparent rounded-full mb-6"
+              className="w-14 h-14 border-4 border-gray-800 border-t-transparent rounded-full mb-6"
               animate={{ rotate: 360 }}
               transition={{ repeat: Infinity, duration: 1, ease: 'linear' }}
             />
-
-            {/* Texto */}
             <motion.p
-              className="text-base font-medium text-gray-200 text-center px-6"
+              className="text-base font-medium text-gray-700 text-center px-6"
               initial={{ y: 10, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               exit={{ y: -10, opacity: 0 }}
