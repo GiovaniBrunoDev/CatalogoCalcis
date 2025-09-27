@@ -40,14 +40,6 @@ export default function ProductCard({ produto, numeracaoSelecionada }) {
                     )}
                 </div>
 
-                {/* Aviso de última unidade */}
-                {ultimaUnidade && (
-                    <span className="inline-flex items-center gap-1 px-2 py-1 text-xs font-medium bg-red-100 text-red-700 rounded-full mb-2">
-                        🔥 Última unidade na sua numeração!
-                    </span>
-                )}
-
-
                 {/* Tamanhos */}
                 {produto.variacoes?.length > 0 && (
                     <div className="mb-3">
@@ -67,6 +59,13 @@ export default function ProductCard({ produto, numeracaoSelecionada }) {
                                 ))}
                         </div>
                     </div>
+                )}
+
+                {/* Aviso de última unidade */}
+                {ultimaUnidade && (
+                    <span className="inline-flex items-center gap-1 px-2 py-1 text-xs font-medium bg-red-100 text-red-700 rounded-full mb-2">
+                        🔥 Última unidade na sua numeração!
+                    </span>
                 )}
 
                 {/* Botão WhatsApp */}
