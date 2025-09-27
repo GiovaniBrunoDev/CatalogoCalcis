@@ -88,7 +88,7 @@ export default function ProductCard({ produto, numeracaoSelecionada }) {
 
                 {/* Botão WhatsApp */}
                 <a
-                    href={`https://wa.me/55${produto.whatsapp || '45988190147'}?text=Olá, tenho interesse no produto ${produto.nome}`}
+                    href={`https://wa.me/55${produto.whatsapp || '45988190147'}?text=Olá, tenho interesse no produto ${produto.nome} ${numeracaoSelecionada}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="mt-auto flex items-center justify-center gap-1.5 bg-gradient-to-r from-green-500 to-green-600 text-white py-2 px-3 rounded-lg text-sm font-medium shadow hover:from-green-600 hover:to-green-700 transition-all duration-300"
