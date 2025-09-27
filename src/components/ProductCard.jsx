@@ -64,7 +64,7 @@ export default function ProductCard({ produto, numeracaoSelecionada }) {
                 {/* Aviso de última unidade */}
                 {ultimaUnidade && (
                     <span className="inline-flex items-center gap-1 px-2 py-1 text-xs font-medium bg-red-100 text-red-700 rounded-full mb-2">
-                        🔥 Última unidade na sua numeração!
+                        🔥 Última unidade na sua numeração! a
                     </span>
                 )}
 
