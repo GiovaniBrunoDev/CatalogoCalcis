@@ -1,29 +1,53 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import axios from 'axios'
-import { FaShoePrints } from 'react-icons/fa'
-import bannerImage from '../assets/banner.png' // ajuste o caminho da imagem
+import bannerImage from '../assets/banner.png'
 
 export default function Numeracao() {
     const navigate = useNavigate()
     const [loadingSize, setLoadingSize] = useState(null)
+    const [loadingMessageIndex, setLoadingMessageIndex] = useState(0)
+
     const sizes = Array.from({ length: 11 }, (_, i) => 34 + i) // 34..44
+    const messages = [
+        "Um momento... estamos conferindo a sua numeração no estoque.",
+        "Só um instantinho, já já fica pronto!",
+        "Quase lá, finalizando a busca!"
+    ]
+
+    useEffect(() => {
+        if (loadingSize) {
+            let index = 0
+            const interval = setInterval(() => {
+                index++
+                if (index < messages.length) {
+                    setLoadingMessageIndex(index)
+                } else {
+                    clearInterval(interval) // para quando chegar na última frase
+                }
+            }, 2000) // troca a cada 2s
+
+            return () => clearInterval(interval)
+        }
+    }, [loadingSize])
 
     async function choose(size) {
         setLoadingSize(size)
+        setLoadingMessageIndex(0) // sempre começa na primeira frase
+
         const base = import.meta.env.VITE_API_BASE_URL || 'http://localhost:4000'
 
         try {
             const res = await axios.get(`${base}/produtos`, { params: { numeracao: size } })
             setTimeout(() => {
                 navigate(`/catalogo/${size}`, { state: { preloadedProducts: res.data || [] } })
-            }, 1200)
+            }, 5000) // tempo total para exibir as frases
         } catch (err) {
             console.error('Erro ao pré-carregar produtos:', err)
             setTimeout(() => {
                 navigate(`/catalogo/${size}`)
-            }, 1200)
+            }, 5000)
         }
     }
 
@@ -53,7 +77,6 @@ export default function Numeracao() {
                     </button>
                 </div>
 
-
                 <style jsx>{`
           @keyframes fadeIn {
             from {
@@ -66,7 +89,7 @@ export default function Numeracao() {
             }
           }
           .animate-fadeIn {
-            animation: fadeIn 1.2s ease-out forwards;
+            animation: fadeIn 2s ease-out forwards;
           }
         `}</style>
             </div>
@@ -74,13 +97,12 @@ export default function Numeracao() {
             {/* Seção escolha de numeração */}
             <div id="numeracao-section" className="flex-1 flex items-center justify-center p-6">
                 <motion.div
-                    initial={{ y: 30, opacity: 0 }}
+                    initial={{ y: 10, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
-                    transition={{ duration: 0.5, ease: 'easeOut' }}
+                    transition={{ duration: 0.6, ease: 'easeOut' }}
                     className="w-full max-w-xl bg-white rounded-2xl shadow-xl p-8 z-10 border border-gray-200"
                 >
                     <div className="text-center mb-8">
-
                         <h2 className="text-2xl font-bold tracking-tight text-gray-900">
                             Escolha sua numeração
                         </h2>
@@ -120,25 +142,32 @@ export default function Numeracao() {
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         transition={{ duration: 0.3 }}
-                        className="absolute inset-0 flex flex-col items-center justify-center bg-white/90 backdrop-blur-sm z-20"
+                        className="absolute inset-0 flex flex-col items-center justify-center 
+                 bg-gradient-to-b from-white via-gray-50 to-gray-200 
+                 backdrop-blur-sm z-20"
                     >
+                        {/* Spinner */}
                         <motion.div
                             className="w-14 h-14 border-4 border-gray-800 border-t-transparent rounded-full mb-6"
                             animate={{ rotate: 360 }}
                             transition={{ repeat: Infinity, duration: 1, ease: 'linear' }}
                         />
+
+                        {/* Mensagem dinâmica */}
                         <motion.p
+                            key={loadingMessageIndex}
                             className="text-base font-medium text-gray-700 text-center px-6"
                             initial={{ y: 10, opacity: 0 }}
                             animate={{ y: 0, opacity: 1 }}
                             exit={{ y: -10, opacity: 0 }}
                             transition={{ duration: 0.4 }}
                         >
-                            Estamos conferindo o estoque para você...
+                            {messages[loadingMessageIndex]}
                         </motion.p>
                     </motion.div>
                 )}
             </AnimatePresence>
+
         </div>
     )
 }
