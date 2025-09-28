@@ -26,7 +26,7 @@ export default function Numeracao() {
                 } else {
                     clearInterval(interval) // para quando chegar na última frase
                 }
-            }, 2000) // troca a cada 2s
+            }, 3000) // troca a cada 2s
 
             return () => clearInterval(interval)
         }
