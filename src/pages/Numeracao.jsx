@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import axios from 'axios'
 import bannerImage from '../assets/banner.png'
+import LogoImage from '../assets/logo.png'
 
 export default function Numeracao() {
     const navigate = useNavigate()
@@ -53,6 +54,16 @@ export default function Numeracao() {
 
     return (
         <div className="relative min-h-screen bg-gray-50 text-gray-800 flex flex-col">
+            <header className="w-full bg-black">
+                <div className="max-w-6xl mx-auto flex justify-center items-center py-3">
+                    <img
+                        src={LogoImage} // substitua por LogoImage se for logo em vez do banner
+                        alt="Calcis"
+                        className="h-8 sm:h-9 object-contain"
+                    />
+                </div>
+            </header>
+
             {/* Banner topo */}
             <div className="relative w-full aspect-[18/10] overflow-hidden">
                 <img
@@ -70,29 +81,65 @@ export default function Numeracao() {
                         PARA TODOS OS MOMENTOS.
                     </p>
                     <button
-                        onClick={() => document.getElementById('numeracao-section')?.scrollIntoView({ behavior: 'smooth' })}
+                        onClick={() =>
+                            document.getElementById('numeracao-section')?.scrollIntoView({ behavior: 'smooth' })
+                        }
                         className="bg-gray-900 hover:bg-gray-800 text-white font-medium py-2 px-5 rounded-full text-xs sm:text-sm shadow-md tracking-wide"
                     >
                         CONFIRA NOSSO CATÁLOGO
                     </button>
                 </div>
-
-                <style jsx>{`
-          @keyframes fadeIn {
-            from {
-              opacity: 0;
-              transform: translateY(20px);
-            }
-            to {
-              opacity: 1;
-              transform: translateY(0);
-            }
-          }
-          .animate-fadeIn {
-            animation: fadeIn 2s ease-out forwards;
-          }
-        `}</style>
             </div>
+
+            {/* Carrossel infinito de textos */}
+            <div className="overflow-hidden bg-black py-3 relative">
+                {/* Primeira lista */}
+                <div className="flex animate-marquee whitespace-nowrap">
+                    <span className="mx-8 text-white font-medium text-sm sm:text-base">✔ Frete rápido para todo o Brasil</span>
+                    <span className="mx-8 text-white font-medium text-sm sm:text-base">✔ Qualidade e preço justo</span>
+                    <span className="mx-8 text-white font-medium text-sm sm:text-base">✔ Pague em até 12x sem juros</span>
+                    <span className="mx-8 text-white font-medium text-sm sm:text-base">✔ Novos modelos toda semana</span>
+                    <span className="mx-8 text-white font-medium text-sm sm:text-base">✔ Mais de 2 mil clientes satisfeitos</span>
+                </div>
+
+                {/* Segunda lista duplicada */}
+                <div className="flex animate-marquee2 whitespace-nowrap absolute top-3 left-0">
+                    <span className="mx-8 text-white font-medium text-sm sm:text-base">✔ Frete rápido para todo o Brasil</span>
+                    <span className="mx-8 text-white font-medium text-sm sm:text-base">✔ Qualidade e preço justo</span>
+                    <span className="mx-8 text-white font-medium text-sm sm:text-base">✔ Pague em até 12x sem juros</span>
+                    <span className="mx-8 text-white font-medium text-sm sm:text-base">✔ Novos modelos toda semana</span>
+                    <span className="mx-8 text-white font-medium text-sm sm:text-base">✔ Mais de 2 mil clientes satisfeitos</span>
+                </div>
+            </div>
+
+            <style jsx>{`
+  @keyframes marquee {
+    0%   { transform: translateX(0%); }
+    100% { transform: translateX(-100%); }
+  }
+  @keyframes marquee2 {
+    0%   { transform: translateX(100%); }
+    100% { transform: translateX(0%); }
+  }
+  .animate-marquee {
+    animation: marquee 15s linear infinite;
+  }
+  .animate-marquee2 {
+    animation: marquee2 15s linear infinite;
+  }
+
+  /* Mobile mais rápido */
+  @media (max-width: 640px) {
+    .animate-marquee {
+      animation-duration: 8s;
+    }
+    .animate-marquee2 {
+      animation-duration: 8s;
+    }
+  }
+`}</style>
+
+
 
             {/* Seção escolha de numeração */}
             <div id="numeracao-section" className="flex-1 flex items-center justify-center p-6">

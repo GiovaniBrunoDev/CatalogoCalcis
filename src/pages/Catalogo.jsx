@@ -159,7 +159,7 @@ export default function Catalogo() {
                 )}
                 {!loading && produtosOrdenados.length === 0 && (
                     <div className="text-gray-600 text-center py-12">
-                        Nenhum produto disponível para essa numeração.
+                         Desculpe, nenhuma opção disponível no {numeracaoSelecionada}. 
                     </div>
                 )}
 
