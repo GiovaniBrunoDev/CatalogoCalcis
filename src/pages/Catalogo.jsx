@@ -22,6 +22,14 @@ export default function Catalogo() {
     window.scrollTo({ top: 0, behavior: "smooth" })
   }, [])
 
+  // 🔥 Se atualizar e não tiver state, manda pra home
+  useEffect(() => {
+    if (!location.state) {
+      navigate("/", { replace: true })
+    }
+  }, [location.state, navigate])
+
+
 
     useEffect(() => {
         if (preloadedProducts.length > 0) {
