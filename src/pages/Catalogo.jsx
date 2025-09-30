@@ -7,15 +7,21 @@ import { motion, AnimatePresence } from 'framer-motion'
 import LogoImage from '../assets/logo.png'
 
 export default function Catalogo() {
-    const { numeracao } = useParams()
-    const navigate = useNavigate()
-    const location = useLocation()
-    const preloadedProducts = location.state?.preloadedProducts || []
+  const { numeracao } = useParams()
+  const navigate = useNavigate()
+  const location = useLocation()
+  const preloadedProducts = location.state?.preloadedProducts || []
 
-    const [loading, setLoading] = useState(true)
-    const [produtos, setProdutos] = useState(preloadedProducts)
-    const [error, setError] = useState(null)
-    const [overlayVisible, setOverlayVisible] = useState(true)
+  const [loading, setLoading] = useState(true)
+  const [produtos, setProdutos] = useState(preloadedProducts)
+  const [error, setError] = useState(null)
+  const [overlayVisible, setOverlayVisible] = useState(true)
+
+  // 🔥 Sempre rolar para o topo ao entrar na página
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" })
+  }, [])
+
 
     useEffect(() => {
         if (preloadedProducts.length > 0) {
@@ -47,7 +53,7 @@ export default function Catalogo() {
 
     useEffect(() => {
         if (!loading) {
-            const timer = setTimeout(() => setOverlayVisible(false), 400) // delay para animação final
+            const timer = setTimeout(() => setOverlayVisible(false), 400)
             return () => clearTimeout(timer)
         }
     }, [loading])
@@ -59,8 +65,9 @@ export default function Catalogo() {
     }, [produtos])
 
     return (
-        <div className="min-h-screen p-4 sm:p-6 bg-gradient-to-br from-gray-50 to-gray-100 relative">
-            {/* Overlay Ultra-Interativo */}
+        <div className="min-h-screen pt-0 px-4 pb-4 sm:px-6 sm:pb-6 bg-gradient-to-br from-gray-50 to-gray-100 relative">
+
+            {/* Overlay */}
             <AnimatePresence>
                 {overlayVisible && (
                     <motion.div
@@ -71,13 +78,12 @@ export default function Catalogo() {
                         transition={{ duration: 0.3 }}
                         className="absolute inset-0 flex flex-col items-center justify-center bg-white/95 backdrop-blur-sm z-30"
                     >
-                        {/* Spinner pulsante com rotação */}
                         <motion.div
                             className="w-20 h-20 border-4 border-green-500 border-t-transparent rounded-full mb-4"
                             animate={
                                 loading
-                                    ? { rotate: 360, scale: [1, 1.15, 1] } // pulsar
-                                    : { scale: 1.5, opacity: 0 } // zoom out + fade
+                                    ? { rotate: 360, scale: [1, 1.15, 1] }
+                                    : { scale: 1.5, opacity: 0 }
                             }
                             transition={
                                 loading
@@ -85,15 +91,13 @@ export default function Catalogo() {
                                     : { duration: 0.5, ease: 'easeInOut' }
                             }
                         />
-
-                        {/* Mensagem com leve bounce */}
                         <motion.p
                             className="text-gray-700 text-lg font-medium text-center px-6"
                             initial={{ y: 10, opacity: 0 }}
                             animate={
                                 loading
-                                    ? { y: [0, -6, 0], opacity: 1 } // bounce suave
-                                    : { y: -10, opacity: 0 } // saída
+                                    ? { y: [0, -6, 0], opacity: 1 }
+                                    : { y: -10, opacity: 0 }
                             }
                             transition={
                                 loading
@@ -103,60 +107,43 @@ export default function Catalogo() {
                         >
                             Quase lá! Preparando seu catálogo...
                         </motion.p>
-
-                        {/* Partículas leves ao redor do spinner */}
-                        {loading && Array.from({ length: 6 }).map((_, i) => (
-                            <motion.div
-                                key={i}
-                                className="absolute w-2 h-2 bg-green-400 rounded-full"
-                                initial={{ opacity: 0, scale: 0 }}
-                                animate={{
-                                    rotate: i * 60,
-                                    x: 40,
-                                    y: 0,
-                                    opacity: [0, 0.8, 0],
-                                    scale: [0, 1, 0],
-                                }}
-                                transition={{ repeat: Infinity, duration: 1.5, ease: 'easeInOut', delay: i * 0.1 }}
-                            />
-                        ))}
                     </motion.div>
                 )}
             </AnimatePresence>
 
-            {/* Conteúdo da página */}
-            <div className="max-w-6xl mx-auto relative z-10">
-                <header className="mb-6 sm:mb-10 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                    {/* Logo centralizada */}
-                    <div className="flex flex-col items-center sm:items-start text-center sm:text-left">
-                        <img
-                            src={LogoImage}
-                            alt="Calcis"
-                            className="h-8 sm:h-10 object-contain mb-2"
-                        />
-                    </div>
-                    <div className="flex flex-col items-center sm:items-start text-center sm:text-left">
-                        <p className="text-sm sm:text-base text-gray-600 leading-snug">
-                            Confira os modelos disponíveis na numeração{" "}
-                            <span className="font-semibold text-green-600">{numeracao}</span>.
-                        </p>
-                    </div>
+            {/* Header preto cobrindo largura total */}
+            <header className="max-w-6xl mx-auto px-4 sm:px-6 py-2 flex flex-col gap-4">
+                {/* Logo com fundo preto */}
+                <div className="bg-black flex justify-center sm:justify-start py-3 px-4 rounded-lg">
+                    <img
+                        src={LogoImage}
+                        alt="Calcis"
+                        className="h-8 sm:h-10 object-contain"
+                    />
+                </div>
 
-                    {/* Botão voltar */}
+                {/* Texto + botão */}
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                    <p className="text-sm sm:text-base text-gray-700 text-center sm:text-left">
+                        Confira os modelos disponíveis na numeração{" "}
+                        <span className="font-semibold text-green-600">{numeracao}</span>.
+                    </p>
+
                     <button
                         onClick={() => navigate(-1)}
                         className="flex items-center justify-center gap-2 px-5 py-2.5 rounded-full 
-      border border-gray-300 text-gray-700 bg-white 
+      border border-gray-400 text-gray-700 bg-white 
       shadow-sm hover:shadow-md hover:bg-gray-50 
       transition font-medium text-sm sm:text-base"
                     >
                         <ArrowLeft size={18} className="text-gray-500" />
                         Voltar
                     </button>
-                </header>
+                </div>
+            </header>
 
-
-
+            {/* Conteúdo */}
+            <div className="max-w-6xl mx-auto relative z-10 mt-6">
                 {error && (
                     <div className="text-red-600 bg-red-100 px-4 py-2 rounded-lg text-center mb-6">
                         Erro: {error}
