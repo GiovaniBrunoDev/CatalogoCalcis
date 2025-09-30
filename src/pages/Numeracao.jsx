@@ -102,14 +102,6 @@ export default function Numeracao() {
                     <span className="mx-8 text-white font-medium text-sm sm:text-base">✔ Mais de 2 mil clientes satisfeitos</span>
                 </div>
 
-                {/* Segunda lista duplicada */}
-                <div className="flex animate-marquee2 whitespace-nowrap absolute top-3 left-0">
-                    <span className="mx-8 text-white font-medium text-sm sm:text-base">✔ Frete rápido para todo o Brasil</span>
-                    <span className="mx-8 text-white font-medium text-sm sm:text-base">✔ Qualidade e preço justo</span>
-                    <span className="mx-8 text-white font-medium text-sm sm:text-base">✔ Pague em até 12x sem juros</span>
-                    <span className="mx-8 text-white font-medium text-sm sm:text-base">✔ Novos modelos toda semana</span>
-                    <span className="mx-8 text-white font-medium text-sm sm:text-base">✔ Mais de 2 mil clientes satisfeitos</span>
-                </div>
             </div>
 
             <style jsx>{`
