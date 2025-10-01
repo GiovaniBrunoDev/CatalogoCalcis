@@ -63,7 +63,7 @@ export default function Numeracao() {
                     />
                 </div>
             </header>
-            
+
             {/* Banner topo */}
             <div className="relative w-full aspect-[18/10] overflow-hidden">
                 {/* Imagem */}
@@ -84,7 +84,6 @@ export default function Numeracao() {
                         transition={{ duration: 0.8, ease: "easeOut" }}
                         className="text-2xl sm:text-4xl font-extrabold tracking-tight text-white drop-shadow-lg mb-3"
                     >
-                        BEM-VINDO À <span className="text-green-400">CALCIS</span>
                     </motion.h2>
 
                     <motion.p
@@ -118,18 +117,38 @@ export default function Numeracao() {
             <div className="overflow-hidden bg-black py-3 relative">
                 <div className="flex animate-marquee whitespace-nowrap">
                     {/* Lista duplicada para efeito contínuo */}
-                    <span className="mx-8 text-white font-medium text-sm sm:text-base">✔ Frete rápido para todo o Brasil</span>
-                    <span className="mx-8 text-white font-medium text-sm sm:text-base">✔ Qualidade e preço justo</span>
-                    <span className="mx-8 text-white font-medium text-sm sm:text-base">✔ Pague em até 12x sem juros</span>
-                    <span className="mx-8 text-white font-medium text-sm sm:text-base">✔ Novos modelos toda semana</span>
-                    <span className="mx-8 text-white font-medium text-sm sm:text-base">✔ Mais de 2 mil clientes satisfeitos</span>
+                    <span className="mx-8 text-white font-medium text-sm sm:text-base">
+                        🚚 <span className="text-green-400 font-semibold">Frete rápido</span> para todo o Brasil
+                    </span>
+                    <span className="mx-8 text-white font-medium text-sm sm:text-base">
+                        ⭐ Qualidade e <span className="text-green-400 font-semibold">preço justo</span>
+                    </span>
+                    <span className="mx-8 text-white font-medium text-sm sm:text-base">
+                        💳 Pague em até <span className="text-green-400 font-semibold">12x</span> nos cartões
+                    </span>
+                    <span className="mx-8 text-white font-medium text-sm sm:text-base">
+                        🔥 <span className="text-green-400 font-semibold">Novos modelos</span> toda semana
+                    </span>
+                    <span className="mx-8 text-white font-medium text-sm sm:text-base">
+                        ⭐ Mais de <span className="text-green-400 font-semibold">2 mil clientes</span> satisfeitos
+                    </span>
 
                     {/* Duplicado */}
-                    <span className="mx-8 text-white font-medium text-sm sm:text-base">✔ Frete rápido para todo o Brasil</span>
-                    <span className="mx-8 text-white font-medium text-sm sm:text-base">✔ Qualidade e preço justo</span>
-                    <span className="mx-8 text-white font-medium text-sm sm:text-base">✔ Pague em até 12x sem juros</span>
-                    <span className="mx-8 text-white font-medium text-sm sm:text-base">✔ Novos modelos toda semana</span>
-                    <span className="mx-8 text-white font-medium text-sm sm:text-base">✔ Mais de 2 mil clientes satisfeitos</span>
+                    <span className="mx-8 text-white font-medium text-sm sm:text-base">
+                        🚚 <span className="text-green-400 font-semibold">Frete rápido</span> para todo o Brasil
+                    </span>
+                    <span className="mx-8 text-white font-medium text-sm sm:text-base">
+                        ⭐ Qualidade e <span className="text-green-400 font-semibold">preço justo</span>
+                    </span>
+                    <span className="mx-8 text-white font-medium text-sm sm:text-base">
+                        💳 Pague em até <span className="text-green-400 font-semibold">12x sem juros</span>
+                    </span>
+                    <span className="mx-8 text-white font-medium text-sm sm:text-base">
+                        🔥 <span className="text-green-400 font-semibold">Novos modelos</span> toda semana
+                    </span>
+                    <span className="mx-8 text-white font-medium text-sm sm:text-base">
+                        ⭐ Mais de <span className="text-green-400 font-semibold">2 mil clientes</span> satisfeitos
+                    </span>
                 </div>
             </div>
 
@@ -147,7 +166,7 @@ export default function Numeracao() {
   /* Mobile mais rápido */
   @media (max-width: 640px) {
     .animate-marquee {
-      animation-duration: 12s;
+      animation-duration: 18s;
     }
   }
 `}</style>
