@@ -4,11 +4,14 @@ import { motion, AnimatePresence } from 'framer-motion'
 import axios from 'axios'
 import bannerImage from '../assets/banner.png'
 import LogoImage from '../assets/logo.png'
+import { ChevronDown } from "lucide-react"
 
 export default function Numeracao() {
     const navigate = useNavigate()
     const [loadingSize, setLoadingSize] = useState(null)
     const [loadingMessageIndex, setLoadingMessageIndex] = useState(0)
+    const [openIndex, setOpenIndex] = useState(null)
+
 
     const sizes = Array.from({ length: 11 }, (_, i) => 34 + i) // 34..44
     const messages = [
@@ -51,6 +54,23 @@ export default function Numeracao() {
             }, 5000)
         }
     }
+
+    const faqs = [
+        {
+            question: "Como funciona a entrega?",
+            answer: "Enviamos para todo o Brasil com código de rastreio. O prazo varia conforme a região."
+        },
+        {
+            question: "Quais são as formas de pagamento?",
+            answer: "Você pode pagar em até 12x no cartão de crédito ou à vista no Pix com desconto exclusivo."
+        },
+        {
+            question: "Posso trocar meu pedido?",
+            answer: "Sim! Você tem até 7 dias para solicitar a troca caso o produto não sirva ou apresente defeito."
+        }
+    ]
+
+
 
     return (
         <div className="relative min-h-screen bg-gray-50 text-gray-800 flex flex-col">
@@ -104,8 +124,8 @@ export default function Numeracao() {
                             document.getElementById("numeracao-section")?.scrollIntoView({ behavior: "smooth" })
                         }
                         className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 
-                 text-white font-semibold py-2.5 px-6 rounded-full text-sm sm:text-base shadow-lg
-                 transition-transform transform hover:scale-105"
+           text-white font-semibold py-2 px-4 rounded-full text-xs sm:text-sm shadow-lg
+           transition-transform transform hover:scale-105"
                     >
                         CONFIRA NOSSO CATÁLOGO
                     </motion.button>
@@ -212,6 +232,72 @@ export default function Numeracao() {
                     </div>
                 </motion.div>
             </div>
+
+            <div className="mt-10">
+                <h3 className="text-lg font-semibold text-center mb-4">O que dizem nossos clientes</h3>
+                <div className="flex overflow-x-auto gap-4 px-4 pb-2 scrollbar-hide">
+                    <div className="bg-white shadow rounded-xl p-4 min-w-[200px]">
+                        <p className="text-sm text-gray-600 italic">
+                            "Chegou super rápido e a qualidade é top!"
+                        </p>
+                        <span className="text-xs font-semibold text-gray-800">– Mariana S.</span>
+                    </div>
+                    <div className="bg-white shadow rounded-xl p-4 min-w-[200px]">
+                        <p className="text-sm text-gray-600 italic">
+                            "Ótimo atendimento, recomendo demais!"
+                        </p>
+                        <span className="text-xs font-semibold text-gray-800">– Rafael P.</span>
+                    </div>
+                </div>
+            </div>
+
+            {/* FAQ Accordion */}
+            <div className="mt-12 max-w-2xl mx-auto">
+                <h3 className="text-xl font-bold text-gray-900 mb-6 text-center">
+                    ❓ Dúvidas frequentes
+                </h3>
+
+                <div className="space-y-3">
+                    {faqs.map((faq, i) => (
+                        <div
+                            key={i}
+                            className="border border-gray-200 rounded-lg shadow-sm overflow-hidden"
+                        >
+                            {/* Cabeçalho */}
+                            <button
+                                onClick={() =>
+                                    setOpenIndex(openIndex === i ? null : i)
+                                }
+                                className="w-full flex justify-between items-center p-4 text-left text-gray-800 font-medium hover:bg-gray-50 transition"
+                            >
+                                <span>{faq.question}</span>
+                                <ChevronDown
+                                    className={`w-5 h-5 text-gray-500 transition-transform ${openIndex === i ? "rotate-180" : ""
+                                        }`}
+                                />
+                            </button>
+
+                            {/* Resposta */}
+                            <AnimatePresence initial={false}>
+                                {openIndex === i && (
+                                    <motion.div
+                                        key="content"
+                                        initial={{ opacity: 0, height: 0 }}
+                                        animate={{ opacity: 1, height: "auto" }}
+                                        exit={{ opacity: 0, height: 0 }}
+                                        transition={{ duration: 0.3 }}
+                                        className="px-4 pb-4 text-sm text-gray-600 leading-relaxed"
+                                    >
+                                        {faq.answer}
+                                    </motion.div>
+                                )}
+                            </AnimatePresence>
+                        </div>
+                    ))}
+                </div>
+            </div>
+
+
 
             {/* Overlay de loading */}
             <AnimatePresence>
