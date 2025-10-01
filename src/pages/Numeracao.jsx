@@ -174,7 +174,7 @@ export default function Numeracao() {
                         🔥 <span className="text-white font-semibold">Novos modelos</span> toda semana
                     </span>
                     <span className="mx-8 text-gray-300 font-medium text-sm sm:text-base">
-                        ⭐ Mais de <span className="text-white font-semibold">2 mil clientes</span> satisfeitos
+                        ⭐ Mais de <span className="text-white font-semibold">mil clientes</span> satisfeitos
                     </span>
 
                     {/* Duplicado */}
@@ -191,7 +191,7 @@ export default function Numeracao() {
                         🔥 <span className="text-white font-semibold">Novos modelos</span> toda semana
                     </span>
                     <span className="mx-8 text-gray-300 font-medium text-sm sm:text-base">
-                        ⭐ Mais de <span className="text-white font-semibold">2 mil clientes</span> satisfeitos
+                        ⭐ Mais de <span className="text-white font-semibold">mil clientes</span> satisfeitos
                     </span>
                 </div>
             </div>
