@@ -15,7 +15,8 @@ export default function Numeracao() {
 
     const sizes = Array.from({ length: 11 }, (_, i) => 34 + i) // 34..44
     const messages = [
-        "Um momento... estamos conferindo a sua numeração no estoque.",
+        "Um momento...",
+        "Consultando sua numeração em nosso estoque.",
         "Só um instantinho, já já fica pronto!",
         "Quase lá, finalizando a busca!"
     ]
@@ -33,7 +34,7 @@ export default function Numeracao() {
                 } else {
                     clearInterval(interval); // para quando chegar na última frase
                 }
-            }, 3000);
+            }, 2000);
 
             return () => {
                 clearInterval(interval);
@@ -417,7 +418,7 @@ export default function Numeracao() {
                     </motion.div>
                 )}
             </AnimatePresence>
-
+                
 
 
 
