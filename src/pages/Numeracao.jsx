@@ -22,19 +22,28 @@ export default function Numeracao() {
 
     useEffect(() => {
         if (loadingSize) {
-            let index = 0
-            const interval = setInterval(() => {
-                index++
-                if (index < messages.length) {
-                    setLoadingMessageIndex(index)
-                } else {
-                    clearInterval(interval) // para quando chegar na última frase
-                }
-            }, 3000) // troca a cada 2s
+            // trava o scroll do body
+            document.body.style.overflow = "hidden";
 
-            return () => clearInterval(interval)
+            let index = 0;
+            const interval = setInterval(() => {
+                index++;
+                if (index < messages.length) {
+                    setLoadingMessageIndex(index);
+                } else {
+                    clearInterval(interval); // para quando chegar na última frase
+                }
+            }, 3000);
+
+            return () => {
+                clearInterval(interval);
+                document.body.style.overflow = ""; // libera scroll
+            };
+        } else {
+            // caso loadingSize volte a false
+            document.body.style.overflow = "";
         }
-    }, [loadingSize])
+    }, [loadingSize]);
 
     async function choose(size) {
         setLoadingSize(size)
@@ -207,7 +216,7 @@ export default function Numeracao() {
 
 
 
-            {/* Seção escolha de numeração */}
+            {/* Seção de numeração */}
             <div id="numeracao-section" className="flex-1 flex items-center justify-center p-6">
                 <motion.div
                     initial={{ y: 10, opacity: 0 }}
@@ -216,28 +225,19 @@ export default function Numeracao() {
                     className="w-full max-w-xl bg-white rounded-2xl shadow-xl p-8 z-10 border border-gray-200"
                 >
                     <div className="text-center mb-8">
-                        <h2 className="text-2xl font-bold tracking-tight text-gray-900">
-                            Escolha sua numeração
-                        </h2>
-                        <p className="text-gray-500 mt-2 text-sm">
-                            Selecione o tamanho para visualizar os produtos disponíveis em estoque.
-                        </p>
+                        <h2 className="text-2xl font-bold tracking-tight text-gray-900">Escolha sua numeração</h2>
+                        <p className="text-gray-500 mt-2 text-sm">Selecione o tamanho para visualizar os produtos disponíveis em estoque.</p>
                     </div>
-
                     <div className="grid grid-cols-4 sm:grid-cols-6 gap-4">
                         {sizes.map((s) => (
                             <button
                                 key={s}
                                 onClick={() => choose(s)}
                                 disabled={loadingSize !== null}
-                                className={`
-                  py-2 rounded-lg font-medium text-sm transition-all duration-300
-                  border shadow-sm
-                  ${loadingSize === s
-                                        ? 'bg-gray-900 text-white border-gray-900 animate-pulse'
-                                        : 'bg-gray-100 border-gray-300 hover:bg-gray-200 hover:border-gray-400'}
-                  ${loadingSize !== null && loadingSize !== s ? 'opacity-40 cursor-not-allowed' : ''}
-                `}
+                                className={`py-2 rounded-lg font-medium text-sm transition-all duration-300
+                                        border shadow-sm
+                                        ${loadingSize === s ? 'bg-gray-900 text-white border-gray-900 animate-pulse' : 'bg-gray-100 border-gray-300 hover:bg-gray-200 hover:border-gray-400'}
+                                        ${loadingSize !== null && loadingSize !== s ? 'opacity-40 cursor-not-allowed' : ''}`}
                             >
                                 {s}
                             </button>
@@ -245,6 +245,7 @@ export default function Numeracao() {
                     </div>
                 </motion.div>
             </div>
+
 
             <div className="mt-10">
                 <h3 className="text-lg font-semibold text-center mb-4">O que dizem nossos clientes</h3>
@@ -334,28 +335,43 @@ export default function Numeracao() {
                             </button>
 
                             {/* Resposta */}
-                            <AnimatePresence initial={false}>
-                                {openIndex === i && (
+                            <AnimatePresence>
+                                {loadingSize && (
                                     <motion.div
-                                        key="content"
-                                        initial={{ opacity: 0, height: 0 }}
-                                        animate={{ opacity: 1, height: "auto" }}
-                                        exit={{ opacity: 0, height: 0 }}
-                                        transition={{ duration: 0.35, ease: "easeInOut" }}
-                                        className="px-6 pb-5 text-gray-600 text-sm sm:text-base leading-relaxed"
+                                        key="overlay"
+                                        initial={{ opacity: 0 }}
+                                        animate={{ opacity: 1 }}
+                                        exit={{ opacity: 0 }}
+                                        transition={{ duration: 0.3 }}
+                                        className="fixed inset-0 flex flex-col items-center justify-center
+                 bg-black/20 backdrop-blur-md z-50"
                                     >
-                                        {faq.answer}
+                                        {/* Spinner */}
+                                        <motion.div
+                                            className="w-14 h-14 border-4 border-gray-800 border-t-transparent rounded-full mb-6"
+                                            animate={{ rotate: 360 }}
+                                            transition={{ repeat: Infinity, duration: 1, ease: 'linear' }}
+                                        />
+
+                                        {/* Mensagem dinâmica */}
+                                        <motion.p
+                                            key={loadingMessageIndex}
+                                            className="text-base font-medium text-white text-center px-6"
+                                            initial={{ y: 10, opacity: 0 }}
+                                            animate={{ y: 0, opacity: 1 }}
+                                            exit={{ y: -10, opacity: 0 }}
+                                            transition={{ duration: 0.4 }}
+                                        >
+                                            {messages[loadingMessageIndex]}
+                                        </motion.p>
                                     </motion.div>
                                 )}
                             </AnimatePresence>
+
                         </div>
                     ))}
                 </div>
             </div>
-
-
-
-
 
             {/* Overlay de loading */}
             <AnimatePresence>
@@ -366,31 +382,95 @@ export default function Numeracao() {
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         transition={{ duration: 0.3 }}
-                        className="absolute inset-0 flex flex-col items-center justify-center 
-                 bg-gradient-to-b from-white via-gray-50 to-gray-200 
-                 backdrop-blur-sm z-20"
+                        className="fixed inset-0 flex items-center justify-center
+                 bg-black/40 backdrop-blur-sm z-50"
                     >
-                        {/* Spinner */}
+                        {/* Card sólido central */}
                         <motion.div
-                            className="w-14 h-14 border-4 border-gray-800 border-t-transparent rounded-full mb-6"
-                            animate={{ rotate: 360 }}
-                            transition={{ repeat: Infinity, duration: 1, ease: 'linear' }}
-                        />
-
-                        {/* Mensagem dinâmica */}
-                        <motion.p
-                            key={loadingMessageIndex}
-                            className="text-base font-medium text-gray-700 text-center px-6"
-                            initial={{ y: 10, opacity: 0 }}
-                            animate={{ y: 0, opacity: 1 }}
-                            exit={{ y: -10, opacity: 0 }}
-                            transition={{ duration: 0.4 }}
+                            className="w-80 max-w-[90%] p-8 rounded-3xl
+                   bg-white shadow-2xl border border-gray-200
+                   flex flex-col items-center justify-center"
+                            initial={{ scale: 0.85, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            exit={{ scale: 0.85, opacity: 0 }}
+                            transition={{ duration: 0.35, ease: "easeOut" }}
                         >
-                            {messages[loadingMessageIndex]}
-                        </motion.p>
+                            {/* Spinner */}
+                            <motion.div
+                                className="w-14 h-14 border-4 border-gray-300 border-t-blue-500 rounded-full mb-6"
+                                animate={{ rotate: 360 }}
+                                transition={{ repeat: Infinity, duration: 1, ease: 'linear' }}
+                            />
+
+                            {/* Mensagem dinâmica */}
+                            <motion.p
+                                key={loadingMessageIndex}
+                                className="text-gray-900 text-center text-base font-semibold px-2"
+                                initial={{ y: 10, opacity: 0 }}
+                                animate={{ y: 0, opacity: 1 }}
+                                exit={{ y: -10, opacity: 0 }}
+                                transition={{ duration: 0.4 }}
+                            >
+                                {messages[loadingMessageIndex]}
+                            </motion.p>
+                        </motion.div>
                     </motion.div>
                 )}
             </AnimatePresence>
+
+
+
+
+            {/* FOOTER */}
+            <footer className="mt-20 bg-gray-950 text-gray-300">
+                <div className="max-w-6xl mx-auto px-6 py-10 grid grid-cols-1 sm:grid-cols-3 gap-10">
+
+                    {/* Logo + descrição */}
+                    <div>
+                        <img src={LogoImage} alt="Calcis" className="h-8 sm:h-9 mb-4" />
+                        <p className="text-sm leading-relaxed text-gray-400">
+                            Estilo, conforto e qualidade para todos os momentos.
+                            Enviamos para todo o Brasil 🚚
+                        </p>
+                    </div>
+
+                    {/* Links rápidos */}
+                    <div>
+                        <h4 className="text-white font-semibold mb-3">Links rápidos</h4>
+                        <ul className="space-y-2 text-sm">
+                            <li><a href="#numeracao-section" className="hover:text-white transition">Catálogo</a></li>
+                            <li><a href="#faq" className="hover:text-white transition">Dúvidas frequentes</a></li>
+                            <li><a href="#" className="hover:text-white transition">Política de Troca</a></li>
+                            <li><a href="#" className="hover:text-white transition">Contato</a></li>
+                        </ul>
+                    </div>
+
+                    {/* Redes sociais */}
+                    <div>
+                        <h4 className="text-white font-semibold mb-3">Siga-nos</h4>
+                        <div className="flex gap-4">
+                            <a href="https://instagram.com" target="_blank" rel="noreferrer"
+                                className="w-9 h-9 rounded-full flex items-center justify-center bg-gray-800 hover:bg-gray-700 transition">
+                                📷
+                            </a>
+                            <a href="https://facebook.com" target="_blank" rel="noreferrer"
+                                className="w-9 h-9 rounded-full flex items-center justify-center bg-gray-800 hover:bg-gray-700 transition">
+                                👍
+                            </a>
+                            <a href="https://wa.me/55XXXXXXXXXX" target="_blank" rel="noreferrer"
+                                className="w-9 h-9 rounded-full flex items-center justify-center bg-gray-800 hover:bg-gray-700 transition">
+                                💬
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Créditos */}
+                <div className="border-t border-gray-800 mt-8 py-4 text-center text-xs text-gray-500">
+                    © {new Date().getFullYear()} Calcis. Todos os direitos reservados.
+                </div>
+            </footer>
+
 
         </div>
     )
