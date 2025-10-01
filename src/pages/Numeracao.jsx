@@ -58,17 +58,31 @@ export default function Numeracao() {
     const faqs = [
         {
             question: "Como funciona a entrega?",
-            answer: "Enviamos para todo o Brasil com código de rastreio. O prazo varia conforme a região."
+            answer: (
+                <>
+                    <p className="mb-3">
+                        🚚 <span className="font-semibold">Em Cascavel:</span> entregamos no mesmo dia.
+                        O pagamento é realizado na entrega. <span className="italic">(consulte a taxa)</span>
+                    </p>
+                    <p>
+                        📦 Para outras regiões, enviamos para todo o Brasil com código de rastreio.
+                        O prazo varia conforme a localidade. o pagamento é antecipado via Pix ou cartão.
+                    </p>
+                </>
+            ),
         },
         {
             question: "Quais são as formas de pagamento?",
-            answer: "Você pode pagar em até 12x no cartão de crédito ou à vista no Pix com desconto exclusivo."
+            answer:
+                "Você pode pagar em até 12x no cartão de crédito ou à vista no Pix com desconto exclusivo.",
         },
         {
             question: "Posso trocar meu pedido?",
-            answer: "Sim! Você tem até 7 dias para solicitar a troca caso o produto não sirva ou apresente defeito."
-        }
-    ]
+            answer:
+                "Sim! Você tem até 7 dias para solicitar a troca caso o produto não sirva ou apresente defeito.",
+        },
+    ];
+
 
 
 
@@ -251,28 +265,25 @@ export default function Numeracao() {
                 </div>
             </div>
 
-            {/* FAQ Accordion */}
-            <div className="mt-12 max-w-2xl mx-auto">
-                <h3 className="text-xl font-bold text-gray-900 mb-6 text-center">
-                    ❓ Dúvidas frequentes
+            {/* FAQ Accordion Super Clean */}
+            <div className="mt-20 max-w-3xl mx-auto px-4">
+                <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-10 text-center">
+                    Dúvidas frequentes
                 </h3>
 
-                <div className="space-y-3">
+                <div className="divide-y divide-gray-200 border border-gray-100 rounded-2xl bg-white/80 backdrop-blur-sm shadow-sm">
                     {faqs.map((faq, i) => (
-                        <div
-                            key={i}
-                            className="border border-gray-200 rounded-lg shadow-sm overflow-hidden"
-                        >
+                        <div key={i} className="overflow-hidden">
                             {/* Cabeçalho */}
                             <button
-                                onClick={() =>
-                                    setOpenIndex(openIndex === i ? null : i)
-                                }
-                                className="w-full flex justify-between items-center p-4 text-left text-gray-800 font-medium hover:bg-gray-50 transition"
+                                onClick={() => setOpenIndex(openIndex === i ? null : i)}
+                                className="w-full flex justify-between items-center py-5 px-6 text-left group"
                             >
-                                <span>{faq.question}</span>
+                                <span className="font-medium text-gray-800 text-base sm:text-lg group-hover:text-gray-900 transition-colors">
+                                    {faq.question}
+                                </span>
                                 <ChevronDown
-                                    className={`w-5 h-5 text-gray-500 transition-transform ${openIndex === i ? "rotate-180" : ""
+                                    className={`w-5 h-5 text-gray-400 transition-transform duration-300 ${openIndex === i ? "rotate-180 text-green-500" : "group-hover:text-gray-600"
                                         }`}
                                 />
                             </button>
@@ -285,8 +296,8 @@ export default function Numeracao() {
                                         initial={{ opacity: 0, height: 0 }}
                                         animate={{ opacity: 1, height: "auto" }}
                                         exit={{ opacity: 0, height: 0 }}
-                                        transition={{ duration: 0.3 }}
-                                        className="px-4 pb-4 text-sm text-gray-600 leading-relaxed"
+                                        transition={{ duration: 0.35, ease: "easeInOut" }}
+                                        className="px-6 pb-5 text-gray-600 text-sm sm:text-base leading-relaxed"
                                     >
                                         {faq.answer}
                                     </motion.div>
@@ -296,6 +307,8 @@ export default function Numeracao() {
                     ))}
                 </div>
             </div>
+
+
 
 
 
