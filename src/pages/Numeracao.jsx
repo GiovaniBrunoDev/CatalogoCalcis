@@ -337,41 +337,23 @@ export default function Numeracao() {
 
                             {/* Resposta */}
                             <AnimatePresence>
-                                {loadingSize && (
+                                {openIndex === i && (
                                     <motion.div
-                                        key="overlay"
-                                        initial={{ opacity: 0 }}
-                                        animate={{ opacity: 1 }}
-                                        exit={{ opacity: 0 }}
+                                        key="content"
+                                        initial={{ height: 0, opacity: 0 }}
+                                        animate={{ height: "auto", opacity: 1 }}
+                                        exit={{ height: 0, opacity: 0 }}
                                         transition={{ duration: 0.3 }}
-                                        className="fixed inset-0 flex flex-col items-center justify-center
-                 bg-black/20 backdrop-blur-md z-50"
+                                        className="px-6 pb-5 text-gray-600 text-sm sm:text-base"
                                     >
-                                        {/* Spinner */}
-                                        <motion.div
-                                            className="w-14 h-14 border-4 border-gray-800 border-t-transparent rounded-full mb-6"
-                                            animate={{ rotate: 360 }}
-                                            transition={{ repeat: Infinity, duration: 1, ease: 'linear' }}
-                                        />
-
-                                        {/* Mensagem dinâmica */}
-                                        <motion.p
-                                            key={loadingMessageIndex}
-                                            className="text-base font-medium text-white text-center px-6"
-                                            initial={{ y: 10, opacity: 0 }}
-                                            animate={{ y: 0, opacity: 1 }}
-                                            exit={{ y: -10, opacity: 0 }}
-                                            transition={{ duration: 0.4 }}
-                                        >
-                                            {messages[loadingMessageIndex]}
-                                        </motion.p>
+                                        {faq.answer}
                                     </motion.div>
                                 )}
                             </AnimatePresence>
-
                         </div>
                     ))}
                 </div>
+
             </div>
 
             {/* Overlay de loading */}
@@ -418,7 +400,7 @@ export default function Numeracao() {
                     </motion.div>
                 )}
             </AnimatePresence>
-                
+
 
 
 

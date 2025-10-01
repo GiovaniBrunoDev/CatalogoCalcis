@@ -7,27 +7,35 @@ import { motion, AnimatePresence } from 'framer-motion'
 import LogoImage from '../assets/logo.png'
 
 export default function Catalogo() {
-  const { numeracao } = useParams()
-  const navigate = useNavigate()
-  const location = useLocation()
-  const preloadedProducts = location.state?.preloadedProducts || []
+    const { numeracao } = useParams()
+    const navigate = useNavigate()
+    const location = useLocation()
+    const preloadedProducts = location.state?.preloadedProducts || []
 
-  const [loading, setLoading] = useState(true)
-  const [produtos, setProdutos] = useState(preloadedProducts)
-  const [error, setError] = useState(null)
-  const [overlayVisible, setOverlayVisible] = useState(true)
+    const [loading, setLoading] = useState(true)
+    const [produtos, setProdutos] = useState(preloadedProducts)
+    const [error, setError] = useState(null)
+    const [overlayVisible, setOverlayVisible] = useState(true)
 
-  // 🔥 Sempre rolar para o topo ao entrar na página
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "smooth" })
-  }, [])
+    // 🔥 Sempre rolar para o topo ao entrar na página
+    useEffect(() => {
+        window.scrollTo({ top: 0, behavior: "smooth" })
+    }, [])
 
-  // 🔥 Se atualizar e não tiver state, manda pra home
-  useEffect(() => {
-    if (!location.state) {
-      navigate("/", { replace: true })
-    }
-  }, [location.state, navigate])
+    // 🔥 Se atualizar e não tiver state, manda pra home
+    useEffect(() => {
+        if (!location.state) {
+            navigate("/", { replace: true })
+        }
+    }, [location.state, navigate])
+
+    // 🔀 Embaralhar produtos quando eles mudarem
+    useEffect(() => {
+        if (produtos.length > 0) {
+            const shuffled = [...produtos].sort(() => Math.random() - 0.5)
+            setProdutos(shuffled)
+        }
+    }, [produtos.length])
 
 
 
@@ -66,11 +74,7 @@ export default function Catalogo() {
         }
     }, [loading])
 
-    const produtosOrdenados = useMemo(() => {
-        return [...produtos].sort((a, b) =>
-            a.nome.localeCompare(b.nome, 'pt-BR', { sensitivity: 'base' })
-        )
-    }, [produtos])
+
 
     return (
         <div className="min-h-screen pt-0 px-4 pb-4 sm:px-6 sm:pb-6 bg-gradient-to-br from-gray-50 to-gray-100 relative">
@@ -157,22 +161,22 @@ export default function Catalogo() {
                         Erro: {error}
                     </div>
                 )}
-                {!loading && produtosOrdenados.length === 0 && (
+                {!loading && produtos.length === 0 && (
                     <div className="text-gray-600 text-center py-12">
-                         Desculpe, nenhuma opção disponível no {numeracaoSelecionada}. 
+                        Desculpe, nenhuma opção disponível na numeração {numeracao}.
                     </div>
                 )}
 
                 <div
                     className="
-            grid gap-4 sm:gap-6
-            grid-cols-1
-            sm:grid-cols-2
-            md:grid-cols-3
-            lg:grid-cols-4
-          "
+    grid gap-4 sm:gap-6
+    grid-cols-1
+    sm:grid-cols-2
+    md:grid-cols-3
+    lg:grid-cols-4
+  "
                 >
-                    {produtosOrdenados.map((p) => (
+                    {produtos.map((p) => (
                         <ProductCard
                             key={p.id}
                             produto={p}
@@ -181,6 +185,7 @@ export default function Catalogo() {
                         />
                     ))}
                 </div>
+
             </div>
         </div>
     )
