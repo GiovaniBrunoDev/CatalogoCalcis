@@ -107,10 +107,10 @@ export default function Numeracao() {
                     className="absolute inset-0 w-full h-full object-cover object-center"
                 />
 
-                {/* Overlay com gradiente */}
-                <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent z-10"></div>
+                {/* Overlay com gradiente mais suave */}
+                <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/30 to-transparent z-10"></div>
 
-                {/* Conteúdo com animações */}
+                {/* Conteúdo */}
                 <div className="absolute inset-0 flex flex-col items-start justify-center px-6 sm:px-12 z-20">
                     <motion.h2
                         initial={{ opacity: 0, y: 40 }}
@@ -137,51 +137,50 @@ export default function Numeracao() {
                         onClick={() =>
                             document.getElementById("numeracao-section")?.scrollIntoView({ behavior: "smooth" })
                         }
-                        className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 
-           text-white font-semibold py-2 px-4 rounded-full text-xs sm:text-sm shadow-lg
-           transition-transform transform hover:scale-105"
+                        className="bg-gradient-to-r from-emerald-400 to-emerald-500 hover:from-emerald-500 hover:to-emerald-600
+                 text-white font-semibold py-2 px-4 rounded-full text-xs sm:text-sm shadow-lg
+                 transition-transform transform hover:scale-105"
                     >
                         CONFIRA NOSSO CATÁLOGO
                     </motion.button>
                 </div>
             </div>
 
-
             {/* Carrossel infinito de textos */}
-            <div className="overflow-hidden bg-black py-3 relative">
+            <div className="overflow-hidden bg-gray-900 py-3 relative">
                 <div className="flex animate-marquee whitespace-nowrap">
-                    {/* Lista duplicada para efeito contínuo */}
+                    {/* Lista duplicada */}
                     <span className="mx-8 text-white font-medium text-sm sm:text-base">
-                        🚚 <span className="text-green-400 font-semibold">Frete rápido</span> para todo o Brasil
+                        🚚 <span className="text-emerald-300 font-semibold">Frete rápido</span> para todo o Brasil
                     </span>
                     <span className="mx-8 text-white font-medium text-sm sm:text-base">
-                        ⭐ Qualidade e <span className="text-green-400 font-semibold">preço justo</span>
+                        ⭐ Qualidade e <span className="text-emerald-300 font-semibold">preço justo</span>
                     </span>
                     <span className="mx-8 text-white font-medium text-sm sm:text-base">
-                        💳 Pague em até <span className="text-green-400 font-semibold">12x</span> nos cartões
+                        💳 Pague em até <span className="text-emerald-300 font-semibold">12x</span> nos cartões
                     </span>
                     <span className="mx-8 text-white font-medium text-sm sm:text-base">
-                        🔥 <span className="text-green-400 font-semibold">Novos modelos</span> toda semana
+                        🔥 <span className="text-emerald-300 font-semibold">Novos modelos</span> toda semana
                     </span>
                     <span className="mx-8 text-white font-medium text-sm sm:text-base">
-                        ⭐ Mais de <span className="text-green-400 font-semibold">2 mil clientes</span> satisfeitos
+                        ⭐ Mais de <span className="text-emerald-300 font-semibold">2 mil clientes</span> satisfeitos
                     </span>
 
                     {/* Duplicado */}
                     <span className="mx-8 text-white font-medium text-sm sm:text-base">
-                        🚚 <span className="text-green-400 font-semibold">Frete rápido</span> para todo o Brasil
+                        🚚 <span className="text-emerald-300 font-semibold">Frete rápido</span> para todo o Brasil
                     </span>
                     <span className="mx-8 text-white font-medium text-sm sm:text-base">
-                        ⭐ Qualidade e <span className="text-green-400 font-semibold">preço justo</span>
+                        ⭐ Qualidade e <span className="text-emerald-300 font-semibold">preço justo</span>
                     </span>
                     <span className="mx-8 text-white font-medium text-sm sm:text-base">
-                        💳 Pague em até <span className="text-green-400 font-semibold">12x sem juros</span>
+                        💳 Pague em até <span className="text-emerald-300 font-semibold">12x sem juros</span>
                     </span>
                     <span className="mx-8 text-white font-medium text-sm sm:text-base">
-                        🔥 <span className="text-green-400 font-semibold">Novos modelos</span> toda semana
+                        🔥 <span className="text-emerald-300 font-semibold">Novos modelos</span> toda semana
                     </span>
                     <span className="mx-8 text-white font-medium text-sm sm:text-base">
-                        ⭐ Mais de <span className="text-green-400 font-semibold">2 mil clientes</span> satisfeitos
+                        ⭐ Mais de <span className="text-emerald-300 font-semibold">2 mil clientes</span> satisfeitos
                     </span>
                 </div>
             </div>
@@ -189,7 +188,7 @@ export default function Numeracao() {
             <style jsx>{`
   @keyframes marquee {
     0%   { transform: translateX(0%); }
-    100% { transform: translateX(-50%); } /* só até metade, pq está duplicado */
+    100% { transform: translateX(-50%); }
   }
 
   .animate-marquee {
@@ -197,7 +196,6 @@ export default function Numeracao() {
     animation: marquee 20s linear infinite;
   }
 
-  /* Mobile mais rápido */
   @media (max-width: 640px) {
     .animate-marquee {
       animation-duration: 18s;
@@ -250,20 +248,66 @@ export default function Numeracao() {
             <div className="mt-10">
                 <h3 className="text-lg font-semibold text-center mb-4">O que dizem nossos clientes</h3>
                 <div className="flex overflow-x-auto gap-4 px-4 pb-2 scrollbar-hide">
+
+                    {/* Avaliação 1 */}
                     <div className="bg-white shadow rounded-xl p-4 min-w-[200px]">
                         <p className="text-sm text-gray-600 italic">
                             "Chegou super rápido e a qualidade é top!"
                         </p>
                         <span className="text-xs font-semibold text-gray-800">– Mariana S.</span>
                     </div>
+
+                    {/* Avaliação 2 */}
                     <div className="bg-white shadow rounded-xl p-4 min-w-[200px]">
                         <p className="text-sm text-gray-600 italic">
                             "Ótimo atendimento, recomendo demais!"
                         </p>
                         <span className="text-xs font-semibold text-gray-800">– Rafael P.</span>
                     </div>
+
+                    {/* Avaliação 3 */}
+                    <div className="bg-white shadow rounded-xl p-4 min-w-[200px]">
+                        <p className="text-sm text-gray-600 italic">
+                            "Muito confortáveis, uso no dia a dia e parecem novos ainda."
+                        </p>
+                        <span className="text-xs font-semibold text-gray-800">– Camila R.</span>
+                    </div>
+
+                    {/* Avaliação 4 */}
+                    <div className="bg-white shadow rounded-xl p-4 min-w-[200px]">
+                        <p className="text-sm text-gray-600 italic">
+                            "Superou minhas expectativas, material excelente!"
+                        </p>
+                        <span className="text-xs font-semibold text-gray-800">– João V.</span>
+                    </div>
+
+                    {/* Avaliação 5 */}
+                    <div className="bg-white shadow rounded-xl p-4 min-w-[200px]">
+                        <p className="text-sm text-gray-600 italic">
+                            "Atendimento rápido no WhatsApp, ganhei confiança na hora."
+                        </p>
+                        <span className="text-xs font-semibold text-gray-800">– Fernanda L.</span>
+                    </div>
+
+                    {/* Avaliação 6 */}
+                    <div className="bg-white shadow rounded-xl p-4 min-w-[200px]">
+                        <p className="text-sm text-gray-600 italic">
+                            "Atendimento top demais 👏"
+                        </p>
+                        <span className="text-xs font-semibold text-gray-800">– Diego M.</span>
+                    </div>
+
+                    {/* Avaliação 7 */}
+                    <div className="bg-white shadow rounded-xl p-4 min-w-[200px]">
+                        <p className="text-sm text-gray-600 italic">
+                            "Minha Loja Favorita"
+                        </p>
+                        <span className="text-xs font-semibold text-gray-800">– Juliana A.</span>
+                    </div>
+
                 </div>
             </div>
+
 
             {/* FAQ Accordion Super Clean */}
             <div className="mt-20 max-w-3xl mx-auto px-4">
