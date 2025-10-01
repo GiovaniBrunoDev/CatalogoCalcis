@@ -63,73 +63,95 @@ export default function Numeracao() {
                     />
                 </div>
             </header>
-
+            
             {/* Banner topo */}
             <div className="relative w-full aspect-[18/10] overflow-hidden">
+                {/* Imagem */}
                 <img
                     src={bannerImage}
                     alt="Banner"
                     className="absolute inset-0 w-full h-full object-cover object-center"
                 />
 
-                <div className="absolute inset-0 flex flex-col items-start justify-center px-6 sm:px-12 text-white z-10 animate-fadeIn bg-black/10">
-                    <h2 className="text-xl sm:text-3xl font-semibold tracking-tight mb-2">
-                        BEM-VINDO À CALCIS
-                    </h2>
-                    <p className="text-xs sm:text-base font-normal mb-3 leading-snug text-gray-100/90">
-                        <span className="font-semibold">ESTILO, CONFORTO E QUALIDADE</span><br />
+                {/* Overlay com gradiente */}
+                <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent z-10"></div>
+
+                {/* Conteúdo com animações */}
+                <div className="absolute inset-0 flex flex-col items-start justify-center px-6 sm:px-12 z-20">
+                    <motion.h2
+                        initial={{ opacity: 0, y: 40 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.8, ease: "easeOut" }}
+                        className="text-2xl sm:text-4xl font-extrabold tracking-tight text-white drop-shadow-lg mb-3"
+                    >
+                        BEM-VINDO À <span className="text-green-400">CALCIS</span>
+                    </motion.h2>
+
+                    <motion.p
+                        initial={{ opacity: 0, y: 40 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
+                        className="text-sm sm:text-lg font-medium mb-5 text-gray-100 max-w-md leading-snug"
+                    >
+                        <span className="font-semibold text-white">ESTILO, CONFORTO E QUALIDADE</span><br />
                         PARA TODOS OS MOMENTOS.
-                    </p>
-                    <button
+                    </motion.p>
+
+                    <motion.button
+                        initial={{ opacity: 0, y: 40 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.8, delay: 0.6, type: "spring", stiffness: 100 }}
                         onClick={() =>
-                            document.getElementById('numeracao-section')?.scrollIntoView({ behavior: 'smooth' })
+                            document.getElementById("numeracao-section")?.scrollIntoView({ behavior: "smooth" })
                         }
-                        className="bg-gray-900 hover:bg-gray-800 text-white font-medium py-2 px-5 rounded-full text-xs sm:text-sm shadow-md tracking-wide"
+                        className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 
+                 text-white font-semibold py-2.5 px-6 rounded-full text-sm sm:text-base shadow-lg
+                 transition-transform transform hover:scale-105"
                     >
                         CONFIRA NOSSO CATÁLOGO
-                    </button>
+                    </motion.button>
                 </div>
             </div>
 
+
             {/* Carrossel infinito de textos */}
             <div className="overflow-hidden bg-black py-3 relative">
-                {/* Primeira lista */}
                 <div className="flex animate-marquee whitespace-nowrap">
+                    {/* Lista duplicada para efeito contínuo */}
+                    <span className="mx-8 text-white font-medium text-sm sm:text-base">✔ Frete rápido para todo o Brasil</span>
+                    <span className="mx-8 text-white font-medium text-sm sm:text-base">✔ Qualidade e preço justo</span>
+                    <span className="mx-8 text-white font-medium text-sm sm:text-base">✔ Pague em até 12x sem juros</span>
+                    <span className="mx-8 text-white font-medium text-sm sm:text-base">✔ Novos modelos toda semana</span>
+                    <span className="mx-8 text-white font-medium text-sm sm:text-base">✔ Mais de 2 mil clientes satisfeitos</span>
+
+                    {/* Duplicado */}
                     <span className="mx-8 text-white font-medium text-sm sm:text-base">✔ Frete rápido para todo o Brasil</span>
                     <span className="mx-8 text-white font-medium text-sm sm:text-base">✔ Qualidade e preço justo</span>
                     <span className="mx-8 text-white font-medium text-sm sm:text-base">✔ Pague em até 12x sem juros</span>
                     <span className="mx-8 text-white font-medium text-sm sm:text-base">✔ Novos modelos toda semana</span>
                     <span className="mx-8 text-white font-medium text-sm sm:text-base">✔ Mais de 2 mil clientes satisfeitos</span>
                 </div>
-
             </div>
 
             <style jsx>{`
   @keyframes marquee {
     0%   { transform: translateX(0%); }
-    100% { transform: translateX(-100%); }
+    100% { transform: translateX(-50%); } /* só até metade, pq está duplicado */
   }
-  @keyframes marquee2 {
-    0%   { transform: translateX(100%); }
-    100% { transform: translateX(0%); }
-  }
+
   .animate-marquee {
-    animation: marquee 15s linear infinite;
-  }
-  .animate-marquee2 {
-    animation: marquee2 15s linear infinite;
+    display: inline-flex;
+    animation: marquee 20s linear infinite;
   }
 
   /* Mobile mais rápido */
   @media (max-width: 640px) {
     .animate-marquee {
-      animation-duration: 8s;
-    }
-    .animate-marquee2 {
-      animation-duration: 8s;
+      animation-duration: 12s;
     }
   }
 `}</style>
+
 
 
 
