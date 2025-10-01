@@ -107,8 +107,8 @@ export default function Numeracao() {
                     className="absolute inset-0 w-full h-full object-cover object-center"
                 />
 
-                {/* Overlay com gradiente mais suave */}
-                <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/30 to-transparent z-10"></div>
+                {/* Overlay mais suave */}
+                <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-black/20 to-transparent z-10"></div>
 
                 {/* Conteúdo */}
                 <div className="absolute inset-0 flex flex-col items-start justify-center px-6 sm:px-12 z-20">
@@ -118,13 +118,14 @@ export default function Numeracao() {
                         transition={{ duration: 0.8, ease: "easeOut" }}
                         className="text-2xl sm:text-4xl font-extrabold tracking-tight text-white drop-shadow-lg mb-3"
                     >
+                        {/* Pode colocar um título aqui se quiser */}
                     </motion.h2>
 
                     <motion.p
                         initial={{ opacity: 0, y: 40 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
-                        className="text-sm sm:text-lg font-medium mb-5 text-gray-100 max-w-md leading-snug"
+                        className="text-sm sm:text-lg font-medium mb-5 text-gray-200 max-w-md leading-snug"
                     >
                         <span className="font-semibold text-white">ESTILO, CONFORTO E QUALIDADE</span><br />
                         PARA TODOS OS MOMENTOS.
@@ -137,8 +138,8 @@ export default function Numeracao() {
                         onClick={() =>
                             document.getElementById("numeracao-section")?.scrollIntoView({ behavior: "smooth" })
                         }
-                        className="bg-gradient-to-r from-emerald-400 to-emerald-500 hover:from-emerald-500 hover:to-emerald-600
-                 text-white font-semibold py-2 px-4 rounded-full text-xs sm:text-sm shadow-lg
+                        className="bg-gradient-to-r from-gray-800 to-gray-900 hover:from-gray-700 hover:to-gray-800
+                 text-white font-semibold py-2 px-4 rounded-full text-xs sm:text-sm shadow-md
                  transition-transform transform hover:scale-105"
                     >
                         CONFIRA NOSSO CATÁLOGO
@@ -147,40 +148,40 @@ export default function Numeracao() {
             </div>
 
             {/* Carrossel infinito de textos */}
-            <div className="overflow-hidden bg-gray-900 py-3 relative">
+            <div className="overflow-hidden bg-gray-950 py-3 relative">
                 <div className="flex animate-marquee whitespace-nowrap">
                     {/* Lista duplicada */}
-                    <span className="mx-8 text-white font-medium text-sm sm:text-base">
-                        🚚 <span className="text-emerald-300 font-semibold">Frete rápido</span> para todo o Brasil
+                    <span className="mx-8 text-gray-300 font-medium text-sm sm:text-base">
+                        🚚 <span className="text-white font-semibold">Frete rápido</span> para todo o Brasil
                     </span>
-                    <span className="mx-8 text-white font-medium text-sm sm:text-base">
-                        ⭐ Qualidade e <span className="text-emerald-300 font-semibold">preço justo</span>
+                    <span className="mx-8 text-gray-300 font-medium text-sm sm:text-base">
+                        ⭐ Qualidade e <span className="text-white font-semibold">preço justo</span>
                     </span>
-                    <span className="mx-8 text-white font-medium text-sm sm:text-base">
-                        💳 Pague em até <span className="text-emerald-300 font-semibold">12x</span> nos cartões
+                    <span className="mx-8 text-gray-300 font-medium text-sm sm:text-base">
+                        💳 Pague em até <span className="text-white font-semibold">12x</span> nos cartões
                     </span>
-                    <span className="mx-8 text-white font-medium text-sm sm:text-base">
-                        🔥 <span className="text-emerald-300 font-semibold">Novos modelos</span> toda semana
+                    <span className="mx-8 text-gray-300 font-medium text-sm sm:text-base">
+                        🔥 <span className="text-white font-semibold">Novos modelos</span> toda semana
                     </span>
-                    <span className="mx-8 text-white font-medium text-sm sm:text-base">
-                        ⭐ Mais de <span className="text-emerald-300 font-semibold">2 mil clientes</span> satisfeitos
+                    <span className="mx-8 text-gray-300 font-medium text-sm sm:text-base">
+                        ⭐ Mais de <span className="text-white font-semibold">2 mil clientes</span> satisfeitos
                     </span>
 
                     {/* Duplicado */}
-                    <span className="mx-8 text-white font-medium text-sm sm:text-base">
-                        🚚 <span className="text-emerald-300 font-semibold">Frete rápido</span> para todo o Brasil
+                    <span className="mx-8 text-gray-300 font-medium text-sm sm:text-base">
+                        🚚 <span className="text-white font-semibold">Frete rápido</span> para todo o Brasil
                     </span>
-                    <span className="mx-8 text-white font-medium text-sm sm:text-base">
-                        ⭐ Qualidade e <span className="text-emerald-300 font-semibold">preço justo</span>
+                    <span className="mx-8 text-gray-300 font-medium text-sm sm:text-base">
+                        ⭐ Qualidade e <span className="text-white font-semibold">preço justo</span>
                     </span>
-                    <span className="mx-8 text-white font-medium text-sm sm:text-base">
-                        💳 Pague em até <span className="text-emerald-300 font-semibold">12x sem juros</span>
+                    <span className="mx-8 text-gray-300 font-medium text-sm sm:text-base">
+                        💳 Pague em até <span className="text-white font-semibold">12x sem juros</span>
                     </span>
-                    <span className="mx-8 text-white font-medium text-sm sm:text-base">
-                        🔥 <span className="text-emerald-300 font-semibold">Novos modelos</span> toda semana
+                    <span className="mx-8 text-gray-300 font-medium text-sm sm:text-base">
+                        🔥 <span className="text-white font-semibold">Novos modelos</span> toda semana
                     </span>
-                    <span className="mx-8 text-white font-medium text-sm sm:text-base">
-                        ⭐ Mais de <span className="text-emerald-300 font-semibold">2 mil clientes</span> satisfeitos
+                    <span className="mx-8 text-gray-300 font-medium text-sm sm:text-base">
+                        ⭐ Mais de <span className="text-white font-semibold">2 mil clientes</span> satisfeitos
                     </span>
                 </div>
             </div>

@@ -1,10 +1,11 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { FaWhatsapp } from 'react-icons/fa'
 
 export default function ProductCard({ produto, numeracaoSelecionada }) {
   const [imgLoaded, setImgLoaded] = useState(false)
+  const videoBtnRef = useRef<HTMLDivElement | null>(null)
 
-  // pega a variação da numeração selecionada no catálogo
+  // pega a variação da numeração selecionada
   const variacaoSelecionada = produto.variacoes?.find(
     (v) => String(v.numeracao) === String(numeracaoSelecionada)
   )
@@ -12,13 +13,29 @@ export default function ProductCard({ produto, numeracaoSelecionada }) {
   const ultimaUnidade =
     variacaoSelecionada && Number(variacaoSelecionada.estoque) === 1
 
+  // Se você realmente precisa rodar um script externo que cria o botão
+  useEffect(() => {
+    if (videoBtnRef.current) {
+      // exemplo: criar um botão manualmente
+      const button = document.createElement("button")
+      button.innerText = "▶"
+      button.className =
+        "w-full h-full flex items-center justify-center bg-black/70 text-white text-xl"
+      button.onclick = () => {
+        alert("Abrir vídeo aqui...")
+      }
+
+      videoBtnRef.current.innerHTML = "" // limpa se já tiver algo
+      videoBtnRef.current.appendChild(button)
+    }
+  }, [])
+
   return (
     <div className="bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden flex flex-col transform hover:-translate-y-0.5">
       {/* Imagem com placeholder */}
       <div className="relative w-full flex items-center justify-center bg-gray-50 overflow-hidden">
-        {!imgLoaded && (
-          <div className="absolute inset-0 bg-gray-100 animate-pulse" />
-        )}
+        {!imgLoaded && <div className="absolute inset-0 bg-gray-100 animate-pulse" />}
+
         <img
           src={produto.imagemUrl || '/placeholder.jpg'}
           alt={produto.nome}
@@ -28,11 +45,16 @@ export default function ProductCard({ produto, numeracaoSelecionada }) {
             imgLoaded ? 'opacity-100' : 'opacity-0'
           }`}
         />
+
+        {/* Botão de vídeo no canto inferior direito */}
+        <div
+          ref={videoBtnRef}
+          className="absolute bottom-3 right-3 w-[50px] h-[50px] rounded-full overflow-hidden shadow-lg cursor-pointer z-30"
+        ></div>
       </div>
 
       {/* Conteúdo */}
       <div className="p-3 flex flex-col flex-1 items-center text-center">
-        {/* Nome */}
         <h3 className="text-base font-medium text-gray-800 mb-2 line-clamp-2">
           {produto.nome}
         </h3>
