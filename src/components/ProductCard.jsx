@@ -24,9 +24,8 @@ export default function ProductCard({ produto, numeracaoSelecionada }) {
           alt={produto.nome}
           loading="lazy"
           onLoad={() => setImgLoaded(true)}
-          className={`w-full h-auto transition-opacity duration-500 ${
-            imgLoaded ? 'opacity-100' : 'opacity-0'
-          }`}
+          className={`w-full h-auto transition-opacity duration-500 ${imgLoaded ? 'opacity-100' : 'opacity-0'
+            }`}
         />
       </div>
 
@@ -43,9 +42,9 @@ export default function ProductCard({ produto, numeracaoSelecionada }) {
             <span className="text-xl sm:text-2xl font-bold text-green-500">
               {produto.preco
                 ? produto.preco.toLocaleString('pt-BR', {
-                    style: 'currency',
-                    currency: 'BRL',
-                  })
+                  style: 'currency',
+                  currency: 'BRL',
+                })
                 : 'R$ 0,00'}
             </span>
 
@@ -109,6 +108,11 @@ export default function ProductCard({ produto, numeracaoSelecionada }) {
           <FaWhatsapp className="text-lg" />
           Pedir via WhatsApp
         </a>
+        {/* Mensagem discreta */}
+        <p className="mt-2 text-xs text-gray-500 text-center leading-snug">
+        Entregamos em Cascavel (consulte a taxa) <br />💳 Pagamento na entrega
+        </p>
+
       </div>
     </div>
   )
