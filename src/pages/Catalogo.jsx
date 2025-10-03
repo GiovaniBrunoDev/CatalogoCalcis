@@ -144,7 +144,7 @@ export default function Catalogo() {
 
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                     <p className="text-sm sm:text-base text-gray-700 text-center sm:text-left">
-                        Confira os modelos na numeração{" "}
+                        Confira os modelos disponíveis na numeração {" "}
                         <span className="font-semibold text-green-600">{numeracao}</span>.
                     </p>
 
@@ -187,27 +187,57 @@ export default function Catalogo() {
                     </>
                 )}
 
-                {produtosEsgotados.length > 0 && (
-                    <>
-                        <h2 className="text-lg font-semibold text-gray-600 mt-10 mb-4">
+                {/* Sessão de produtos fora de estoque */}
+                <div className="mt-12">
+                    {/* Título estilizado */}
+                    {/* Título clean e bonito */}
+                    <div className="text-center mb-8">
+                        <h2 className="text-2xl sm:text-3xl font-bold text-gray-800">
                             Produtos Fora de Estoque
                         </h2>
-                        <div className="grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-                            {produtosEsgotados.map((p) => (
-                                <div key={p.id} className="relative">
-                                    <ProductCard
-                                        produto={p}
-                                        numeracaoSelecionada={numeracao}
-                                        esgotado={true}
-                                    />
-                                    <span className="absolute top-3 left-3 bg-red-600 text-white text-xs px-2 py-1 rounded">
-                                        Esgotado
-                                    </span>
+                        <p className="text-sm sm:text-base text-gray-500 mt-1">
+                            Indisponíveis no momento
+                        </p>
+                        <div className="w-20 h-[3px] bg-red-500 rounded mx-auto mt-3" />
+                    </div>
+
+
+                    {/* Grid dos produtos */}
+                    <div className="grid gap-5 sm:gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+                        {produtosEsgotados.map((p) => (
+                            <div
+                                key={p.id}
+                                className="relative opacity-95 hover:opacity-100 hover:scale-[1.02] transition transform duration-300 group"
+                            >
+                                <ProductCard
+                                    produto={p}
+                                    numeracaoSelecionada={numeracao}
+                                    esgotado={true}
+                                />
+
+                                {/* Badge diagonal com pontas dobradas */}
+                                <div className="absolute top-4 -left-10 rotate-[-35deg] z-20">
+                                    <div className="relative bg-gradient-to-r from-red-500 to-red-700 text-white text-[11px] font-bold px-12 py-1 shadow-lg tracking-wide">
+                                        ESGOTADO
+
+                                        {/* ponta esquerda dobrada */}
+                                        <span className="absolute -bottom-2 left-0 w-0 h-0 
+                border-t-[8px] border-t-red-700 
+                border-l-[8px] border-l-transparent" />
+
+                                        {/* ponta direita dobrada */}
+                                        <span className="absolute -bottom-2 right-0 w-0 h-0 
+                border-t-[8px] border-t-red-700 
+                border-r-[8px] border-r-transparent" />
+                                    </div>
                                 </div>
-                            ))}
-                        </div>
-                    </>
-                )}
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
+
+
             </div>
         </div>
     )

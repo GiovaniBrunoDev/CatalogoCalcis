@@ -35,12 +35,6 @@ export default function ProductCard({ produto, numeracaoSelecionada }) {
             }`}
         />
 
-        {/* Badge de esgotado */}
-        {esgotado && (
-          <span className="absolute top-3 left-3 bg-red-600 text-white text-xs px-2 py-1 rounded">
-            Esgotado
-          </span>
-        )}
       </div>
 
       {/* Conteúdo */}
