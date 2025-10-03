@@ -22,6 +22,18 @@ export default function VideoWidget({ produto, videoUrl, gifUrl }) {
     return () => clearInterval(interval);
   }, [open]);
 
+  // Travar scroll da página quando o modal abre
+  useEffect(() => {
+    if (open) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [open]);
+
   return (
     <>
       {/* Botão fixo com preview */}
@@ -40,9 +52,9 @@ export default function VideoWidget({ produto, videoUrl, gifUrl }) {
 
       {/* Modal tela cheia */}
       {open && (
-        <div className="fixed inset-0 bg-black z-[2147483647] flex items-center justify-center">
+        <div className="fixed inset-0 w-screen h-screen bg-black z-[2147483647] flex items-center justify-center">
           {/* Barra de progresso */}
-          <div className="absolute top-2 left-2 right-2 h-[3px] bg-white/30 rounded overflow-hidden">
+          <div className="absolute top-2 left-2 right-2 h-[3px] bg-white/30 rounded overflow-hidden z-50">
             <div
               ref={progressRef}
               className="h-full w-0 bg-white transition-all"
@@ -61,7 +73,7 @@ export default function VideoWidget({ produto, videoUrl, gifUrl }) {
           />
 
           {/* Card do produto */}
-          <div className="absolute bottom-[60px] left-1/2 -translate-x-1/2 w-[320px] flex justify-between items-center gap-4 p-3 rounded-2xl bg-black/70 backdrop-blur-md text-white shadow-lg hover:scale-[1.02] transition">
+          <div className="absolute bottom-[60px] left-1/2 -translate-x-1/2 w-[320px] flex justify-between items-center gap-4 p-3 rounded-2xl bg-black/70 backdrop-blur-md text-white shadow-lg hover:scale-[1.02] transition z-50">
             <div className="flex items-center gap-3">
               <img
                 src={produto.imagemUrl}
@@ -77,20 +89,11 @@ export default function VideoWidget({ produto, videoUrl, gifUrl }) {
                 </div>
               </div>
             </div>
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                window.location.href = "/carrinho"; // ajuste para sua rota
-              }}
-              className="bg-pink-600 hover:bg-pink-700 px-3 py-2 rounded-lg text-[13px]"
-            >
-              Adicionar
-            </button>
           </div>
 
           {/* Botão fechar */}
           <div
-            className="absolute top-5 right-5 text-white text-3xl cursor-pointer z-50"
+            className="absolute top-5 right-5 text-white text-3xl cursor-pointer z-[60]"
             onClick={(e) => {
               e.stopPropagation();
               setOpen(false);
@@ -105,7 +108,7 @@ export default function VideoWidget({ produto, videoUrl, gifUrl }) {
               e.stopPropagation();
               setMuted(!muted);
             }}
-            className="absolute bottom-5 right-5 bg-black/50 rounded-full p-2 text-white cursor-pointer z-50"
+            className="absolute bottom-5 right-5 bg-black/50 rounded-full p-2 text-white cursor-pointer z-[60]"
           >
             {muted ? "🔇" : "🔊"}
           </div>
