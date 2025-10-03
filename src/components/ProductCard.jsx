@@ -38,11 +38,18 @@ export default function ProductCard({ produto, numeracaoSelecionada }) {
         />
 
         {/* Botão de vídeo sobre a imagem */}
-        
+        {produto.videoUrl && (
           <div className="absolute bottom-1 right-3 z-20">
-            <VideoWidget videoUrl={produto.videoUrl} produto={produto} />
+            <VideoWidget
+              produto={produto}
+              videoUrl={produto.videoUrl}
+              gifUrl={produto.gifUrl}
+            />
           </div>
-    
+        )}
+
+
+
       </div>
 
 
