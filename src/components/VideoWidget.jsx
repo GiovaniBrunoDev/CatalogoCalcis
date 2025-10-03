@@ -6,7 +6,7 @@ export default function VideoWidget({ produto, videoUrl, gifUrl }) {
   const progressRef = useRef(null);
 
   const [open, setOpen] = useState(false);
-  const [muted, setMuted] = useState(true);
+const [muted, setMuted] = useState(false);
 
   // Atualiza progresso
   useEffect(() => {

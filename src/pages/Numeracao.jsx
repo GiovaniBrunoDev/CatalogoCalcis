@@ -86,7 +86,7 @@ export default function Numeracao() {
             question: "Quais são as formas de pagamento?",
             answer: (
                 <p>
-                    Você pode pagar em até 12x no cartão de crédito ou à vista no Pix com desconto exclusivo.
+                    Você pode pagar no pix, dinheiro ou em até 12x no cartão de crédito.
                 </p>
             ),
         },
@@ -304,7 +304,7 @@ export default function Numeracao() {
                     {/* Avaliação 5 */}
                     <div className="bg-white shadow rounded-xl p-4 min-w-[200px]">
                         <p className="text-sm text-gray-600 italic">
-                            "Atendimento rápido no WhatsApp, ganhei confiança na hora."
+                            "Atendimento muito bom, amei o capricho."
                         </p>
                         <span className="text-xs font-semibold text-gray-800">– Fernanda L.</span>
                     </div>
@@ -320,7 +320,7 @@ export default function Numeracao() {
                     {/* Avaliação 7 */}
                     <div className="bg-white shadow rounded-xl p-4 min-w-[200px]">
                         <p className="text-sm text-gray-600 italic">
-                            "Minha Loja Favorita"
+                            "A Calcis é minha Loja Favorita"
                         </p>
                         <span className="text-xs font-semibold text-gray-800">– Juliana A.</span>
                     </div>
