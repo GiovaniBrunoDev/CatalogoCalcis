@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from "react";
 export default function VideoWidget() {
     const VIDEOS = [
         "https://cdn.storyboost.shop/AQMBllcs8KbVUJNZ25Vg5Ub69_dNTKRU6pp-6wOeHrWsdb-pZwscD0ZY48l0_CRLhVKwS-KaxeL_27iEflGIfHDNRoi_gaHz3E55GdY.mp4",
-        
+
     ];
 
     const PRODUCT = {
@@ -55,22 +55,19 @@ export default function VideoWidget() {
                 onClick={() => setOpen(true)}
                 className="w-12 h-12 rounded-full overflow-hidden shadow-lg border border-white"
             >
-                <video
-                    src={PRODUCT.Gift
-                    }
-                    muted
-                    loop
-                    autoPlay
-                    playsInline
+                <img
+                    src={PRODUCT.Gift}
+                    alt="preview"
                     className="w-full h-full object-cover"
                 />
             </button>
 
 
-            {/* Label animada */}
+
+            {/* Label animada 
             <div className="fixed bottom-[142px] right-[55px] px-4 h-[25px] flex items-center text-white text-[12px] font-semibold rounded-[15px] bg-[#ADC7BB] whitespace-nowrap overflow-hidden z-[9998] transition-all duration-500">
                 VÍDEO DO PRODUTO
-            </div>
+            </div> */}
 
             {/* Modal */}
             {open && (
