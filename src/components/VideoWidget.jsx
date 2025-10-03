@@ -1,4 +1,5 @@
 import { useRef, useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 
 export default function VideoWidget({ produto, videoUrl, gifUrl }) {
   const videoRef = useRef(null);
@@ -34,6 +35,71 @@ export default function VideoWidget({ produto, videoUrl, gifUrl }) {
     };
   }, [open]);
 
+  // Modal JSX (vai ser enviado para o body via Portal)
+  const modal = (
+    <div className="fixed inset-0 w-screen h-screen bg-black z-[2147483647] flex items-center justify-center">
+      {/* Barra de progresso */}
+      <div className="absolute top-2 left-2 right-2 h-[3px] bg-white/30 rounded overflow-hidden z-50">
+        <div
+          ref={progressRef}
+          className="h-full w-0 bg-white transition-all"
+        />
+      </div>
+
+      {/* Vídeo fullscreen */}
+      <video
+        ref={videoRef}
+        src={videoUrl}
+        autoPlay
+        playsInline
+        muted={muted}
+        className="w-screen h-screen object-cover"
+        onEnded={() => setOpen(false)}
+      />
+
+      {/* Card do produto */}
+      <div className="absolute bottom-[60px] left-1/2 -translate-x-1/2 w-[320px] flex justify-between items-center gap-4 p-3 rounded-2xl bg-black/70 backdrop-blur-md text-white shadow-lg hover:scale-[1.02] transition z-50">
+        <div className="flex items-center gap-3">
+          <img
+            src={produto.imagemUrl}
+            alt={produto.nome}
+            className="w-[60px] h-[60px] rounded-lg object-cover"
+          />
+          <div>
+            <div className="text-[14px] font-semibold leading-tight">
+              {produto.nome}
+            </div>
+            <div className="text-[14px] opacity-90">
+              R$ {produto.preco?.toFixed(2)}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Botão fechar */}
+      <div
+        className="absolute top-5 right-5 text-white text-3xl cursor-pointer z-[60]"
+        onClick={(e) => {
+          e.stopPropagation();
+          setOpen(false);
+        }}
+      >
+        ✕
+      </div>
+
+      {/* Botão som/mute */}
+      <div
+        onClick={(e) => {
+          e.stopPropagation();
+          setMuted(!muted);
+        }}
+        className="absolute bottom-5 right-5 bg-black/50 rounded-full p-2 text-white cursor-pointer z-50"
+      >
+        {muted ? "🔇" : "🔊"}
+      </div>
+    </div>
+  );
+
   return (
     <>
       {/* Botão fixo com preview */}
@@ -50,70 +116,8 @@ export default function VideoWidget({ produto, videoUrl, gifUrl }) {
         </button>
       )}
 
-      {/* Modal tela cheia */}
-      {open && (
-        <div className="fixed inset-0 w-screen h-screen bg-black z-[2147483647] flex items-center justify-center">
-          {/* Barra de progresso */}
-          <div className="absolute top-2 left-2 right-2 h-[3px] bg-white/30 rounded overflow-hidden z-50">
-            <div
-              ref={progressRef}
-              className="h-full w-0 bg-white transition-all"
-            />
-          </div>
-
-          {/* Vídeo fullscreen */}
-          <video
-            ref={videoRef}
-            src={videoUrl}
-            autoPlay
-            playsInline
-            muted={muted}
-            className="w-screen h-screen object-cover"
-            onEnded={() => setOpen(false)}
-          />
-
-          {/* Card do produto */}
-          <div className="absolute bottom-[60px] left-1/2 -translate-x-1/2 w-[320px] flex justify-between items-center gap-4 p-3 rounded-2xl bg-black/70 backdrop-blur-md text-white shadow-lg hover:scale-[1.02] transition z-50">
-            <div className="flex items-center gap-3">
-              <img
-                src={produto.imagemUrl}
-                alt={produto.nome}
-                className="w-[60px] h-[60px] rounded-lg object-cover"
-              />
-              <div>
-                <div className="text-[14px] font-semibold leading-tight">
-                  {produto.nome}
-                </div>
-                <div className="text-[14px] opacity-90">
-                  R$ {produto.preco?.toFixed(2)}
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Botão fechar */}
-          <div
-            className="absolute top-5 right-5 text-white text-3xl cursor-pointer z-[60]"
-            onClick={(e) => {
-              e.stopPropagation();
-              setOpen(false);
-            }}
-          >
-            ✕
-          </div>
-
-          {/* Botão som/mute */}
-          <div
-            onClick={(e) => {
-              e.stopPropagation();
-              setMuted(!muted);
-            }}
-            className="absolute bottom-5 right-5 bg-black/50 rounded-full p-2 text-white cursor-pointer z-[60]"
-          >
-            {muted ? "🔇" : "🔊"}
-          </div>
-        </div>
-      )}
+      {/* Renderiza modal fora da div principal */}
+      {open && createPortal(modal, document.body)}
     </>
   );
 }
