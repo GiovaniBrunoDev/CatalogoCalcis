@@ -5,6 +5,7 @@ import axios from 'axios'
 import bannerImage from '../assets/banner.png'
 import LogoImage from '../assets/logo.png'
 import { ChevronDown } from "lucide-react"
+import { FaInstagram, FaFacebookF, FaWhatsapp } from 'react-icons/fa'
 
 export default function Numeracao() {
     const navigate = useNavigate()
@@ -71,27 +72,43 @@ export default function Numeracao() {
             answer: (
                 <>
                     <p className="mb-3">
-                        🚚 <span className="font-semibold">Em Cascavel:</span> entregamos no mesmo dia.
+                        <span className="font-semibold">Em Cascavel:</span> entregamos no mesmo dia.
                         O pagamento é realizado na entrega. <span className="italic">(consulte a taxa)</span>
                     </p>
                     <p>
-                        📦 Para outras regiões, enviamos para todo o Brasil com código de rastreio.
-                        O prazo varia conforme a localidade. o pagamento é antecipado via Pix ou cartão.
+                        <span className="font-semibold">Demais regiões:</span> enviamos para todo o Brasil com código de rastreio.
+                        O prazo varia conforme a localidade e o pagamento é antecipado via Pix ou cartão.
                     </p>
                 </>
             ),
         },
         {
             question: "Quais são as formas de pagamento?",
-            answer:
-                "Você pode pagar em até 12x no cartão de crédito ou à vista no Pix com desconto exclusivo.",
+            answer: (
+                <p>
+                    Você pode pagar em até 12x no cartão de crédito ou à vista no Pix com desconto exclusivo.
+                </p>
+            ),
         },
         {
             question: "Posso trocar meu pedido?",
-            answer:
-                "Sim! Você tem até 7 dias para solicitar a troca caso o produto não sirva ou apresente defeito.",
+            answer: (
+                <p>
+                    Sim! Você tem até 7 dias para solicitar a troca caso o produto não sirva ou apresente defeito.
+                </p>
+            ),
+        },
+        {
+            question: "A loja possui endereço físico?",
+            answer: (
+                <p>
+                    No momento, trabalhamos apenas com vendas online e entregas em todo o Brasil.
+                    Caso queira, você pode entrar em contato para mais informações.
+                </p>
+            ),
         },
     ];
+
 
 
 
@@ -404,17 +421,12 @@ export default function Numeracao() {
 
 
 
-            {/* FOOTER */}
             <footer className="mt-20 bg-gray-950 text-gray-300">
                 <div className="max-w-6xl mx-auto px-6 py-10 grid grid-cols-1 sm:grid-cols-3 gap-10">
 
-                    {/* Logo + descrição */}
+                    {/* Logo */}
                     <div>
-                        <img src={LogoImage} alt="Calcis" className="h-8 sm:h-9 mb-4" />
-                        <p className="text-sm leading-relaxed text-gray-400">
-                            Estilo, conforto e qualidade para todos os momentos.
-                            Enviamos para todo o Brasil 🚚
-                        </p>
+                        <img src={LogoImage} alt="Calcis" className="h-8 sm:h-9" />
                     </div>
 
                     {/* Links rápidos */}
@@ -432,17 +444,17 @@ export default function Numeracao() {
                     <div>
                         <h4 className="text-white font-semibold mb-3">Siga-nos</h4>
                         <div className="flex gap-4">
-                            <a href="https://instagram.com" target="_blank" rel="noreferrer"
-                                className="w-9 h-9 rounded-full flex items-center justify-center bg-gray-800 hover:bg-gray-700 transition">
-                                📷
+                            <a href="https://www.instagram.com/calcis_/" target="_blank" rel="noreferrer"
+                                className="w-9 h-9 rounded-full flex items-center justify-center bg-gray-800 hover:bg-gray-700 transition text-white">
+                                <FaInstagram size={16} />
                             </a>
-                            <a href="https://facebook.com" target="_blank" rel="noreferrer"
-                                className="w-9 h-9 rounded-full flex items-center justify-center bg-gray-800 hover:bg-gray-700 transition">
-                                👍
+                            <a href="https://www.facebook.com/profile.php?id=61550662895654" target="_blank" rel="noreferrer"
+                                className="w-9 h-9 rounded-full flex items-center justify-center bg-gray-800 hover:bg-gray-700 transition text-white">
+                                <FaFacebookF size={16} />
                             </a>
-                            <a href="https://wa.me/55XXXXXXXXXX" target="_blank" rel="noreferrer"
-                                className="w-9 h-9 rounded-full flex items-center justify-center bg-gray-800 hover:bg-gray-700 transition">
-                                💬
+                            <a href="https://wa.me/5545988190147" target="_blank" rel="noreferrer"
+                                className="w-9 h-9 rounded-full flex items-center justify-center bg-gray-800 hover:bg-gray-700 transition text-white">
+                                <FaWhatsapp size={16} />
                             </a>
                         </div>
                     </div>

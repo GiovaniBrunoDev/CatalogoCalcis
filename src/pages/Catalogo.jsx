@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react'
 import { useParams, useNavigate, useLocation } from 'react-router-dom'
 import axios from 'axios'
 import ProductCard from '../components/ProductCard'
-import { ArrowLeft } from 'lucide-react'
+import { ArrowLeft, ChevronUp } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import LogoImage from '../assets/logo.png'
 
@@ -90,6 +90,36 @@ export default function Catalogo() {
             !p.variacoes?.some((v) => String(v.numeracao) === String(numeracao) && Number(v.estoque) > 0)
         )
     }, [produtos, numeracao])
+
+    function ScrollToTopButton() {
+        const [visible, setVisible] = useState(false);
+
+        useEffect(() => {
+            const handleScroll = () => {
+                setVisible(window.scrollY > 300); // aparece após 300px
+            };
+            window.addEventListener('scroll', handleScroll);
+            return () => window.removeEventListener('scroll', handleScroll);
+        }, []);
+
+        const scrollToTop = () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        };
+
+        return (
+            <button
+                onClick={scrollToTop}
+                className={`
+        fixed bottom-6 right-6 z-50 w-10 h-10 rounded-full bg-white shadow-md flex items-center justify-center
+        transition-opacity duration-300 ${visible ? 'opacity-100' : 'opacity-0'}
+        hover:bg-gray-100
+      `}
+                aria-label="Voltar ao topo"
+            >
+                <ChevronUp className="text-gray-700 w-5 h-5" />
+            </button>
+        );
+    }
 
     return (
         <div className="min-h-screen pt-0 px-4 pb-4 sm:px-6 sm:pb-6 bg-gradient-to-br from-gray-50 to-gray-100 relative">
@@ -239,6 +269,8 @@ export default function Catalogo() {
 
 
             </div>
+            <ScrollToTopButton />
+
         </div>
     )
 }
