@@ -17,27 +17,23 @@ export default function Catalogo() {
     const [error, setError] = useState(null)
     const [overlayVisible, setOverlayVisible] = useState(true)
 
-    // 🔥 Sempre rolar para o topo ao entrar na página
     useEffect(() => {
         window.scrollTo({ top: 0, behavior: "smooth" })
     }, [])
 
-    // 🔥 Se atualizar e não tiver state, manda pra home
     useEffect(() => {
         if (!location.state) {
             navigate("/", { replace: true })
         }
     }, [location.state, navigate])
 
-    // 🔀 Embaralhar produtos quando eles mudarem
+    // Embaralha apenas quando a lista muda (não causa loop porque depende do length)
     useEffect(() => {
         if (produtos.length > 0) {
             const shuffled = [...produtos].sort(() => Math.random() - 0.5)
             setProdutos(shuffled)
         }
     }, [produtos.length])
-
-
 
     useEffect(() => {
         if (preloadedProducts.length > 0) {
@@ -74,12 +70,30 @@ export default function Catalogo() {
         }
     }, [loading])
 
+    // 🔍 Aqui está a correção: verificar estoque **somente** para a variação da numeracao atual.
+    const produtosDisponiveis = useMemo(() => {
+        if (!numeracao) {
+            // se não tiver numeracao na rota, considera qualquer variacao com estoque
+            return produtos.filter((p) => p.variacoes?.some((v) => Number(v.estoque) > 0))
+        }
+        return produtos.filter((p) =>
+            p.variacoes?.some((v) => String(v.numeracao) === String(numeracao) && Number(v.estoque) > 0)
+        )
+    }, [produtos, numeracao])
 
+    const produtosEsgotados = useMemo(() => {
+        if (!numeracao) {
+            return produtos.filter((p) => !(p.variacoes?.some((v) => Number(v.estoque) > 0)))
+        }
+        return produtos.filter((p) =>
+            // esgotado se NÃO existir variação com a numeracao e estoque > 0
+            !p.variacoes?.some((v) => String(v.numeracao) === String(numeracao) && Number(v.estoque) > 0)
+        )
+    }, [produtos, numeracao])
 
     return (
         <div className="min-h-screen pt-0 px-4 pb-4 sm:px-6 sm:pb-6 bg-gradient-to-br from-gray-50 to-gray-100 relative">
 
-            {/* Overlay */}
             <AnimatePresence>
                 {overlayVisible && (
                     <motion.div
@@ -123,30 +137,20 @@ export default function Catalogo() {
                 )}
             </AnimatePresence>
 
-            {/* Header preto cobrindo largura total */}
             <header className="max-w-6xl mx-auto px-4 sm:px-6 py-2 flex flex-col gap-4">
-                {/* Logo com fundo preto */}
                 <div className="bg-black flex justify-center sm:justify-start py-3 px-4 rounded-lg">
-                    <img
-                        src={LogoImage}
-                        alt="Calcis"
-                        className="h-8 sm:h-10 object-contain"
-                    />
+                    <img src={LogoImage} alt="Calcis" className="h-8 sm:h-10 object-contain" />
                 </div>
 
-                {/* Texto + botão */}
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                     <p className="text-sm sm:text-base text-gray-700 text-center sm:text-left">
-                        Confira os modelos disponíveis na numeração{" "}
+                        Confira os modelos na numeração{" "}
                         <span className="font-semibold text-green-600">{numeracao}</span>.
                     </p>
 
                     <button
                         onClick={() => navigate(-1)}
-                        className="flex items-center justify-center gap-2 px-5 py-2.5 rounded-full 
-      border border-gray-400 text-gray-700 bg-white 
-      shadow-sm hover:shadow-md hover:bg-gray-50 
-      transition font-medium text-sm sm:text-base"
+                        className="flex items-center justify-center gap-2 px-5 py-2.5 rounded-full border border-gray-400 text-gray-700 bg-white shadow-sm hover:shadow-md hover:bg-gray-50 transition font-medium text-sm sm:text-base"
                     >
                         <ArrowLeft size={18} className="text-gray-500" />
                         Voltar
@@ -154,38 +158,56 @@ export default function Catalogo() {
                 </div>
             </header>
 
-            {/* Conteúdo */}
             <div className="max-w-6xl mx-auto relative z-10 mt-6">
                 {error && (
                     <div className="text-red-600 bg-red-100 px-4 py-2 rounded-lg text-center mb-6">
                         Erro: {error}
                     </div>
                 )}
+
                 {!loading && produtos.length === 0 && (
                     <div className="text-gray-600 text-center py-12">
                         Desculpe, nenhuma opção disponível na numeração {numeracao}.
                     </div>
                 )}
 
-                <div
-                    className="
-    grid gap-4 sm:gap-6
-    grid-cols-1
-    sm:grid-cols-2
-    md:grid-cols-3
-    lg:grid-cols-4
-  "
-                >
-                    {produtos.map((p) => (
-                        <ProductCard
-                            key={p.id}
-                            produto={p}
-                            numeracaoSelecionada={numeracao}
-                            onView={() => navigate(`/produto/${p.id}`)}
-                        />
-                    ))}
-                </div>
+                {produtosDisponiveis.length > 0 && (
+                    <>
+                        <div className="grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+                            {produtosDisponiveis.map((p) => (
+                                <ProductCard
+                                    key={p.id}
+                                    produto={p}
+                                    numeracaoSelecionada={numeracao}
+                                    esgotado={false}
+                                    onView={() => navigate(`/produto/${p.id}`)}
+                                />
+                            ))}
+                        </div>
+                    </>
+                )}
 
+                {produtosEsgotados.length > 0 && (
+                    <>
+                        <h2 className="text-lg font-semibold text-gray-600 mt-10 mb-4">
+                            Produtos Fora de Estoque
+                        </h2>
+                        <div className="grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+                            {produtosEsgotados.map((p) => (
+                                <div key={p.id} className="relative">
+                                    <ProductCard
+                                        produto={p}
+                                        numeracaoSelecionada={numeracao}
+                                        esgotado={true}
+                                    />
+                                    <span className="absolute top-3 left-3 bg-red-600 text-white text-xs px-2 py-1 rounded">
+                                        Esgotado
+                                    </span>
+                                </div>
+                            ))}
+                        </div>
+                    </>
+                )}
             </div>
         </div>
     )

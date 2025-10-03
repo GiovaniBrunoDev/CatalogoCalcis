@@ -12,8 +12,15 @@ export default function ProductCard({ produto, numeracaoSelecionada }) {
   const ultimaUnidade =
     variacaoSelecionada && Number(variacaoSelecionada.estoque) === 1
 
+  const esgotado =
+    variacaoSelecionada && Number(variacaoSelecionada.estoque) === 0
+
   return (
-    <div className="bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden flex flex-col transform hover:-translate-y-0.5">
+    <div
+      className={`bg-white rounded-xl shadow-sm transition-all duration-300 overflow-hidden flex flex-col transform
+        ${esgotado ? 'opacity-90' : 'hover:shadow-md hover:-translate-y-0.5'}
+      `}
+    >
       {/* Imagem com placeholder */}
       <div className="relative w-full flex items-center justify-center bg-gray-50 overflow-hidden">
         {!imgLoaded && (
@@ -27,6 +34,13 @@ export default function ProductCard({ produto, numeracaoSelecionada }) {
           className={`w-full h-auto transition-opacity duration-500 ${imgLoaded ? 'opacity-100' : 'opacity-0'
             }`}
         />
+
+        {/* Badge de esgotado */}
+        {esgotado && (
+          <span className="absolute top-3 left-3 bg-red-600 text-white text-xs px-2 py-1 rounded">
+            Esgotado
+          </span>
+        )}
       </div>
 
       {/* Conteúdo */}
@@ -73,16 +87,19 @@ export default function ProductCard({ produto, numeracaoSelecionada }) {
         {/* Tamanhos */}
         {produto.variacoes?.length > 0 && (
           <div className="mb-3">
-            <p className="text-xs text-gray-500 mb-1">Tamanhos disponíveis:</p>
+            <p className="text-xs text-gray-500 mb-1">Tamanhos:</p>
             <div className="flex flex-wrap gap-2 justify-center">
               {produto.variacoes
                 .slice()
                 .sort((a, b) => Number(a.numeracao) - Number(b.numeracao))
-                .filter((v) => Number(v.estoque) > 0)
                 .map((v) => (
                   <span
                     key={v.numeracao}
-                    className="px-3 py-1 rounded-full text-sm font-medium bg-gray-100 text-gray-700 border hover:bg-gray-200 transition-colors"
+                    className={`px-3 py-1 rounded-full text-sm font-medium border transition-colors
+                      ${Number(v.estoque) > 0
+                        ? 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                        : 'bg-gray-200 text-gray-400 line-through cursor-not-allowed'
+                      }`}
                   >
                     {v.numeracao}
                   </span>
@@ -92,27 +109,54 @@ export default function ProductCard({ produto, numeracaoSelecionada }) {
         )}
 
         {/* Aviso de última unidade */}
-        {ultimaUnidade && numeracaoSelecionada && (
+        {ultimaUnidade && numeracaoSelecionada && !esgotado && (
           <span className="inline-flex items-center gap-1 px-2 py-1 text-xs font-medium bg-red-100 text-red-700 rounded-full mb-3">
             🔥 Última unidade na numeração {numeracaoSelecionada}!
           </span>
         )}
 
+        {/* Aviso de indisponibilidade */}
+        {esgotado && numeracaoSelecionada && (
+          <div className="mb-3 flex items-center gap-2 rounded-lg border border-red-300 bg-red-50 px-3 py-2 shadow-sm">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-5 w-5 text-red-600"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth={2}
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            </svg>
+            <span className="text-sm font-medium text-red-700">
+              Produto indisponível na numeração <b>{numeracaoSelecionada}</b>.
+            </span>
+          </div>
+        )}
+
+
         {/* Botão WhatsApp */}
         <a
-          href={`https://wa.me/55${produto.whatsapp || '45988190147'}?text=Olá, tenho interesse no produto ${produto.nome} ${numeracaoSelecionada}`}
+          href={`https://wa.me/55${produto.whatsapp || '45988190147'
+            }?text=Olá, gostaria de ser avisado quando o produto ${produto.nome} na numeração ${numeracaoSelecionada} voltar ao estoque.`}
           target="_blank"
           rel="noopener noreferrer"
-          className="mt-auto flex items-center justify-center gap-1.5 bg-gradient-to-r from-green-500 to-green-600 text-white py-2 px-3 rounded-lg text-sm font-medium shadow hover:from-green-600 hover:to-green-700 transition-all duration-300"
+          className={`mt-auto flex items-center justify-center gap-1.5 py-2 px-3 rounded-lg text-sm font-medium shadow transition-all duration-300
+            ${esgotado
+              ? 'bg-gray-400 text-white cursor-pointer hover:bg-gray-500'
+              : 'bg-gradient-to-r from-green-500 to-green-600 text-white hover:from-green-600 hover:to-green-700'
+            }`}
         >
           <FaWhatsapp className="text-lg" />
-          Pedir via WhatsApp
+          {esgotado ? 'Avise-me quando disponível' : 'Pedir via WhatsApp'}
         </a>
-        {/* Mensagem discreta */}
-        <p className="mt-2 text-xs text-gray-500 text-center leading-snug">
-        Entregamos em Cascavel (consulte a taxa) <br />💳 Pagamento na entrega
-        </p>
 
+        {/* Mensagem discreta */}
+        {!esgotado && (
+          <p className="mt-2 text-xs text-gray-500 text-center leading-snug">
+            Entregamos em Cascavel (consulte a taxa) <br />💳 Pagamento na entrega
+          </p>
+        )}
       </div>
     </div>
   )
