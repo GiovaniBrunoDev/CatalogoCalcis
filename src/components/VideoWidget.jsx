@@ -6,9 +6,8 @@ export default function VideoWidget({ produto, videoUrl, gifUrl }) {
 
   const [open, setOpen] = useState(false);
   const [muted, setMuted] = useState(true);
-  const [showCard, setShowCard] = useState(false);
 
-  // Atualiza progresso (fallback caso queira tempo real)
+  // Atualiza progresso
   useEffect(() => {
     let interval;
     if (open && videoRef.current) {
@@ -22,18 +21,6 @@ export default function VideoWidget({ produto, videoUrl, gifUrl }) {
     }
     return () => clearInterval(interval);
   }, [open]);
-
-  // Mostra o card após 8 segundos do vídeo
-  useEffect(() => {
-    let timer;
-    if (open) {
-      setShowCard(false); // resetar antes
-      timer = setTimeout(() => {
-        setShowCard(true);
-      }, 8000); // 8 segundos
-    }
-    return () => clearTimeout(timer);
-  }, [open, videoUrl]);
 
   return (
     <>
@@ -51,54 +38,57 @@ export default function VideoWidget({ produto, videoUrl, gifUrl }) {
         </button>
       )}
 
-      {/* Modal */}
+      {/* Modal tela cheia */}
       {open && (
-        <div className="fixed inset-0 bg-black flex items-center justify-center z-[2147483647]">
+        <div className="fixed inset-0 bg-black z-[2147483647] flex items-center justify-center">
           {/* Barra de progresso */}
           <div className="absolute top-2 left-2 right-2 h-[3px] bg-white/30 rounded overflow-hidden">
             <div
               ref={progressRef}
-              className="h-full w-0 bg-white rounded-sm transition-all"
+              className="h-full w-0 bg-white transition-all"
             />
           </div>
 
-          {/* Vídeo principal */}
+          {/* Vídeo fullscreen */}
           <video
             ref={videoRef}
             src={videoUrl}
             autoPlay
             playsInline
             muted={muted}
-            className="w-full h-full object-cover"
+            className="w-screen h-screen object-cover"
             onEnded={() => setOpen(false)}
           />
 
-          {/* Card do produto com fade-in de baixo pra cima */}
-          {showCard && (
-            <div
-              className="absolute bottom-[60px] left-1/2 -translate-x-1/2 w-[320px] flex justify-between items-center gap-4 p-3 
-              rounded-2xl bg-black/70 backdrop-blur-md text-white shadow-lg 
-              opacity-0 translate-y-6 animate-[fadeUp_0.6s_ease-out_forwards]"
-            >
-              <div className="flex items-center gap-3">
-                <img
-                  src={produto.imagemUrl}
-                  alt={produto.nome}
-                  className="w-[60px] h-[60px] rounded-lg object-cover"
-                />
-                <div>
-                  <div className="text-[14px] font-semibold leading-tight">
-                    {produto.nome}
-                  </div>
-                  <div className="text-[14px] opacity-90">
-                    R$ {produto.preco?.toFixed(2)}
-                  </div>
+          {/* Card do produto */}
+          <div className="absolute bottom-[60px] left-1/2 -translate-x-1/2 w-[320px] flex justify-between items-center gap-4 p-3 rounded-2xl bg-black/70 backdrop-blur-md text-white shadow-lg hover:scale-[1.02] transition">
+            <div className="flex items-center gap-3">
+              <img
+                src={produto.imagemUrl}
+                alt={produto.nome}
+                className="w-[60px] h-[60px] rounded-lg object-cover"
+              />
+              <div>
+                <div className="text-[14px] font-semibold leading-tight">
+                  {produto.nome}
+                </div>
+                <div className="text-[14px] opacity-90">
+                  R$ {produto.preco?.toFixed(2)}
                 </div>
               </div>
             </div>
-          )}
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                window.location.href = "/carrinho"; // ajuste para sua rota
+              }}
+              className="bg-pink-600 hover:bg-pink-700 px-3 py-2 rounded-lg text-[13px]"
+            >
+              Adicionar
+            </button>
+          </div>
 
-          {/* Fechar (sempre acima de tudo) */}
+          {/* Botão fechar */}
           <div
             className="absolute top-5 right-5 text-white text-3xl cursor-pointer z-50"
             onClick={(e) => {
@@ -121,20 +111,6 @@ export default function VideoWidget({ produto, videoUrl, gifUrl }) {
           </div>
         </div>
       )}
-
-      {/* Keyframes Tailwind custom */}
-      <style jsx>{`
-        @keyframes fadeUp {
-          0% {
-            opacity: 0;
-            transform: translateY(24px);
-          }
-          100% {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-      `}</style>
     </>
   );
 }
