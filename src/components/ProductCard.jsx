@@ -150,20 +150,22 @@ export default function ProductCard({ produto, numeracaoSelecionada }) {
 
         {/* Botão WhatsApp */}
         <a
-          href={`https://wa.me/55${produto.whatsapp || "45988190147"
-            }?text=Olá, gostaria de ser avisado quando o produto ${produto.nome
-            } na numeração ${numeracaoSelecionada} voltar ao estoque.`}
+          href={`https://wa.me/55${produto.whatsapp || "45988190147"}?text=${esgotado
+              ? `Olá, gostaria de ser avisado quando o produto *${produto.nome}* na numeração *${numeracaoSelecionada}* voltar ao estoque.`
+              : `Olá, tenho interesse no produto *${produto.nome}* na numeração *${numeracaoSelecionada}*.`
+            }`}
           target="_blank"
           rel="noopener noreferrer"
           className={`mt-auto flex items-center justify-center gap-1.5 py-2 px-3 rounded-lg text-sm font-medium shadow transition-all duration-300
-            ${esgotado
+    ${esgotado
               ? "bg-gray-400 text-white cursor-pointer hover:bg-gray-500"
               : "bg-gradient-to-r from-green-500 to-green-600 text-white hover:from-green-600 hover:to-green-700"
             }`}
         >
           <FaWhatsapp className="text-lg" />
-          {esgotado ? "Avise-me quando disponível" : "Pedir via WhatsApp"}
+          {esgotado ? "Avise-me quando disponível" : "Pedir pelo Whatsapp"}
         </a>
+
 
         {/* Mensagem discreta */}
         {!esgotado && (
