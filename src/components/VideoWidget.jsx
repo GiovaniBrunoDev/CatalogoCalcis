@@ -104,7 +104,7 @@ export default function VideoWidget({ produto, videoUrl, gifUrl }) {
         <>
             {/* Botão fixo com preview e texto curvado */}
             {gifUrl && (
-                <div className="relative w-16 h-16 flex items-center justify-center">
+                <div className="relative w-20 h-20 flex items-center justify-center">
                     <button
                         onClick={() => setOpen(true)}
                         className="w-14 h-14 rounded-full overflow-hidden shadow-lg border border-white z-10"
@@ -129,12 +129,12 @@ export default function VideoWidget({ produto, videoUrl, gifUrl }) {
                         </defs>
                         <text
                             fill="rgba(255,255,255,0.7)"
-                            fontSize="15"
+                            fontSize="13"
                             fontWeight="600"
-                            letterSpacing="3"
+                            letterSpacing="4"
                         >
                             <textPath xlinkHref="#circlePath">
-                                • VÍDEO • VÍDEO • VÍDEO • VÍDEO •
+                                • VÍDEO • VÍDEO • VÍDEO 
                             </textPath>
                         </text>
                     </svg>
