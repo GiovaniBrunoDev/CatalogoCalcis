@@ -163,7 +163,7 @@ export default function ProductCard({ produto, numeracaoSelecionada }) {
             }`}
         >
           <FaWhatsapp className="text-lg" />
-          {esgotado ? "Avise-me quando disponível" : "Pedir pelo Whatsapp"}
+          {esgotado ? "Avise-me quando disponível" : "Pedir pelo Whatsapp "}
         </a>
 
 

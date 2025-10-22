@@ -107,7 +107,7 @@ export default function VideoWidget({ produto, videoUrl, gifUrl }) {
                 <div className="relative w-16 h-16 flex items-center justify-center">
                     <button
                         onClick={() => setOpen(true)}
-                        className="w-12 h-12 rounded-full overflow-hidden shadow-lg border border-white z-10"
+                        className="w-14 h-14 rounded-full overflow-hidden shadow-lg border border-white z-10"
                     >
                         <img
                             src={gifUrl}
