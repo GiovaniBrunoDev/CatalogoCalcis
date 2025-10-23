@@ -111,7 +111,7 @@ export default function VideoWidget({ produto, videoUrl, gifUrl }) {
                     >
                         <img
                             src={gifUrl}
-                            alt="preview"
+                            alt=""
                             className="w-full h-full object-cover"
                         />
                     </button>
