@@ -37,7 +37,7 @@ export default function ProductCard({ produto, numeracaoSelecionada }) {
             }`}
         />
 
-        {/* Botão de vídeo sobre a imagem */}
+        {/* Botão de vídeo sobre a imagem 
         {produto.videoUrl && (
           <div className="absolute bottom-1 right-3 z-20">
             <VideoWidget
@@ -46,7 +46,7 @@ export default function ProductCard({ produto, numeracaoSelecionada }) {
               gifUrl={produto.gifUrl}
             />
           </div>
-        )}
+        )} */}
 
 
 
