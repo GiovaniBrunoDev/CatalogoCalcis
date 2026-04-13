@@ -79,7 +79,7 @@ export default function VideoWidget({ produto, videoUrl, gifUrl }) {
 
             {/* Card do produto com delay */}
             {showCard && (
-                <div className="absolute bottom-[60px] left-1/2 -translate-x-1/2 w-[320px] flex justify-between items-center gap-4 p-3 rounded-2xl bg-black/70 backdrop-blur-md text-white shadow-lg hover:scale-[1.02] transition z-50 animate-fadeInUp">
+                <div className="absolute bottom-[90px] left-1/2 -translate-x-1/2 w-[320px] flex justify-between items-center gap-4 p-3 rounded-2xl bg-black/70 backdrop-blur-md text-white shadow-lg hover:scale-[1.02] transition z-50 animate-fadeInUp">
                     <div className="flex items-center gap-3">
                         <img
                             src={produto.imagemUrl}
