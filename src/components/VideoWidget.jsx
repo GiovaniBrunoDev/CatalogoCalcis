@@ -7,6 +7,7 @@ export default function VideoWidget({ produto, videoUrl, gifUrl }) {
 
     const [open, setOpen] = useState(false);
     const [muted, setMuted] = useState(false);
+    const [showCard, setShowCard] = useState(false);
 
     // Atualiza progresso
     useEffect(() => {
@@ -20,6 +21,25 @@ export default function VideoWidget({ produto, videoUrl, gifUrl }) {
                 }
             }, 100);
         }
+        return () => clearInterval(interval);
+    }, [open]);
+
+    // Delay inteligente baseado no tempo do vídeo
+    useEffect(() => {
+        let interval;
+
+        if (open && videoRef.current) {
+            setShowCard(false);
+
+            interval = setInterval(() => {
+                const video = videoRef.current;
+
+                if (video.currentTime > 2) { // ⏱️ aparece após 2s
+                    setShowCard(true);
+                }
+            }, 200);
+        }
+
         return () => clearInterval(interval);
     }, [open]);
 
@@ -57,24 +77,26 @@ export default function VideoWidget({ produto, videoUrl, gifUrl }) {
                 onEnded={() => setOpen(false)}
             />
 
-            {/* Card do produto */}
-            <div className="absolute bottom-[60px] left-1/2 -translate-x-1/2 w-[320px] flex justify-between items-center gap-4 p-3 rounded-2xl bg-black/70 backdrop-blur-md text-white shadow-lg hover:scale-[1.02] transition z-50">
-                <div className="flex items-center gap-3">
-                    <img
-                        src={produto.imagemUrl}
-                        alt={produto.nome}
-                        className="w-[60px] h-[60px] rounded-lg object-cover"
-                    />
-                    <div>
-                        <div className="text-[14px] font-semibold leading-tight">
-                            {produto.nome}
-                        </div>
-                        <div className="text-[14px] opacity-90">
-                            R$ {produto.preco?.toFixed(2)}
+            {/* Card do produto com delay */}
+            {showCard && (
+                <div className="absolute bottom-[60px] left-1/2 -translate-x-1/2 w-[320px] flex justify-between items-center gap-4 p-3 rounded-2xl bg-black/70 backdrop-blur-md text-white shadow-lg hover:scale-[1.02] transition z-50 animate-fadeInUp">
+                    <div className="flex items-center gap-3">
+                        <img
+                            src={produto.imagemUrl}
+                            alt={produto.nome}
+                            className="w-[60px] h-[60px] rounded-lg object-cover"
+                        />
+                        <div>
+                            <div className="text-[14px] font-semibold leading-tight">
+                                {produto.nome}
+                            </div>
+                            <div className="text-[14px] opacity-90">
+                                R$ {produto.preco?.toFixed(2)}
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            )}
 
             {/* Botão fechar */}
             <div
@@ -102,7 +124,7 @@ export default function VideoWidget({ produto, videoUrl, gifUrl }) {
 
     return (
         <>
-            {/* Botão fixo com preview e texto curvado */}
+            {/* Botão com GIF */}
             {gifUrl && (
                 <div className="relative w-20 h-20 flex items-center justify-center">
                     <button
@@ -116,7 +138,7 @@ export default function VideoWidget({ produto, videoUrl, gifUrl }) {
                         />
                     </button>
 
-                    {/* Texto curvado discreto */}
+                    {/* Texto curvado */}
                     <svg
                         viewBox="0 0 100 100"
                         className="absolute w-full h-full animate-spin-slow pointer-events-none"
@@ -134,16 +156,14 @@ export default function VideoWidget({ produto, videoUrl, gifUrl }) {
                             letterSpacing="4"
                         >
                             <textPath xlinkHref="#circlePath">
-                                • VÍDEO • VÍDEO • VÍDEO 
+                                • VÍDEO • VÍDEO • VÍDEO
                             </textPath>
                         </text>
                     </svg>
-
-
                 </div>
             )}
 
-            {/* Renderiza modal fora da div principal */}
+            {/* Portal */}
             {open && createPortal(modal, document.body)}
         </>
     );
