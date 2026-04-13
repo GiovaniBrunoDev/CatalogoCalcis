@@ -24,9 +24,10 @@ export default function VideoWidget({ produto, videoUrl, gifUrl }) {
         return () => clearInterval(interval);
     }, [open]);
 
-    // Delay inteligente baseado no tempo do vídeo
+    // Controle de tempo do card (aparece + some)
     useEffect(() => {
         let interval;
+        let hideTimeout;
 
         if (open && videoRef.current) {
             setShowCard(false);
@@ -34,13 +35,22 @@ export default function VideoWidget({ produto, videoUrl, gifUrl }) {
             interval = setInterval(() => {
                 const video = videoRef.current;
 
-                if (video.currentTime > 2) { // ⏱️ aparece após 2s
+                if (video.currentTime > 4) { // aparece com 2s
                     setShowCard(true);
+                    clearInterval(interval);
+
+                    // some após 6s visível
+                    hideTimeout = setTimeout(() => {
+                        setShowCard(false);
+                    }, 8000);
                 }
             }, 200);
         }
 
-        return () => clearInterval(interval);
+        return () => {
+            clearInterval(interval);
+            clearTimeout(hideTimeout);
+        };
     }, [open]);
 
     // Travar scroll da página quando o modal abre
@@ -77,26 +87,44 @@ export default function VideoWidget({ produto, videoUrl, gifUrl }) {
                 onEnded={() => setOpen(false)}
             />
 
-            {/* Card do produto com delay */}
-            {showCard && (
-                <div className="absolute bottom-[90px] left-1/2 -translate-x-1/2 w-[320px] flex justify-between items-center gap-4 p-3 rounded-2xl bg-black/70 backdrop-blur-md text-white shadow-lg hover:scale-[1.02] transition z-50 animate-fadeInUp">
-                    <div className="flex items-center gap-3">
-                        <img
-                            src={produto.imagemUrl}
-                            alt={produto.nome}
-                            className="w-[60px] h-[60px] rounded-lg object-cover"
-                        />
-                        <div>
-                            <div className="text-[14px] font-semibold leading-tight">
+            {/* Card com animação suave */}
+            <div
+                className={`absolute bottom-[110px] left-1/2 -translate-x-1/2 transition-all duration-500 z-50
+                ${showCard
+                        ? "opacity-100 translate-y-0"
+                        : "opacity-0 translate-y-6 pointer-events-none"
+                    }`}
+            >
+                <div className="w-[350px] flex items-center justify-between gap-3 p-[10px] rounded-[20px] bg-gradient-to-b from-black/70 to-black/50 backdrop-blur-2xl text-white shadow-[0_10px_40px_rgba(0,0,0,0.6)] border border-white/10 hover:scale-[1.04] active:scale-[0.97] transition-all duration-300 cursor-pointer">
+
+                    {/* Glow */}
+                    <div className="absolute inset-0 rounded-[20px] bg-white/5 blur-xl opacity-20 pointer-events-none"></div>
+
+                    {/* Conteúdo */}
+                    <div className="relative flex items-center gap-3">
+                        <div className="relative">
+                            <img
+                                src={produto.imagemUrl}
+                                alt={produto.nome}
+                                className="w-[64px] h-[64px] rounded-xl object-cover"
+                            />
+                            <div className="absolute inset-0 rounded-xl bg-white/10 opacity-20"></div>
+                        </div>
+
+                        <div className="flex flex-col leading-tight">
+                            <div className="text-[15px] font-semibold line-clamp-1 tracking-tight">
                                 {produto.nome}
                             </div>
-                            <div className="text-[14px] opacity-90">
-                                R$ {produto.preco?.toFixed(2)}
+
+                            <div className="flex items-center gap-2 mt-[2px]">
+                                <span className="text-[17px] font-bold">
+                                    R$ {produto.preco?.toFixed(2)}
+                                </span>
                             </div>
                         </div>
                     </div>
                 </div>
-            )}
+            </div>
 
             {/* Botão fechar */}
             <div
@@ -109,7 +137,7 @@ export default function VideoWidget({ produto, videoUrl, gifUrl }) {
                 ✕
             </div>
 
-            {/* Botão som/mute */}
+            {/* Botão som */}
             <div
                 onClick={(e) => {
                     e.stopPropagation();
@@ -138,7 +166,7 @@ export default function VideoWidget({ produto, videoUrl, gifUrl }) {
                         />
                     </button>
 
-                    {/* Texto curvado */}
+                    {/* Texto girando */}
                     <svg
                         viewBox="0 0 100 100"
                         className="absolute w-full h-full animate-spin-slow pointer-events-none"
