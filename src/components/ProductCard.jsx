@@ -18,7 +18,7 @@ export default function ProductCard({ produto, numeracaoSelecionada }) {
 
   return (
     <div
-      className={`bg-white rounded-xl shadow-sm transition-all duration-300 overflow-hidden flex flex-col transform
+      className={`bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 transition-all duration-300 overflow-hidden flex flex-col transform
         ${esgotado
           ? "opacity-90"
           : "hover:shadow-md hover:-translate-y-0.5"
@@ -37,7 +37,7 @@ export default function ProductCard({ produto, numeracaoSelecionada }) {
             }`}
         />
 
-        {/* Botão de vídeo sobre a imagem 
+{/* botão de vídeo */}
         {produto.videoUrl && (
           <div className="absolute bottom-1 right-3 z-20">
             <VideoWidget
@@ -46,7 +46,7 @@ export default function ProductCard({ produto, numeracaoSelecionada }) {
               gifUrl={produto.gifUrl}
             />
           </div>
-        )} */}
+        )} 
 
 
 
@@ -163,7 +163,7 @@ export default function ProductCard({ produto, numeracaoSelecionada }) {
             }`}
         >
           <FaWhatsapp className="text-lg" />
-          {esgotado ? "Avise-me quando disponível" : "Pedir pelo Whatsapp "}
+          {esgotado ? "Avise-me quando disponível" : "Comprar agora"}
         </a>
 
 
