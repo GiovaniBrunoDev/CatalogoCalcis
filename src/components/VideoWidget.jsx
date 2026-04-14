@@ -9,25 +9,32 @@ export default function VideoWidget({ produto, videoUrl, gifUrl }) {
     const [muted, setMuted] = useState(false);
     const [showCard, setShowCard] = useState(false);
 
-    // Atualiza progresso
+    // 🔥 Progresso (mais performático com requestAnimationFrame)
     useEffect(() => {
-        let interval;
-        if (open && videoRef.current) {
-            interval = setInterval(() => {
-                const video = videoRef.current;
-                if (video && video.duration && progressRef.current) {
-                    progressRef.current.style.width =
-                        (video.currentTime / video.duration) * 100 + "%";
-                }
-            }, 100);
+        let raf;
+
+        const updateProgress = () => {
+            const video = videoRef.current;
+
+            if (video && video.duration && progressRef.current) {
+                progressRef.current.style.width =
+                    (video.currentTime / video.duration) * 100 + "%";
+            }
+
+            raf = requestAnimationFrame(updateProgress);
+        };
+
+        if (open) {
+            raf = requestAnimationFrame(updateProgress);
         }
-        return () => clearInterval(interval);
+
+        return () => cancelAnimationFrame(raf);
     }, [open]);
 
-    // Controle de tempo do card (aparece + some)
+    // 🎯 Controle do card
     useEffect(() => {
         let interval;
-        let hideTimeout;
+        let timeout;
 
         if (open && videoRef.current) {
             setShowCard(false);
@@ -35,12 +42,11 @@ export default function VideoWidget({ produto, videoUrl, gifUrl }) {
             interval = setInterval(() => {
                 const video = videoRef.current;
 
-                if (video.currentTime > 4) { // aparece com 2s
+                if (video.currentTime > 4) {
                     setShowCard(true);
                     clearInterval(interval);
 
-                    // some após 6s visível
-                    hideTimeout = setTimeout(() => {
+                    timeout = setTimeout(() => {
                         setShowCard(false);
                     }, 8000);
                 }
@@ -49,30 +55,41 @@ export default function VideoWidget({ produto, videoUrl, gifUrl }) {
 
         return () => {
             clearInterval(interval);
-            clearTimeout(hideTimeout);
+            clearTimeout(timeout);
         };
     }, [open]);
 
-    // Travar scroll da página quando o modal abre
+    // 🔒 Travar scroll + esconder barras mobile
     useEffect(() => {
         if (open) {
             document.body.style.overflow = "hidden";
+
+            // 🔥 força esconder barra do navegador
+            setTimeout(() => {
+                window.scrollTo(0, 1);
+            }, 50);
         } else {
             document.body.style.overflow = "";
         }
+
         return () => {
             document.body.style.overflow = "";
         };
     }, [open]);
 
-    // Modal JSX
     const modal = (
-        <div className="fixed top-0 left-0 w-[100vw] h-[100dvh] bg-black z-[2147483647] flex items-center justify-center">
+        <div
+            className="fixed top-0 left-0 w-[100vw] h-[100dvh] bg-black z-[2147483647] flex items-center justify-center"
+            style={{
+                paddingTop: "env(safe-area-inset-top)",
+                paddingBottom: "env(safe-area-inset-bottom)"
+            }}
+        >
             {/* Barra de progresso */}
             <div className="absolute top-2 left-2 right-2 h-[3px] bg-white/30 rounded overflow-hidden z-50">
                 <div
                     ref={progressRef}
-                    className="h-full w-0 bg-white transition-all"
+                    className="h-full w-0 bg-white"
                 />
             </div>
 
@@ -84,9 +101,10 @@ export default function VideoWidget({ produto, videoUrl, gifUrl }) {
                 playsInline
                 muted={muted}
                 className="w-full h-full object-cover"
+                onEnded={() => setOpen(false)}
             />
 
-            {/* Card com animação suave */}
+            {/* Card */}
             <div
                 className={`absolute bottom-[110px] left-1/2 -translate-x-1/2 transition-all duration-500 z-50
                 ${showCard
@@ -94,40 +112,31 @@ export default function VideoWidget({ produto, videoUrl, gifUrl }) {
                         : "opacity-0 translate-y-6 pointer-events-none"
                     }`}
             >
-                <div className="w-[350px] flex items-center justify-between gap-3 p-[10px] rounded-[20px] bg-gradient-to-b from-black/70 to-black/50 backdrop-blur-2xl text-white shadow-[0_10px_40px_rgba(0,0,0,0.6)] border border-white/10 hover:scale-[1.04] active:scale-[0.97] transition-all duration-300 cursor-pointer">
+                <div className="w-[350px] max-w-[90vw] flex items-center gap-3 p-[10px] rounded-[20px] bg-gradient-to-b from-black/70 to-black/50 backdrop-blur-2xl text-white shadow-[0_10px_40px_rgba(0,0,0,0.6)] border border-white/10">
 
-                    {/* Glow */}
-                    <div className="absolute inset-0 rounded-[20px] bg-white/5 blur-xl opacity-20 pointer-events-none"></div>
-
-                    {/* Conteúdo */}
-                    <div className="relative flex items-center gap-3">
-                        <div className="relative">
-                            <img
-                                src={produto.imagemUrl}
-                                alt={produto.nome}
-                                className="w-[64px] h-[64px] rounded-xl object-cover"
-                            />
-                            <div className="absolute inset-0 rounded-xl bg-white/10 opacity-20"></div>
-                        </div>
+                    <div className="flex items-center gap-3">
+                        <img
+                            src={produto.imagemUrl}
+                            alt={produto.nome}
+                            className="w-[64px] h-[64px] rounded-xl object-cover"
+                        />
 
                         <div className="flex flex-col leading-tight">
-                            <div className="text-[15px] font-semibold line-clamp-1 tracking-tight">
+                            <div className="text-[15px] font-semibold line-clamp-1">
                                 {produto.nome}
                             </div>
 
-                            <div className="flex items-center gap-2 mt-[2px]">
-                                <span className="text-[17px] font-bold">
-                                    R$ {produto.preco?.toFixed(2)}
-                                </span>
-                            </div>
+                            <span className="text-[17px] font-bold">
+                                R$ {produto.preco?.toFixed(2)}
+                            </span>
                         </div>
                     </div>
                 </div>
             </div>
 
-            {/* Botão fechar */}
+            {/* Fechar */}
             <div
-                className="absolute top-5 right-5 text-white text-3xl cursor-pointer z-[60]"
+                className="absolute top-5 right-5 text-white text-3xl z-[60]"
                 onClick={(e) => {
                     e.stopPropagation();
                     setOpen(false);
@@ -136,13 +145,13 @@ export default function VideoWidget({ produto, videoUrl, gifUrl }) {
                 ✕
             </div>
 
-            {/* Botão som */}
+            {/* Som */}
             <div
                 onClick={(e) => {
                     e.stopPropagation();
                     setMuted(!muted);
                 }}
-                className="absolute bottom-5 right-5 bg-black/50 rounded-full p-2 text-white cursor-pointer z-50"
+                className="absolute bottom-5 right-5 bg-black/50 rounded-full p-2 text-white z-50"
             >
                 {muted ? "🔇" : "🔊"}
             </div>
@@ -151,7 +160,6 @@ export default function VideoWidget({ produto, videoUrl, gifUrl }) {
 
     return (
         <>
-            {/* Botão com GIF */}
             {gifUrl && (
                 <div className="relative w-20 h-20 flex items-center justify-center">
                     <button
@@ -165,7 +173,6 @@ export default function VideoWidget({ produto, videoUrl, gifUrl }) {
                         />
                     </button>
 
-                    {/* Texto girando */}
                     <svg
                         viewBox="0 0 100 100"
                         className="absolute w-full h-full animate-spin-slow pointer-events-none"
@@ -190,7 +197,6 @@ export default function VideoWidget({ produto, videoUrl, gifUrl }) {
                 </div>
             )}
 
-            {/* Portal */}
             {open && createPortal(modal, document.body)}
         </>
     );
