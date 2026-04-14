@@ -61,21 +61,16 @@ export default function VideoWidget({ produto, videoUrl, gifUrl }) {
 
     // 🔒 Travar scroll + esconder barras mobile
     useEffect(() => {
-        if (open) {
-            document.body.style.overflow = "hidden";
+    if (open) {
+        document.body.style.height = "200vh";
 
-            // 🔥 força esconder barra do navegador
-            setTimeout(() => {
-                window.scrollTo(0, 1);
-            }, 50);
-        } else {
-            document.body.style.overflow = "";
-        }
-
-        return () => {
-            document.body.style.overflow = "";
-        };
-    }, [open]);
+        setTimeout(() => {
+            window.scrollTo(0, 100);
+        }, 50);
+    } else {
+        document.body.style.height = "";
+    }
+}, [open]);
 
     const modal = (
         <div
