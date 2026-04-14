@@ -67,7 +67,7 @@ export default function VideoWidget({ produto, videoUrl, gifUrl }) {
 
     // Modal JSX
     const modal = (
-        <div className="fixed inset-0 w-screen h-screen bg-black z-[2147483647] flex items-center justify-center">
+        <div className="fixed top-0 left-0 w-[100vw] h-[100dvh] bg-black z-[2147483647] flex items-center justify-center">
             {/* Barra de progresso */}
             <div className="absolute top-2 left-2 right-2 h-[3px] bg-white/30 rounded overflow-hidden z-50">
                 <div
@@ -83,8 +83,7 @@ export default function VideoWidget({ produto, videoUrl, gifUrl }) {
                 autoPlay
                 playsInline
                 muted={muted}
-                className="w-screen h-screen object-cover"
-                onEnded={() => setOpen(false)}
+                className="w-full h-full object-cover"
             />
 
             {/* Card com animação suave */}
