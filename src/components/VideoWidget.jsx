@@ -4,6 +4,7 @@ import { createPortal } from "react-dom";
 export default function VideoWidget({ produto, videoUrl, gifUrl }) {
     const videoRef = useRef(null);
     const progressRef = useRef(null);
+    const scrollYRef = useRef(0);
 
     const [open, setOpen] = useState(false);
     const [muted, setMuted] = useState(false);
@@ -62,14 +63,27 @@ export default function VideoWidget({ produto, videoUrl, gifUrl }) {
     // 🔒 Travar scroll + esconder barras mobile
     useEffect(() => {
     if (open) {
-        document.body.style.height = "200vh";
+        // salva posição atual
+        scrollYRef.current = window.scrollY;
 
-        setTimeout(() => {
-            window.scrollTo(0, 100);
-        }, 50);
+        // trava scroll sem perder posição
+        document.body.style.position = "fixed";
+        document.body.style.top = `-${scrollYRef.current}px`;
+        document.body.style.width = "100%";
     } else {
-        document.body.style.height = "";
+        // restaura scroll
+        document.body.style.position = "";
+        document.body.style.top = "";
+        document.body.style.width = "";
+
+        window.scrollTo(0, scrollYRef.current);
     }
+
+    return () => {
+        document.body.style.position = "";
+        document.body.style.top = "";
+        document.body.style.width = "";
+    };
 }, [open]);
 
     const modal = (
