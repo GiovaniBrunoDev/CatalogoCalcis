@@ -65,17 +65,19 @@ export default function VideoWidget({ produto, videoUrl, gifUrl }) {
     if (open) {
         scrollYRef.current = window.scrollY;
 
-        // 👇 força esconder barra do navegador
-        window.scrollBy(0, 10);
+        // 👇 força scroll pra esconder barra
+        window.scrollBy(0, 20);
 
-        // espera 1 frame pra aplicar o lock
-        requestAnimationFrame(() => {
+        // ⏳ espera o navegador reagir
+        const timeout = setTimeout(() => {
             const newScrollY = window.scrollY;
 
             document.body.style.position = "fixed";
             document.body.style.top = `-${newScrollY}px`;
             document.body.style.width = "100%";
-        });
+        }, 120); // 🔥 ajuste fino (80~150ms)
+
+        return () => clearTimeout(timeout);
     } else {
         const scrollY = scrollYRef.current;
 
@@ -85,12 +87,6 @@ export default function VideoWidget({ produto, videoUrl, gifUrl }) {
 
         window.scrollTo(0, scrollY);
     }
-
-    return () => {
-        document.body.style.position = "";
-        document.body.style.top = "";
-        document.body.style.width = "";
-    };
 }, [open]);
 
     const modal = (
