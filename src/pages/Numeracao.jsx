@@ -14,11 +14,11 @@ export default function Numeracao() {
     const [openIndex, setOpenIndex] = useState(null)
 
 
-    const sizes = Array.from({ length: 11 }, (_, i) => 34 + i) // 34..44
+    const sizes = Array.from({ length: 12 }, (_, i) => 34 + i) // 34..44
     const messages = [
         "Um momento...",
         "Consultando sua numeração em nosso estoque.",
-        "Só um instantinho, já já fica pronto!",
+        "Só mais um instante!",
         "Quase lá, finalizando a busca!"
     ]
 

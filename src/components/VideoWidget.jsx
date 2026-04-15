@@ -61,30 +61,37 @@ export default function VideoWidget({ produto, videoUrl, gifUrl }) {
     }, [open]);
 
     // 🔒 Travar scroll + esconder barras mobile
-    useEffect(() => {
-        if (open) {
-            // salva posição atual
-            scrollYRef.current = window.scrollY;
+ useEffect(() => {
+    if (open) {
+        scrollYRef.current = window.scrollY;
 
-            // trava scroll sem perder posição
+        // 👇 força esconder barra do navegador
+        window.scrollBy(0, 10);
+
+        // espera 1 frame pra aplicar o lock
+        requestAnimationFrame(() => {
+            const newScrollY = window.scrollY;
+
             document.body.style.position = "fixed";
-            document.body.style.top = `-${scrollYRef.current}px`;
+            document.body.style.top = `-${newScrollY}px`;
             document.body.style.width = "100%";
-        } else {
-            // restaura scroll
-            document.body.style.position = "";
-            document.body.style.top = "";
-            document.body.style.width = "";
+        });
+    } else {
+        const scrollY = scrollYRef.current;
 
-            window.scrollTo(0, scrollYRef.current);
-        }
+        document.body.style.position = "";
+        document.body.style.top = "";
+        document.body.style.width = "";
 
-        return () => {
-            document.body.style.position = "";
-            document.body.style.top = "";
-            document.body.style.width = "";
-        };
-    }, [open]);
+        window.scrollTo(0, scrollY);
+    }
+
+    return () => {
+        document.body.style.position = "";
+        document.body.style.top = "";
+        document.body.style.width = "";
+    };
+}, [open]);
 
     const modal = (
         <div
@@ -96,12 +103,15 @@ export default function VideoWidget({ produto, videoUrl, gifUrl }) {
         >
             {/* Container responsivo */}
             <div
-                className="relative flex items-center justify-center"
-                style={{
-                    height: "99dvh",
-                    aspectRatio: "9 / 16",
-                    maxWidth: "100vw"
-                }}
+                className="
+        relative flex items-center justify-center
+            
+        w-screen h-[100dvh]     /* MOBILE fullscreen */
+
+       md:h-[99dvh]           /* DESKTOP quase full */
+        md:aspect-[9/16]        /* mantém proporção */
+        md:max-w-[500px]        /* opcional: deixa um pouco maior */
+    "
             >
                 {/* 🔥 Glow atrás */}
                 <div className="absolute -inset-10 bg-black blur-3xl opacity-70 pointer-events-none z-0"></div>
@@ -122,7 +132,14 @@ export default function VideoWidget({ produto, videoUrl, gifUrl }) {
                     autoPlay
                     playsInline
                     muted={muted}
-                    className="w-full h-full object-cover rounded-[20px] relative z-10"
+                    className="
+        w-full h-full object-cover
+
+        rounded-none        /* MOBILE */
+        md:rounded-[20px]   /* DESKTOP */
+        
+        relative z-10
+    "
                     onEnded={() => setOpen(false)}
                 />
 
