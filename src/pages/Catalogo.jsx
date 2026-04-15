@@ -123,7 +123,7 @@ export default function Catalogo() {
 
     return (
         <div className="min-h-screen pt-0 px-4 pb-4 sm:px-6 sm:pb-6 bg-gradient-to-br from-gray-50 to-gray-100 relative">
-            <div id="app-root" className="relative"></div>
+     
             <AnimatePresence>
                 {overlayVisible && (
                     <motion.div

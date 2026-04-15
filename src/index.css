@@ -33,7 +33,3 @@ html, body, #root {
   animation: fadeInUp 0.5s ease forwards;
 }
 
-html, body {
-  height: 100%;
-  overflow-x: hidden;
-}

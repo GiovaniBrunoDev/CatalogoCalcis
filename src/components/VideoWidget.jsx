@@ -103,8 +103,7 @@ export default function VideoWidget({ produto, videoUrl, gifUrl }) {
 
     const modal = (
         <div
-            className="absolute inset-0 z-[2147483647] flex items-center justify-center"
-
+            className="fixed inset-0 z-[2147483647] flex items-center justify-center"
             style={{
                 background: "rgba(0,0,0,0.75)",
                 backdropFilter: "blur(8px)"
@@ -268,7 +267,7 @@ export default function VideoWidget({ produto, videoUrl, gifUrl }) {
                 </div>
             )}
 
-            {open && createPortal(modal, document.getElementById("app-root"))}
+            {open && createPortal(modal, document.body)}
         </>
     );
 }
