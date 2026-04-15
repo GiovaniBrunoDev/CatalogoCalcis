@@ -125,6 +125,7 @@ export default function VideoWidget({ produto, videoUrl, gifUrl }) {
                 <video
                     ref={videoRef}
                     src={videoUrl}
+                    poster={gifUrl}
                     autoPlay
                     playsInline
                     muted={muted}
