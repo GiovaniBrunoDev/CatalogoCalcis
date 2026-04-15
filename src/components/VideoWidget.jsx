@@ -79,33 +79,27 @@ export default function VideoWidget({ produto, videoUrl, gifUrl }) {
 
     // 🔒 Travar scroll + esconder barras mobile
     useEffect(() => {
-        if (open) {
-            scrollYRef.current = window.scrollY;
+    if (open) {
+        scrollYRef.current = window.scrollY;
 
-            // 👇 ativa modo "imersivo"
-            hideMobileUI();
+        // 👇 força esconder barras
+        hideMobileUI();
 
-            const timeout = setTimeout(() => {
-                const newScrollY = window.scrollY;
+        const timeout = setTimeout(() => {
+            document.documentElement.style.overflow = "hidden";
+            document.body.style.overflow = "hidden";
+        }, 120);
 
-                document.body.style.position = "fixed";
-                document.body.style.top = `-${newScrollY}px`;
-                document.body.style.width = "100%";
-                document.body.style.overflow = "hidden";
-            }, 150); // 🔥 tempo suficiente pro browser esconder tudo
+        return () => clearTimeout(timeout);
+    } else {
+        const scrollY = scrollYRef.current;
 
-            return () => clearTimeout(timeout);
-        } else {
-            const scrollY = scrollYRef.current;
+        document.documentElement.style.overflow = "";
+        document.body.style.overflow = "";
 
-            document.body.style.position = "";
-            document.body.style.top = "";
-            document.body.style.width = "";
-            document.body.style.overflow = "";
-
-            window.scrollTo(0, scrollY);
-        }
-    }, [open]);
+        window.scrollTo(0, scrollY);
+    }
+}, [open]);
 
     const modal = (
         <div
