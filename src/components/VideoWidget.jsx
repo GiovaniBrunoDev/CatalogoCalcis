@@ -62,107 +62,121 @@ export default function VideoWidget({ produto, videoUrl, gifUrl }) {
 
     // 🔒 Travar scroll + esconder barras mobile
     useEffect(() => {
-    if (open) {
-        // salva posição atual
-        scrollYRef.current = window.scrollY;
+        if (open) {
+            // salva posição atual
+            scrollYRef.current = window.scrollY;
 
-        // trava scroll sem perder posição
-        document.body.style.position = "fixed";
-        document.body.style.top = `-${scrollYRef.current}px`;
-        document.body.style.width = "100%";
-    } else {
-        // restaura scroll
-        document.body.style.position = "";
-        document.body.style.top = "";
-        document.body.style.width = "";
+            // trava scroll sem perder posição
+            document.body.style.position = "fixed";
+            document.body.style.top = `-${scrollYRef.current}px`;
+            document.body.style.width = "100%";
+        } else {
+            // restaura scroll
+            document.body.style.position = "";
+            document.body.style.top = "";
+            document.body.style.width = "";
 
-        window.scrollTo(0, scrollYRef.current);
-    }
+            window.scrollTo(0, scrollYRef.current);
+        }
 
-    return () => {
-        document.body.style.position = "";
-        document.body.style.top = "";
-        document.body.style.width = "";
-    };
-}, [open]);
+        return () => {
+            document.body.style.position = "";
+            document.body.style.top = "";
+            document.body.style.width = "";
+        };
+    }, [open]);
 
     const modal = (
         <div
-            className="fixed top-0 left-0 w-[100vw] h-[100dvh] bg-black z-[2147483647] flex items-center justify-center"
+            className="fixed inset-0 z-[2147483647] flex items-center justify-center"
             style={{
-                paddingTop: "env(safe-area-inset-top)",
-                paddingBottom: "env(safe-area-inset-bottom)"
+                background: "rgba(0,0,0,0.75)",
+                backdropFilter: "blur(8px)"
             }}
         >
-            {/* Barra de progresso */}
-            <div className="absolute top-2 left-2 right-2 h-[3px] bg-white/30 rounded overflow-hidden z-50">
-                <div
-                    ref={progressRef}
-                    className="h-full w-0 bg-white"
-                />
-            </div>
-
-            {/* Vídeo fullscreen */}
-            <video
-                ref={videoRef}
-                src={videoUrl}
-                autoPlay
-                playsInline
-                muted={muted}
-                className="w-full h-full object-cover"
-                onEnded={() => setOpen(false)}
-            />
-
-            {/* Card */}
+            {/* Container responsivo */}
             <div
-                className={`absolute bottom-[110px] left-1/2 -translate-x-1/2 transition-all duration-500 z-50
-                ${showCard
-                        ? "opacity-100 translate-y-0"
-                        : "opacity-0 translate-y-6 pointer-events-none"
-                    }`}
+                className="relative flex items-center justify-center"
+                style={{
+                    height: "99dvh",
+                    aspectRatio: "9 / 16",
+                    maxWidth: "100vw"
+                }}
             >
-                <div className="w-[350px] max-w-[90vw] flex items-center gap-3 p-[10px] rounded-[20px] bg-gradient-to-b from-black/70 to-black/50 backdrop-blur-2xl text-white shadow-[0_10px_40px_rgba(0,0,0,0.6)] border border-white/10">
+                {/* 🔥 Glow atrás */}
+                <div className="absolute -inset-10 bg-black blur-3xl opacity-70 pointer-events-none z-0"></div>
 
-                    <div className="flex items-center gap-3">
-                        <img
-                            src={produto.imagemUrl}
-                            alt={produto.nome}
-                            className="w-[64px] h-[64px] rounded-xl object-cover"
-                        />
 
-                        <div className="flex flex-col leading-tight">
-                            <div className="text-[15px] font-semibold line-clamp-1">
-                                {produto.nome}
+                {/* Barra de progresso */}
+                <div className="absolute top-2 left-2 right-2 h-[3px] bg-white/30 rounded overflow-hidden z-50">
+                    <div
+                        ref={progressRef}
+                        className="h-full w-0 bg-white"
+                    />
+                </div>
+
+                {/* Vídeo */}
+                <video
+                    ref={videoRef}
+                    src={videoUrl}
+                    autoPlay
+                    playsInline
+                    muted={muted}
+                    className="w-full h-full object-cover rounded-[20px] relative z-10"
+                    onEnded={() => setOpen(false)}
+                />
+
+                {/* Card */}
+                <div
+                    className={`absolute bottom-[80px] left-1/2 -translate-x-1/2 transition-all duration-500 z-50
+                ${showCard
+                            ? "opacity-100 translate-y-0"
+                            : "opacity-0 translate-y-6 pointer-events-none"
+                        }`}
+                >
+                    <div className="w-[350px] max-w-[90vw] flex items-center gap-3 p-[10px] rounded-[20px] bg-gradient-to-b from-black/70 to-black/50 backdrop-blur-2xl text-white shadow-[0_10px_40px_rgba(0,0,0,0.6)] border border-white/10">
+
+                        <div className="flex items-center gap-3">
+                            <img
+                                src={produto.imagemUrl}
+                                alt={produto.nome}
+                                className="w-[64px] h-[64px] rounded-xl object-cover"
+                            />
+
+                            <div className="flex flex-col leading-tight">
+                                <div className="text-[15px] font-semibold line-clamp-1">
+                                    {produto.nome}
+                                </div>
+
+                                <span className="text-[17px] font-bold">
+                                    R$ {produto.preco?.toFixed(2)}
+                                </span>
                             </div>
-
-                            <span className="text-[17px] font-bold">
-                                R$ {produto.preco?.toFixed(2)}
-                            </span>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            {/* Fechar */}
-            <div
-                className="absolute top-5 right-5 text-white text-3xl z-[60]"
-                onClick={(e) => {
-                    e.stopPropagation();
-                    setOpen(false);
-                }}
-            >
-                ✕
-            </div>
+                {/* Fechar */}
+                <div
+                    className="absolute top-4 right-4 text-white text-3xl z-[60] cursor-pointer"
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        setOpen(false);
+                    }}
+                >
+                    ✕
+                </div>
 
-            {/* Som */}
-            <div
-                onClick={(e) => {
-                    e.stopPropagation();
-                    setMuted(!muted);
-                }}
-                className="absolute bottom-5 right-5 bg-black/50 rounded-full p-2 text-white z-50"
-            >
-                {muted ? "🔇" : "🔊"}
+                {/* Som */}
+                <div
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        setMuted(!muted);
+                    }}
+                    className="absolute bottom-4 right-4 bg-black/50 rounded-full p-2 text-white z-50 cursor-pointer"
+                >
+                    {muted ? "🔇" : "🔊"}
+                </div>
             </div>
         </div>
     );

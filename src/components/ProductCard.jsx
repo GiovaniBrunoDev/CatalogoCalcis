@@ -4,6 +4,7 @@ import VideoWidget from "./VideoWidget";
 
 export default function ProductCard({ produto, numeracaoSelecionada }) {
   const [imgLoaded, setImgLoaded] = useState(false);
+  const [videoLoading, setVideoLoading] = useState(true);
 
   // pega a variação da numeração selecionada no catálogo
   const variacaoSelecionada = produto.variacoes?.find(
