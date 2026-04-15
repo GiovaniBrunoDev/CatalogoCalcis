@@ -14,6 +14,19 @@ export default function VideoWidget({ produto, videoUrl, gifUrl }) {
         ?.filter(v => Number(v.estoque) > 0)
         .sort((a, b) => Number(a.numeracao) - Number(b.numeracao));
 
+
+    const hideMobileUI = () => {
+        const current = window.scrollY;
+
+        // 👇 garante que não está no topo absoluto
+        if (current < 10) {
+            window.scrollTo(0, 1);
+        }
+
+        // 👇 força scroll maior (ativa hide da UI)
+        window.scrollBy(0, 80);
+    };
+
     // 🔥 Progresso (mais performático com requestAnimationFrame)
     useEffect(() => {
         let raf;
@@ -69,17 +82,17 @@ export default function VideoWidget({ produto, videoUrl, gifUrl }) {
         if (open) {
             scrollYRef.current = window.scrollY;
 
-            // 👇 força scroll pra esconder barra
-            window.scrollBy(0, 20);
+            // 👇 ativa modo "imersivo"
+            hideMobileUI();
 
-            // ⏳ espera o navegador reagir
             const timeout = setTimeout(() => {
                 const newScrollY = window.scrollY;
 
                 document.body.style.position = "fixed";
                 document.body.style.top = `-${newScrollY}px`;
                 document.body.style.width = "100%";
-            }, 120); // 🔥 ajuste fino (80~150ms)
+                document.body.style.overflow = "hidden";
+            }, 150); // 🔥 tempo suficiente pro browser esconder tudo
 
             return () => clearTimeout(timeout);
         } else {
@@ -88,6 +101,7 @@ export default function VideoWidget({ produto, videoUrl, gifUrl }) {
             document.body.style.position = "";
             document.body.style.top = "";
             document.body.style.width = "";
+            document.body.style.overflow = "";
 
             window.scrollTo(0, scrollY);
         }
