@@ -10,6 +10,10 @@ export default function VideoWidget({ produto, videoUrl, gifUrl }) {
     const [muted, setMuted] = useState(false);
     const [showCard, setShowCard] = useState(false);
 
+    const variacoesDisponiveis = produto.variacoes
+        ?.filter(v => Number(v.estoque) > 0)
+        .sort((a, b) => Number(a.numeracao) - Number(b.numeracao));
+
     // 🔥 Progresso (mais performático com requestAnimationFrame)
     useEffect(() => {
         let raf;
@@ -61,33 +65,33 @@ export default function VideoWidget({ produto, videoUrl, gifUrl }) {
     }, [open]);
 
     // 🔒 Travar scroll + esconder barras mobile
- useEffect(() => {
-    if (open) {
-        scrollYRef.current = window.scrollY;
+    useEffect(() => {
+        if (open) {
+            scrollYRef.current = window.scrollY;
 
-        // 👇 força scroll pra esconder barra
-        window.scrollBy(0, 20);
+            // 👇 força scroll pra esconder barra
+            window.scrollBy(0, 20);
 
-        // ⏳ espera o navegador reagir
-        const timeout = setTimeout(() => {
-            const newScrollY = window.scrollY;
+            // ⏳ espera o navegador reagir
+            const timeout = setTimeout(() => {
+                const newScrollY = window.scrollY;
 
-            document.body.style.position = "fixed";
-            document.body.style.top = `-${newScrollY}px`;
-            document.body.style.width = "100%";
-        }, 120); // 🔥 ajuste fino (80~150ms)
+                document.body.style.position = "fixed";
+                document.body.style.top = `-${newScrollY}px`;
+                document.body.style.width = "100%";
+            }, 120); // 🔥 ajuste fino (80~150ms)
 
-        return () => clearTimeout(timeout);
-    } else {
-        const scrollY = scrollYRef.current;
+            return () => clearTimeout(timeout);
+        } else {
+            const scrollY = scrollYRef.current;
 
-        document.body.style.position = "";
-        document.body.style.top = "";
-        document.body.style.width = "";
+            document.body.style.position = "";
+            document.body.style.top = "";
+            document.body.style.width = "";
 
-        window.scrollTo(0, scrollY);
-    }
-}, [open]);
+            window.scrollTo(0, scrollY);
+        }
+    }, [open]);
 
     const modal = (
         <div
@@ -125,7 +129,7 @@ export default function VideoWidget({ produto, videoUrl, gifUrl }) {
                 <video
                     ref={videoRef}
                     src={videoUrl}
-                    poster={gifUrl}
+                    poster={videoUrl}
                     autoPlay
                     playsInline
                     muted={muted}
@@ -158,6 +162,7 @@ export default function VideoWidget({ produto, videoUrl, gifUrl }) {
                             />
 
                             <div className="flex flex-col leading-tight">
+
                                 <div className="text-[15px] font-semibold line-clamp-1">
                                     {produto.nome}
                                 </div>
@@ -165,6 +170,26 @@ export default function VideoWidget({ produto, videoUrl, gifUrl }) {
                                 <span className="text-[17px] font-bold">
                                     R$ {produto.preco?.toFixed(2)}
                                 </span>
+
+                                {/* 👇 NUMERAÇÕES DISPONÍVEIS */}
+                                {variacoesDisponiveis?.length > 0 && (
+                                    <div className="flex flex-wrap gap-1 mt-1">
+                                        {variacoesDisponiveis.slice(0, 6).map(v => (
+                                            <span
+                                                key={v.numeracao}
+                                                className="px-2 py-[2px] text-[11px] bg-white/20 rounded-full"
+                                            >
+                                                {v.numeracao}
+                                            </span>
+                                        ))}
+
+                                        {variacoesDisponiveis.length > 6 && (
+                                            <span className="text-[11px] text-white/70">
+                                                +{variacoesDisponiveis.length - 6}
+                                            </span>
+                                        )}
+                                    </div>
+                                )}
                             </div>
                         </div>
                     </div>
