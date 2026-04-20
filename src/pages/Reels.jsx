@@ -47,7 +47,7 @@ export default function Reels() {
             className="h-[100dvh] w-full overflow-y-scroll snap-y snap-mandatory bg-black"
         >
             {produtos.map((produto, index) => (
-                <div key={produto.id} className="h-[100dvh] snap-start">
+                <div key={produto.id} className="h-[99dvh] snap-start">
                     <ReelItem
                         produto={produto}
                         active={index === currentIndex}
