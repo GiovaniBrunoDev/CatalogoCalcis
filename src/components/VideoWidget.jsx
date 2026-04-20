@@ -80,34 +80,36 @@ export default function VideoWidget({ produto, videoUrl, gifUrl }) {
         if (open) {
             scrollYRef.current = window.scrollY;
 
-            // 🔥 1. força esconder a UI
-            hideMobileUI();
+            // 🔥 1. força scroll real
+            window.scrollTo({
+                top: window.scrollY + 120
+            });
 
-            // 🔥 2. dá tempo pro browser reagir
-            const scrollFix = setTimeout(() => {
-                window.scrollTo({
-                    top: window.scrollY + 120,
-                    behavior: "instant"
-                });
-            }, 50);
+            // 🔥 2. micro scroll contínuo (segura a UI escondida)
+            let keepScrolling = true;
 
-            // 🔥 3. só depois trava scroll
-            const lockScroll = setTimeout(() => {
-                document.documentElement.style.overflow = "hidden";
-                document.body.style.overflow = "hidden";
-            }, 180);
+            const keepAlive = () => {
+                if (!keepScrolling) return;
+
+                window.scrollBy(0, 0.5); // micro movimento invisível
+                requestAnimationFrame(keepAlive);
+            };
+
+            requestAnimationFrame(keepAlive);
+
+            // 🔥 3. bloqueia interação sem matar scroll
+            const lock = setTimeout(() => {
+                document.body.style.touchAction = "none";
+            }, 120);
 
             return () => {
-                clearTimeout(scrollFix);
-                clearTimeout(lockScroll);
+                keepScrolling = false;
+                clearTimeout(lock);
             };
         } else {
-            const scrollY = scrollYRef.current;
+            document.body.style.touchAction = "";
 
-            document.documentElement.style.overflow = "";
-            document.body.style.overflow = "";
-
-            window.scrollTo(0, scrollY);
+            window.scrollTo(0, scrollYRef.current);
         }
     }, [open]);
 
