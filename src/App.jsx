@@ -1,6 +1,6 @@
 import React from 'react'
 import { Routes, Route } from 'react-router-dom'
-import BoasVindas from './pages/BoasVindas'
+import Reels from "./pages/reels";
 import Numeracao from './pages/Numeracao'
 import Catalogo from './pages/Catalogo'
 import Produto from './pages/Produto'
@@ -14,6 +14,7 @@ export default function App() {
         <Route path="/numeracao" element={<Numeracao />} />
         <Route path="/catalogo/:numeracao" element={<Catalogo />} />
         <Route path="/produto/:id" element={<Produto />} />
+        <Route path="/reels" element={<Reels />} />
       </Routes>
     </div>
   )
