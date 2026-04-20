@@ -282,20 +282,47 @@ async function openReels() {
                 </motion.div>
             </div>
 
-<div className="mb-6 flex justify-center">
+<div className="mb-8 flex justify-center">
     <button
         onClick={openReels}
         className="
-        flex items-center gap-2
-        px-6 py-3
+        relative
+        flex items-center gap-3
+        
+        px-7 py-3.5
         rounded-full
-        bg-gradient-to-r from-black to-gray-800
-        text-white font-semibold
-        shadow-lg
-        hover:scale-105 transition
+        
+        bg-gradient-to-r from-black to-gray-900
+        text-white font-semibold text-sm
+        
+        shadow-[0_8px_25px_rgba(0,0,0,0.35)]
+        
+        transition-all duration-300
+        hover:scale-[1.04]
+        active:scale-[0.98]
     "
     >
-        🎥 Ver Reels dos Produtos
+        {/* 🔥 BADGE NOVO */}
+        <span className="
+            absolute -top-2 -right-2
+            bg-green-500 text-white
+            text-[10px] font-bold
+            
+            px-2 py-[2px]
+            rounded-full
+            
+            shadow-md
+        ">
+            NOVO
+        </span>
+
+        {/* 🎥 Ícone */}
+        <span className="text-base">🎥</span>
+
+        {/* TEXTO */}
+        <span>
+            Conheça nosso Reels de Produtos
+        </span>
     </button>
 </div>
 

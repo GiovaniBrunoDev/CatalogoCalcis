@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { FaWhatsapp } from "react-icons/fa";
 
 export default function ReelsViewer({ produtos, onClose }) {
     const containerRef = useRef(null);
@@ -9,6 +10,9 @@ export default function ReelsViewer({ produtos, onClose }) {
     const [hasInteracted, setHasInteracted] = useState(false);
     const [showCard, setShowCard] = useState(false);
     const [ready, setReady] = useState(false);
+
+
+
 
     // 🔒 trava scroll do fundo
     useEffect(() => {
@@ -127,7 +131,14 @@ export default function ReelsViewer({ produtos, onClose }) {
                 >
                     {produtos.map((produto, index) => {
 
-                        if (Math.abs(index - currentIndex) > 1) return null;
+                        if (Math.abs(index - currentIndex) > 2) return null;
+
+                        const shouldPreload =
+                            index === currentIndex ||
+                            index === currentIndex + 1 ||
+                            index === currentIndex + 2;
+                            index === currentIndex + 3;
+                            index === currentIndex + 4;
 
                         const variacoesDisponiveis = produto.variacoes
                             ?.filter(v => Number(v.estoque) > 0)
@@ -148,7 +159,7 @@ export default function ReelsViewer({ produtos, onClose }) {
                                     loop
                                     playsInline
                                     muted={muted || !hasInteracted}
-                                    preload={index === currentIndex + 1 ? "auto" : "metadata"}
+                                    preload={shouldPreload ? "auto" : "metadata"}
                                     onLoadedData={() => {
                                         if (index === 0) setReady(true);
                                     }}
@@ -198,14 +209,22 @@ export default function ReelsViewer({ produtos, onClose }) {
 
                                                 {/* TAMANHOS */}
                                                 <div className="mt-1 flex items-center gap-2 flex-wrap">
-                                                    <span className="text-[10px] text-white/60">
+                                                    <span className="text-[11px] text-white/70 font-medium">
                                                         Disponível:
                                                     </span>
 
                                                     {variacoesDisponiveis?.slice(0, 5).map(v => (
                                                         <span
                                                             key={v.numeracao}
-                                                            className="px-2 py-[1px] text-[10px] bg-white/20 rounded-full"
+                                                            className="
+                px-2.5 py-[2px]
+                text-[11px] font-medium
+                
+                bg-white/20
+                rounded-full
+                
+                backdrop-blur-sm
+            "
                                                         >
                                                             {v.numeracao}
                                                         </span>
@@ -216,7 +235,6 @@ export default function ReelsViewer({ produtos, onClose }) {
                                     </div>
                                 </div>
 
-                                {/* CTA SEPARADO (MUITO MAIS FORTE VISUALMENTE) */}
                                 <div
                                     className={`absolute bottom-10 left-4 right-4 z-30 transition-all duration-500
     ${index === currentIndex && showCard
@@ -228,22 +246,27 @@ export default function ReelsViewer({ produtos, onClose }) {
                                         href={`https://wa.me/55${produto.whatsapp || "45988190147"}?text=Olá, tenho interesse no produto *${produto.nome}*`}
                                         target="_blank"
                                         className="
-            block text-center 
-            bg-green-500 hover:bg-green-600
+            flex items-center justify-center gap-2
+            
+            bg-white/10 backdrop-blur-md
+            border border-white/20
+            
+            text-white text-[13px] font-medium
+            
+            py-2.5 rounded-full
+            
             transition-all duration-300
-            py-3 rounded-full 
-            text-[14px] font-semibold
-            shadow-[0_6px_20px_rgba(0,0,0,0.4)]
+            hover:bg-white/20
+            
+            shadow-md
         "
                                     >
-                                        Comprar agora
+                                        <FaWhatsapp className="text-[15px] text-green-400" />
+                                        Comprar
                                     </a>
                                 </div>
 
-                                {/* SOM ICON */}
-                                <div className="absolute bottom-6 right-4 z-30 bg-black/50 p-3 rounded-full text-white">
-                                    {muted ? "🔇" : "🔊"}
-                                </div>
+
                             </div>
                         );
                     })}
