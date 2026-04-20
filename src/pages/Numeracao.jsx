@@ -6,12 +6,16 @@ import bannerImage from '../assets/banner.png'
 import LogoImage from '../assets/logo.png'
 import { ChevronDown } from "lucide-react"
 import { FaInstagram, FaFacebookF, FaWhatsapp } from 'react-icons/fa'
+import ReelsViewer from "../components/ReelsViewer";
 
 export default function Numeracao() {
     const navigate = useNavigate()
     const [loadingSize, setLoadingSize] = useState(null)
     const [loadingMessageIndex, setLoadingMessageIndex] = useState(0)
     const [openIndex, setOpenIndex] = useState(null)
+
+    const [reelsOpen, setReelsOpen] = useState(false);
+const [reelsProdutos, setReelsProdutos] = useState([]);
 
 
     const sizes = Array.from({ length: 12 }, (_, i) => 34 + i) // 34..44
@@ -109,7 +113,21 @@ export default function Numeracao() {
         },
     ];
 
+async function openReels() {
+    const base = import.meta.env.VITE_API_BASE_URL || 'http://localhost:4000';
 
+    try {
+        const res = await axios.get(`${base}/produtos`);
+
+        // 🔥 pega só produtos com vídeo
+        const comVideo = (res.data || []).filter(p => p.videoUrl);
+
+        setReelsProdutos(comVideo);
+        setReelsOpen(true);
+    } catch (err) {
+        console.error("Erro ao carregar reels", err);
+    }
+}
 
 
 
@@ -264,6 +282,22 @@ export default function Numeracao() {
                 </motion.div>
             </div>
 
+<div className="mb-6 flex justify-center">
+    <button
+        onClick={openReels}
+        className="
+        flex items-center gap-2
+        px-6 py-3
+        rounded-full
+        bg-gradient-to-r from-black to-gray-800
+        text-white font-semibold
+        shadow-lg
+        hover:scale-105 transition
+    "
+    >
+        🎥 Ver Reels dos Produtos
+    </button>
+</div>
 
             <div className="mt-10">
                 <h3 className="text-lg font-semibold text-center mb-4">O que dizem nossos clientes</h3>
@@ -466,7 +500,16 @@ export default function Numeracao() {
                 </div>
             </footer>
 
+{reelsOpen && (
+    <ReelsViewer
+        produtos={reelsProdutos}
+        onClose={() => setReelsOpen(false)}
+    />
+)}
 
         </div>
-    )
+        
+        
+    ) 
+
 }

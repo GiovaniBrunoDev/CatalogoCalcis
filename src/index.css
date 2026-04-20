@@ -33,3 +33,12 @@ html, body, #root {
   animation: fadeInUp 0.5s ease forwards;
 }
 
+/* 🔥 esconde scrollbar mas mantém scroll */
+.hide-scrollbar {
+  -ms-overflow-style: none;  /* IE e Edge */
+  scrollbar-width: none;     /* Firefox */
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;             /* Chrome, Safari */
+}
