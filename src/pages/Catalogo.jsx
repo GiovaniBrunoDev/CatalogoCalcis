@@ -96,7 +96,7 @@ export default function Catalogo() {
 
         useEffect(() => {
             const handleScroll = () => {
-                setVisible(window.scrollY > 300); // aparece após 300px
+                setVisible(window.scrollY > 300); // aparece após 300pxa
             };
             window.addEventListener('scroll', handleScroll);
             return () => window.removeEventListener('scroll', handleScroll);
