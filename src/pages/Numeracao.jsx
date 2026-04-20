@@ -4,9 +4,10 @@ import { motion, AnimatePresence } from 'framer-motion'
 import axios from 'axios'
 import bannerImage from '../assets/banner.png'
 import LogoImage from '../assets/logo.png'
-import { ChevronDown } from "lucide-react"
+import { ChevronDown, Clapperboard } from "lucide-react"
 import { FaInstagram, FaFacebookF, FaWhatsapp } from 'react-icons/fa'
 import ReelsViewer from "../components/ReelsViewer";
+
 
 export default function Numeracao() {
     const navigate = useNavigate()
@@ -285,7 +286,6 @@ async function openReels() {
 <div className="mb-8 flex justify-center">
   <button
     disabled
-    onClick={openReels}
     className="
       relative
       flex items-center gap-3
@@ -298,32 +298,25 @@ async function openReels() {
       
       shadow-[0_8px_25px_rgba(0,0,0,0.35)]
       
-      transition-all duration-300
-      
       opacity-50 cursor-not-allowed
     "
   >
-    {/* 🔥 BADGE NOVO */}
+    {/* badge */}
     <span className="
       absolute -top-2 -right-2
       bg-green-500 text-white
       text-[10px] font-bold
-      
       px-2 py-[2px]
       rounded-full
-      
       shadow-md
     ">
       EM BREVE
     </span>
 
-    {/* 🎥 Ícone */}
-    <span className="text-base">🎥</span>
+    {/* ÍCONE REELS */}
+    <Clapperboard size={18} />
 
-    {/* TEXTO */}
-    <span>
-      Reels de Produtos
-    </span>
+    <span>Reels de Produtos</span>
   </button>
 </div>
 
