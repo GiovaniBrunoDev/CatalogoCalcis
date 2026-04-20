@@ -283,47 +283,48 @@ async function openReels() {
             </div>
 
 <div className="mb-8 flex justify-center">
-    <button
-        onClick={openReels}
-        className="
-        relative
-        flex items-center gap-3
-        
-        px-7 py-3.5
-        rounded-full
-        
-        bg-gradient-to-r from-black to-gray-900
-        text-white font-semibold text-sm
-        
-        shadow-[0_8px_25px_rgba(0,0,0,0.35)]
-        
-        transition-all duration-300
-        hover:scale-[1.04]
-        active:scale-[0.98]
+  <button
+    disabled
+    onClick={openReels}
+    className="
+      relative
+      flex items-center gap-3
+      
+      px-7 py-3.5
+      rounded-full
+      
+      bg-gradient-to-r from-black to-gray-900
+      text-white font-semibold text-sm
+      
+      shadow-[0_8px_25px_rgba(0,0,0,0.35)]
+      
+      transition-all duration-300
+      
+      opacity-50 cursor-not-allowed
     "
-    >
-        {/* 🔥 BADGE NOVO */}
-        <span className="
-            absolute -top-2 -right-2
-            bg-green-500 text-white
-            text-[10px] font-bold
-            
-            px-2 py-[2px]
-            rounded-full
-            
-            shadow-md
-        ">
-            NOVO
-        </span>
+  >
+    {/* 🔥 BADGE NOVO */}
+    <span className="
+      absolute -top-2 -right-2
+      bg-green-500 text-white
+      text-[10px] font-bold
+      
+      px-2 py-[2px]
+      rounded-full
+      
+      shadow-md
+    ">
+      EM BREVE
+    </span>
 
-        {/* 🎥 Ícone */}
-        <span className="text-base">🎥</span>
+    {/* 🎥 Ícone */}
+    <span className="text-base">🎥</span>
 
-        {/* TEXTO */}
-        <span>
-            Conheça nosso Reels de Produtos
-        </span>
-    </button>
+    {/* TEXTO */}
+    <span>
+      Reels de Produtos
+    </span>
+  </button>
 </div>
 
             <div className="mt-10">
