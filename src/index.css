@@ -59,3 +59,8 @@ html, body, #root {
 .animate-fadeIn {
   animation: fadeIn 0.2s ease-out;
 }
+
+snap-start {
+  scroll-snap-align: start;
+  position: relative;
+}

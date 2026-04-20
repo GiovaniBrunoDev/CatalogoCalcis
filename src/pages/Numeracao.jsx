@@ -16,7 +16,7 @@ export default function Numeracao() {
     const [openIndex, setOpenIndex] = useState(null)
 
     const [reelsOpen, setReelsOpen] = useState(false);
-const [reelsProdutos, setReelsProdutos] = useState([]);
+    const [reelsProdutos, setReelsProdutos] = useState([]);
 
 
     const sizes = Array.from({ length: 12 }, (_, i) => 34 + i) // 34..44
@@ -114,21 +114,21 @@ const [reelsProdutos, setReelsProdutos] = useState([]);
         },
     ];
 
-async function openReels() {
-    const base = import.meta.env.VITE_API_BASE_URL || 'http://localhost:4000';
+    async function openReels() {
+        const base = import.meta.env.VITE_API_BASE_URL || 'http://localhost:4000';
 
-    try {
-        const res = await axios.get(`${base}/produtos`);
+        try {
+            const res = await axios.get(`${base}/produtos`);
 
-        // 🔥 pega só produtos com vídeo
-        const comVideo = (res.data || []).filter(p => p.videoUrl);
+            // 🔥 pega só produtos com vídeo
+            const comVideo = (res.data || []).filter(p => p.videoUrl);
 
-        setReelsProdutos(comVideo);
-        setReelsOpen(true);
-    } catch (err) {
-        console.error("Erro ao carregar reels", err);
+            setReelsProdutos(comVideo);
+            setReelsOpen(true);
+        } catch (err) {
+            console.error("Erro ao carregar reels", err);
+        }
     }
-}
 
 
 
@@ -283,9 +283,9 @@ async function openReels() {
                 </motion.div>
             </div>
 
-<div className="mb-8 flex justify-center">
+            <div className="mb-8 flex justify-center">
   <button
-    disabled
+    onClick={openReels}
     className="
       relative
       flex items-center gap-3
@@ -298,10 +298,13 @@ async function openReels() {
       
       shadow-[0_8px_25px_rgba(0,0,0,0.35)]
       
-      opacity-50 cursor-not-allowed
+      transition-all duration-300
+      hover:scale-[1.05]
+      active:scale-[0.98]
+      hover:shadow-[0_12px_35px_rgba(0,0,0,0.5)]
     "
   >
-    {/* badge */}
+    {/* BADGE */}
     <span className="
       absolute -top-2 -right-2
       bg-green-500 text-white
@@ -310,7 +313,7 @@ async function openReels() {
       rounded-full
       shadow-md
     ">
-      EM BREVE
+      NOVO
     </span>
 
     {/* ÍCONE REELS */}
@@ -319,7 +322,6 @@ async function openReels() {
     <span>Reels de Produtos</span>
   </button>
 </div>
-
             <div className="mt-10">
                 <h3 className="text-lg font-semibold text-center mb-4">O que dizem nossos clientes</h3>
                 <div className="flex overflow-x-auto gap-4 px-4 pb-2 scrollbar-hide">
@@ -521,16 +523,16 @@ async function openReels() {
                 </div>
             </footer>
 
-{reelsOpen && (
-    <ReelsViewer
-        produtos={reelsProdutos}
-        onClose={() => setReelsOpen(false)}
-    />
-)}
+            {reelsOpen && (
+                <ReelsViewer
+                    produtos={reelsProdutos}
+                    onClose={() => setReelsOpen(false)}
+                />
+            )}
 
         </div>
-        
-        
-    ) 
+
+
+    )
 
 }

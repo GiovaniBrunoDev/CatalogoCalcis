@@ -62,6 +62,42 @@ export default function ReelsViewer({ produtos, onClose }) {
         return () => clearInterval(interval);
     }, [currentIndex]);
 
+useEffect(() => {
+    if (!videoRefs.current[0] || currentIndex !== 0) return;
+
+    const video = videoRefs.current[0];
+    const el = containerRef.current;
+
+    let triggered = false;
+
+    const checkTime = () => {
+        if (!video.duration) return;
+
+        const progress = video.currentTime / video.duration;
+
+        if (progress > 0.85 && !triggered) {
+            triggered = true;
+
+            // 🔥 sobe levemente o feed (mostra próximo vídeo)
+            el.style.transition = "transform 0.45s cubic-bezier(0.22, 1, 0.36, 1)";
+            el.style.transform = "translateY(-70px)";
+
+            // 🔥 cria sensação de “preview do próximo”
+            setTimeout(() => {
+                el.style.transform = "translateY(-20px)";
+            }, 250);
+
+            setTimeout(() => {
+                el.style.transform = "translateY(0px)";
+            }, 600);
+        }
+    };
+
+    const interval = setInterval(checkTime, 100);
+
+    return () => clearInterval(interval);
+}, [currentIndex]);
+
     // 🔥 TAP INTELIGENTE
     const handleTap = (e) => {
         const el = containerRef.current;
@@ -104,85 +140,87 @@ export default function ReelsViewer({ produtos, onClose }) {
                 </div>
             )}
 
-            {/* CONTAINER */}
-            <div className="
-                relative z-10
-                w-screen h-[100dvh]
-                md:h-[99vh]
-                md:aspect-[9/16]
-                md:max-w-[490px]
-                md:rounded-[30px]
-                md:overflow-hidden
-            ">
+                {/* CONTAINER */}
+                <div className="
+                    relative z-10
+                    w-screen h-[100dvh]
+                    md:h-[99vh]
+                    md:aspect-[9/16]
+                    md:max-w-[490px]
+                    md:rounded-[30px]
+                    md:overflow-hidden
+                ">
 
-                {/* FECHAR */}
-                <button
-                    onClick={onClose}
-                    className="absolute top-4 right-4 z-50 text-white text-3xl"
-                >
-                    ✕
-                </button>
+                    {/* FECHAR */}
+                    <button
+                        onClick={onClose}
+                        className="absolute top-4 right-4 z-50 text-white text-3xl"
+                    >
+                        ✕
+                    </button>
 
-                {/* SCROLL */}
-                <div
-                    ref={containerRef}
-                    onScroll={handleScroll}
-                    className="h-full overflow-y-scroll snap-y snap-mandatory hide-scrollbar will-change-transform"
-                >
-                    {produtos.map((produto, index) => {
+                    {/* SCROLL */}
+                    <div
+                        ref={containerRef}
+                        onScroll={handleScroll}
+                        className="h-full overflow-y-scroll snap-y snap-mandatory hide-scrollbar will-change-transform"
+                    >
+                        {produtos.map((produto, index) => {
 
-                        if (Math.abs(index - currentIndex) > 2) return null;
+                            const isFarAway = Math.abs(index - currentIndex) > 4;
 
-                        const shouldPreload =
-                            index === currentIndex ||
-                            index === currentIndex + 1 ||
-                            index === currentIndex + 2;
-                            index === currentIndex + 3;
-                            index === currentIndex + 4;
+                            if (isFarAway) {
+                                return (
+                                    <div key={produto.id} className="h-full w-full snap-start" />
+                                );
+                            }
 
-                        const variacoesDisponiveis = produto.variacoes
-                            ?.filter(v => Number(v.estoque) > 0)
-                            .sort((a, b) => Number(a.numeracao) - Number(b.numeracao))
-                            .slice(0, 6);
+                            const shouldPreload =
+                                index >= currentIndex - 1 && index <= currentIndex + 4;
 
-                        return (
-                            <div
-                                key={produto.id}
-                                onClick={handleTap}
-                                className="h-full w-full snap-start relative flex items-center justify-center cursor-pointer"
-                            >
-                                {/* VIDEO */}
-                                <video
-                                    ref={(el) => (videoRefs.current[index] = el)}
-                                    src={produto.videoUrl}
-                                    className="w-full h-full object-cover"
-                                    loop
-                                    playsInline
-                                    muted={muted || !hasInteracted}
-                                    preload={shouldPreload ? "auto" : "metadata"}
-                                    onLoadedData={() => {
-                                        if (index === 0) setReady(true);
-                                    }}
-                                />
+                            const variacoesDisponiveis = produto.variacoes
+                                ?.filter(v => Number(v.estoque) > 0)
+                                .sort((a, b) => Number(a.numeracao) - Number(b.numeracao))
+                                .slice(0, 6);
 
-                                {/* GRADIENT */}
-                                <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-black/90 to-transparent z-10" />
-
-                                {/* CARD CONTEÚDO */}
+                            return (
                                 <div
-                                    className={`absolute bottom-28 left-4 right-4 z-20 transition-all duration-500
-    ${index === currentIndex && showCard
-                                            ? "opacity-100 translate-y-0"
-                                            : "opacity-0 translate-y-6"
-                                        }`}
+                                    key={produto.id}
+                                    onClick={handleTap}
+                                    className="h-full w-full snap-start relative flex items-center justify-center cursor-pointer"
                                 >
-                                    <div className="
-        bg-black/50 backdrop-blur-xl 
-        px-4 py-3 rounded-2xl 
-        text-white 
-        border border-white/10 
-        shadow-lg
-    ">
+                                    {/* VIDEO */}
+                                    <video
+                                        ref={(el) => (videoRefs.current[index] = el)}
+                                        src={produto.videoUrl}
+                                        className="w-full h-full object-cover"
+                                        loop
+                                        playsInline
+                                        muted={muted || !hasInteracted}
+                                        preload={shouldPreload ? "auto" : "metadata"}
+                                        onLoadedData={() => {
+                                            if (index === 0) setReady(true);
+                                        }}
+                                    />
+
+                                    {/* GRADIENT */}
+                                    <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-black/90 to-transparent z-10" />
+
+                                    {/* CARD CONTEÚDO */}
+                                    <div
+                                        className={`absolute bottom-28 left-4 right-4 z-20 transition-all duration-500
+        ${index === currentIndex && showCard
+                                                ? "opacity-100 translate-y-0"
+                                                : "opacity-0 translate-y-6"
+                                            }`}
+                                    >
+                                        <div className="
+            bg-black/50 backdrop-blur-xl 
+            px-4 py-3 rounded-2xl 
+            text-white 
+            border border-white/10 
+            shadow-lg
+        ">
 
                                         <div className="flex gap-3 items-center">
                                             {/* IMAGEM */}
