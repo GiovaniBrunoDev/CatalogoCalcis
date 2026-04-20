@@ -16,14 +16,14 @@ export default function VideoWidget({ produto, videoUrl, gifUrl }) {
 
 
     const hideMobileUI = () => {
-    const y = window.scrollY;
+        const y = window.scrollY;
 
-    // força scroll real (não só 1px)
-    window.scrollTo({
-        top: y + 100,
-        behavior: "instant"
-    });
-};
+        // força scroll real (não só 1px)
+        window.scrollTo({
+            top: y + 100,
+            behavior: "instant"
+        });
+    };
 
     // 🔥 Progresso (mais performático com requestAnimationFrame)
     useEffect(() => {
@@ -77,31 +77,32 @@ export default function VideoWidget({ produto, videoUrl, gifUrl }) {
 
     // 🔒 Travar scroll + esconder barras mobile
     useEffect(() => {
-    if (open) {
-        scrollYRef.current = window.scrollY;
+        if (open) {
+            scrollYRef.current = window.scrollY;
 
-        hideMobileUI();
+            hideMobileUI();
 
-        // 👇 tempo REAL para o browser esconder a barra
-        const timeout = setTimeout(() => {
-            document.body.style.position = "fixed";
-            document.body.style.top = `-${scrollYRef.current}px`;
-            document.body.style.left = "0";
-            document.body.style.right = "0";
-        }, 180); // 🔥 esse delay é o segredo
+            // 👇 tempo REAL para o browser esconder a barra
+            const timeout = setTimeout(() => {
+                document.body.style.overflow = "hidden";
+                document.documentElement.style.overflow = "hidden";
+                document.body.style.top = `-${scrollYRef.current}px`;
+                document.body.style.left = "0";
+                document.body.style.right = "0";
+            }, 180); // 🔥 esse delay é o segredo
 
-        return () => clearTimeout(timeout);
-    } else {
-        const scrollY = scrollYRef.current;
+            return () => clearTimeout(timeout);
+        } else {
+            const scrollY = scrollYRef.current;
 
-        document.body.style.position = "";
-        document.body.style.top = "";
-        document.body.style.left = "";
-        document.body.style.right = "";
+            document.body.style.position = "";
+            document.body.style.top = "";
+            document.body.style.left = "";
+            document.body.style.right = "";
 
-        window.scrollTo(0, scrollY);
-    }
-}, [open]);
+            window.scrollTo(0, scrollY);
+        }
+    }, [open]);
 
     const modal = (
         <div
