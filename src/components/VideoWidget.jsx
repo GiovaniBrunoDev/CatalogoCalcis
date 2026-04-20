@@ -80,25 +80,32 @@ export default function VideoWidget({ produto, videoUrl, gifUrl }) {
         if (open) {
             scrollYRef.current = window.scrollY;
 
+            // 🔥 1. força esconder a UI
             hideMobileUI();
 
-            // 👇 tempo REAL para o browser esconder a barra
-            const timeout = setTimeout(() => {
-                document.body.style.overflow = "hidden";
-                document.documentElement.style.overflow = "hidden";
-                document.body.style.top = `-${scrollYRef.current}px`;
-                document.body.style.left = "0";
-                document.body.style.right = "0";
-            }, 180); // 🔥 esse delay é o segredo
+            // 🔥 2. dá tempo pro browser reagir
+            const scrollFix = setTimeout(() => {
+                window.scrollTo({
+                    top: window.scrollY + 120,
+                    behavior: "instant"
+                });
+            }, 50);
 
-            return () => clearTimeout(timeout);
+            // 🔥 3. só depois trava scroll
+            const lockScroll = setTimeout(() => {
+                document.documentElement.style.overflow = "hidden";
+                document.body.style.overflow = "hidden";
+            }, 180);
+
+            return () => {
+                clearTimeout(scrollFix);
+                clearTimeout(lockScroll);
+            };
         } else {
             const scrollY = scrollYRef.current;
 
-            document.body.style.position = "";
-            document.body.style.top = "";
-            document.body.style.left = "";
-            document.body.style.right = "";
+            document.documentElement.style.overflow = "";
+            document.body.style.overflow = "";
 
             window.scrollTo(0, scrollY);
         }
