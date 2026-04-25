@@ -283,7 +283,7 @@ export default function Numeracao() {
                 </motion.div>
             </div>
 
-            <div className="mb-8 flex justify-center">
+          {/*  <div className="mb-8 flex justify-center">
   <button
     onClick={openReels}
     className="
@@ -304,7 +304,7 @@ export default function Numeracao() {
       hover:shadow-[0_12px_35px_rgba(0,0,0,0.5)]
     "
   >
-    {/* BADGE */}
+    {/* BADGE 
     <span className="
       absolute -top-2 -right-2
       bg-green-500 text-white
@@ -316,12 +316,12 @@ export default function Numeracao() {
       NOVO
     </span>
 
-    {/* ÍCONE REELS */}
+    {/* ÍCONE REELS 
     <Clapperboard size={18} />
 
     <span>Reels de Produtos</span>
   </button>
-</div>
+</div> */}
             <div className="mt-10">
                 <h3 className="text-lg font-semibold text-center mb-4">O que dizem nossos clientes</h3>
                 <div className="flex overflow-x-auto gap-4 px-4 pb-2 scrollbar-hide">

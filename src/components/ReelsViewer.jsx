@@ -14,7 +14,7 @@ export default function ReelsViewer({ produtos, onClose }) {
     const [produtosRandom, setProdutosRandom] = useState([]);
 
 
-    const produtosComFinal = [...produtosRandom, { id: "end" }];
+    const produtosComFinal = [...produtos, { id: "end" }];
 
 
     const shuffleArray = (array) => {
