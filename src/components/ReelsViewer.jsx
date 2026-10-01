@@ -488,7 +488,7 @@ export default function ReelsViewer({ produtos, onClose }) {
                                         }`}
                                 >
                                     <a
-                                        href={`https://wa.me/55${produto.whatsapp || "45988190147"}?text=Olá, tenho interesse no produto *${produto.nome}*`}
+                                        href={`https://wa.me/55${produto.whatsapp || "4576059397"}?text=Olá, tenho interesse no produto *${produto.nome}*`}
                                         target="_blank"
                                         className="
             flex items-center justify-center gap-2
