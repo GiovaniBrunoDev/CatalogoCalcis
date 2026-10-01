@@ -511,7 +511,7 @@ export default function Numeracao() {
                                 className="w-9 h-9 rounded-full flex items-center justify-center bg-gray-800 hover:bg-gray-700 transition text-white">
                                 <FaFacebookF size={16} />
                             </a>
-                            <a href="https://wa.me/5545988190147" target="_blank" rel="noreferrer"
+                            <a href="https://wa.me/554576059397" target="_blank" rel="noreferrer"
                                 className="w-9 h-9 rounded-full flex items-center justify-center bg-gray-800 hover:bg-gray-700 transition text-white">
                                 <FaWhatsapp size={16} />
                             </a>
