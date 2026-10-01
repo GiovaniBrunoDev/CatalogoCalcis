@@ -135,7 +135,7 @@ export default function Numeracao() {
     return (
         <div className="relative min-h-screen bg-gray-50 text-gray-800 flex flex-col">
             <header className="w-full bg-black">
-                <div className="max-w-6xl mx-auto flex justify-center items-center py-3">
+                <div className="max-w-7xl mx-auto flex justify-center items-center px-6 py-3">
                     <img
                         src={LogoImage} // substitua por LogoImage se for logo em vez do banner
                         alt="Calcis"
@@ -145,7 +145,8 @@ export default function Numeracao() {
             </header>
 
             {/* Banner topo */}
-            <div className="relative w-full aspect-[18/10] overflow-hidden">
+            <section className="w-full bg-gray-50">
+            <div className="relative mx-auto w-full max-w-[960px] aspect-[18/10] overflow-hidden">
                 {/* Imagem */}
                 <img
                     src={bannerImage}
@@ -192,6 +193,7 @@ export default function Numeracao() {
                     </motion.button>
                 </div>
             </div>
+            </section>
 
             {/* Carrossel infinito de textos */}
             <div className="overflow-hidden bg-gray-950 py-3 relative">
@@ -232,7 +234,7 @@ export default function Numeracao() {
                 </div>
             </div>
 
-            <style jsx>{`
+            <style>{`
   @keyframes marquee {
     0%   { transform: translateX(0%); }
     100% { transform: translateX(-50%); }
@@ -254,24 +256,24 @@ export default function Numeracao() {
 
 
             {/* Seção de numeração */}
-            <div id="numeracao-section" className="flex-1 flex items-center justify-center p-6">
+            <section id="numeracao-section" className="px-4 py-10 sm:px-6 lg:py-12">
                 <motion.div
                     initial={{ y: 10, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
                     transition={{ duration: 0.6, ease: 'easeOut' }}
-                    className="w-full max-w-xl bg-white rounded-2xl shadow-xl p-8 z-10 border border-gray-200"
+                    className="mx-auto w-full max-w-xl bg-white rounded-2xl shadow-xl p-6 sm:p-8 z-10 border border-gray-200"
                 >
                     <div className="text-center mb-8">
                         <h2 className="text-2xl font-bold tracking-tight text-gray-900">Escolha sua numeração</h2>
                         <p className="text-gray-500 mt-2 text-sm">Selecione o tamanho para visualizar os produtos disponíveis em estoque.</p>
                     </div>
-                    <div className="grid grid-cols-4 sm:grid-cols-6 gap-4">
+                    <div className="grid grid-cols-4 sm:grid-cols-6 gap-3 sm:gap-4">
                         {sizes.map((s) => (
                             <button
                                 key={s}
                                 onClick={() => choose(s)}
                                 disabled={loadingSize !== null}
-                                className={`py-2 rounded-lg font-medium text-sm transition-all duration-300
+                                className={`h-11 rounded-lg font-medium text-sm transition-all duration-300
                                         border shadow-sm
                                         ${loadingSize === s ? 'bg-gray-900 text-white border-gray-900 animate-pulse' : 'bg-gray-100 border-gray-300 hover:bg-gray-200 hover:border-gray-400'}
                                         ${loadingSize !== null && loadingSize !== s ? 'opacity-40 cursor-not-allowed' : ''}`}
@@ -281,9 +283,9 @@ export default function Numeracao() {
                         ))}
                     </div>
                 </motion.div>
-            </div>
+            </section>
 
-          {/*  <div className="mb-8 flex justify-center">
+            <div className="mb-10 flex justify-center px-4">
   <button
     onClick={openReels}
     className="
@@ -304,7 +306,7 @@ export default function Numeracao() {
       hover:shadow-[0_12px_35px_rgba(0,0,0,0.5)]
     "
   >
-    {/* BADGE 
+    {/* BADGE */}
     <span className="
       absolute -top-2 -right-2
       bg-green-500 text-white
@@ -316,18 +318,18 @@ export default function Numeracao() {
       NOVO
     </span>
 
-    {/* ÍCONE REELS 
+    {/* ÍCONE REELS */}
     <Clapperboard size={18} />
 
     <span>Reels de Produtos</span>
   </button>
-</div> */}
-            <div className="mt-10">
-                <h3 className="text-lg font-semibold text-center mb-4">O que dizem nossos clientes</h3>
-                <div className="flex overflow-x-auto gap-4 px-4 pb-2 scrollbar-hide">
+</div>
+            <section className="mx-auto mt-12 w-full max-w-3xl px-4 sm:px-6 lg:mt-14">
+                <h3 className="text-lg sm:text-xl font-semibold text-center mb-4 lg:mb-6">O que dizem nossos clientes</h3>
+                <div className="flex overflow-x-auto gap-4 pb-2 hide-scrollbar lg:grid lg:grid-cols-2 lg:overflow-visible lg:pb-0">
 
                     {/* Avaliação 1 */}
-                    <div className="bg-white shadow rounded-xl p-4 min-w-[200px]">
+                    <div className="bg-white shadow rounded-xl p-4 min-w-[200px] lg:min-w-0">
                         <p className="text-sm text-gray-600 italic">
                             "Chegou super rápido e a qualidade é top!"
                         </p>
@@ -335,7 +337,7 @@ export default function Numeracao() {
                     </div>
 
                     {/* Avaliação 2 */}
-                    <div className="bg-white shadow rounded-xl p-4 min-w-[200px]">
+                    <div className="bg-white shadow rounded-xl p-4 min-w-[200px] lg:min-w-0">
                         <p className="text-sm text-gray-600 italic">
                             "Ótimo atendimento, recomendo demais!"
                         </p>
@@ -343,7 +345,7 @@ export default function Numeracao() {
                     </div>
 
                     {/* Avaliação 3 */}
-                    <div className="bg-white shadow rounded-xl p-4 min-w-[200px]">
+                    <div className="bg-white shadow rounded-xl p-4 min-w-[200px] lg:min-w-0">
                         <p className="text-sm text-gray-600 italic">
                             "Muito confortáveis, uso no dia a dia e parecem novos ainda."
                         </p>
@@ -351,7 +353,7 @@ export default function Numeracao() {
                     </div>
 
                     {/* Avaliação 4 */}
-                    <div className="bg-white shadow rounded-xl p-4 min-w-[200px]">
+                    <div className="bg-white shadow rounded-xl p-4 min-w-[200px] lg:min-w-0">
                         <p className="text-sm text-gray-600 italic">
                             "Superou minhas expectativas, material excelente!"
                         </p>
@@ -359,7 +361,7 @@ export default function Numeracao() {
                     </div>
 
                     {/* Avaliação 5 */}
-                    <div className="bg-white shadow rounded-xl p-4 min-w-[200px]">
+                    <div className="bg-white shadow rounded-xl p-4 min-w-[200px] lg:min-w-0">
                         <p className="text-sm text-gray-600 italic">
                             "Atendimento muito bom, amei o capricho."
                         </p>
@@ -367,7 +369,7 @@ export default function Numeracao() {
                     </div>
 
                     {/* Avaliação 6 */}
-                    <div className="bg-white shadow rounded-xl p-4 min-w-[200px]">
+                    <div className="bg-white shadow rounded-xl p-4 min-w-[200px] lg:min-w-0">
                         <p className="text-sm text-gray-600 italic">
                             "Atendimento top demais 👏"
                         </p>
@@ -375,7 +377,7 @@ export default function Numeracao() {
                     </div>
 
                     {/* Avaliação 7 */}
-                    <div className="bg-white shadow rounded-xl p-4 min-w-[200px]">
+                    <div className="bg-white shadow rounded-xl p-4 min-w-[200px] lg:min-w-0">
                         <p className="text-sm text-gray-600 italic">
                             "A Calcis é minha Loja Favorita"
                         </p>
@@ -383,11 +385,11 @@ export default function Numeracao() {
                     </div>
 
                 </div>
-            </div>
+            </section>
 
 
             {/* FAQ Accordion Super Clean */}
-            <div className="mt-20 max-w-3xl mx-auto px-4">
+            <section id="faq" className="mt-20 max-w-3xl mx-auto px-4 sm:px-6">
                 <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-10 text-center">
                     Dúvidas frequentes
                 </h3>
@@ -428,7 +430,7 @@ export default function Numeracao() {
                     ))}
                 </div>
 
-            </div>
+            </section>
 
             {/* Overlay de loading */}
             <AnimatePresence>

@@ -151,7 +151,7 @@ export default function ProductCard({ produto, numeracaoSelecionada }) {
 
         {/* Botão WhatsApp */}
         <a
-          href={`https://wa.me/55${produto.whatsapp || "45988190147"}?text=${esgotado
+          href={`https://wa.me/55${produto.whatsapp || "4576059397"}?text=${esgotado
               ? `Olá, gostaria de ser avisado quando o produto *${produto.nome}* na numeração *${numeracaoSelecionada}* voltar ao estoque.`
               : `Olá, tenho interesse no produto *${produto.nome}* na numeração *${numeracaoSelecionada}*.`
             }`}
